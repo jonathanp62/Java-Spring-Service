@@ -1,7 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
- * (#)Main.java 0.1.0   11/04/2024
+ * (#)TestHelloWorldServiceBean.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
  * @version  0.1.0
@@ -30,53 +30,37 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import java.util.Objects;
+import static org.junit.Assert.assertEquals;
 
-import static net.jmp.util.logging.LoggerUtils.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.Before;
+import org.junit.Test;
 
 import org.springframework.context.ApplicationContext;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-/// The main application class.
+/// The test class for the hello world service bean.
+/// Note that because this is not a Spring Boot
+/// application autowiring does not work.
 ///
 /// @version    0.1.0
 /// @since      0.1.0
-final class Main implements Runnable {
-    /** The logger. */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+public final class TestHelloWorldServiceBean {
+    private HelloWorldService helloWorldService;
 
-    /// The command line arguments.
-    private final String[] arguments;
+    @Before
+    public void before() {
+        if (this.helloWorldService == null) {
+            final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-    /// A constructor that takes the
-    /// command line arguments from
-    /// the bootstrap class.
-    ///
-    /// @param   args    java.lang.String[]
-    Main(final String[] args) {
-        super();
-
-        this.arguments = Objects.requireNonNull(args);
+            this.helloWorldService = context.getBean(HelloWorldService.class);
+        }
     }
 
-    /// The run method.
-    @Override
-    public void run() {
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entry());
-        }
+    @Test
+    public void testGetHelloWorld() {
+        final String result = helloWorldService.getHelloWorld();
 
-        final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        final HelloWorldService helloWorldService = context.getBean(HelloWorldService.class);
-
-        this.logger.info(helloWorldService.getHelloWorld());
-
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exit());
-        }
+        assertEquals("Hello, World!!", result);
     }
 }

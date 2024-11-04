@@ -81,7 +81,6 @@ dependencies {
     implementation      libs.org.slf4j.slf4j.api
     implementation      libs.org.springframework.spring.context
     testImplementation  libs.junit.junit
-    testImplementation  libs.net.jmp.util.testing.testutil.testing.utilities
 }
 
 group = 'net.jmp.spring.java.app'
