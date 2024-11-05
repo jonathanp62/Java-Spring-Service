@@ -4,8 +4,6 @@ package net.jmp.spring.java.app;
  * (#)Bootstrap.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
- * @version  0.1.0
- * @since    0.1.0
  *
  * MIT License
  *

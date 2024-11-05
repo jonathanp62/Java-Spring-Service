@@ -4,8 +4,6 @@ package net.jmp.spring.java.app;
  * (#)AppConfig.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
- * @version  0.1.0
- * @since    0.1.0
  *
  * MIT License
  *
@@ -43,11 +41,14 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
 /// The Spring application configuration.
 ///
 /// @version    0.1.0
 /// @since      0.1.0
 @Configuration
+@EnableMongoRepositories("net.jmp.spring.java.app")
 public class AppConfig {
     /// The default constructor.
     public AppConfig() {

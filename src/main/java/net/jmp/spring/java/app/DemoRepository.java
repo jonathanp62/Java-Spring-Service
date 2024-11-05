@@ -1,7 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
- * (#)HelloWorldServiceImpl.java    0.1.0   11/04/2024
+ * (#)DemoRepository.java   0.1.0   11/05/2024
  *
  * @author   Jonathan Parker
  *
@@ -28,21 +28,42 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-/// The hello world service implementation.
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+
+/// The demo repository interface.
 ///
 /// @version    0.1.0
 /// @since      0.1.0
-public final class HelloWorldServiceImpl implements HelloWorldService {
-    /// The default constructor.
-    public HelloWorldServiceImpl() {
-        super();
-    }
-
-    /// Get a hello world string.
+public interface DemoRepository extends MongoRepository<Demo, String> {
+    /// Get a document by identifier.
     ///
-    /// @return java.lang.String
-    @Override
-    public String getHelloWorld() {
-        return "Hello, World!!";
-    }
+    /// @param  id  java.lang.String
+    /// @return     java.util.Optional<net.jmp.spring.java.app.Demo>
+    @Query("{ 'id' :  ?0}")
+    Optional<Demo> findById(final String id);
+
+    /// Get a document by production identifier.
+    ///
+    /// @param  prodId  int
+    /// @return         java.util.Optional<net.jmp.spring.java.app.Demo>
+    @Query("{ 'prodId' :  ?0}")
+    Optional<Demo> findByProdId(final int prodId);
+
+    /// Get a list of documents by price.
+    ///
+    /// @param  price   int
+    /// @return         java.util.List<net.jmp.spring.java.app.Demo>
+    @Query("{ 'price' :  ?0}")
+    List<Demo> findByPrice(final int price);
+
+    /// Get a list of documents by quantity.
+    ///
+    /// @param  quantity    int
+    /// @return             java.util.List<net.jmp.spring.java.app.Demo>
+    @Query("{ 'quantity' :  ?0}")
+    List<Demo> findByQuantity(final int quantity);
 }

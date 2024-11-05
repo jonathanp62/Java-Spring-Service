@@ -4,8 +4,6 @@ package net.jmp.spring.java.app;
  * (#)Demo.java 0.1.0   11/05/2024
  *
  * @author   Jonathan Parker
- * @version  0.1.0
- * @since    0.1.0
  *
  * MIT License
  *

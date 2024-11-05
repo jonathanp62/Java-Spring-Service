@@ -4,8 +4,6 @@ package net.jmp.spring.java.app;
  * (#)Main.java 0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
- * @version  0.1.0
- * @since    0.1.0
  *
  * MIT License
  *
@@ -32,6 +30,7 @@ package net.jmp.spring.java.app;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -76,7 +75,8 @@ final class Main implements Runnable {
         final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
         this.sayHello(context);
-        this.mongo(context);
+        this.useMongoTemplate(context);
+        this.useMongoRepository(context);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -100,18 +100,52 @@ final class Main implements Runnable {
         }
     }
 
-    /// Do some things with MongoDB.
+    /// Find all the documents in the demo collection
+    /// of the training database in MongoDB using the
+    /// MongoTemplate.
     ///
     /// @param  context org.springframework.context.ApplicationContext
-    private void mongo(final ApplicationContext context) {
+    private void useMongoTemplate(final ApplicationContext context) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(context));
         }
 
         final MongoTemplate mongoTemplate = context.getBean(MongoTemplate.class);
-        final List<Demo> objects = mongoTemplate.findAll(Demo.class);
+        final List<Demo> documents = mongoTemplate.findAll(Demo.class);
 
-        objects.forEach(o -> this.logger.info(o.toString()));
+        documents.forEach(o -> this.logger.info(o.toString()));
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Find documents in the demo collection
+    /// of the training database in MongoDB using the
+    /// custom queries in the DemoRepository.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    private void useMongoRepository(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        final DemoRepository repository = context.getBean(DemoRepository.class);
+        final List<Demo> documentsByPrice = repository.findByPrice(17);
+
+        documentsByPrice.forEach(o -> this.logger.info(o.toString()));
+
+        final List<Demo> documentsByQuantity = repository.findByQuantity(234);
+
+        documentsByQuantity.forEach(o -> this.logger.info(o.toString()));
+
+        final Optional<Demo> documentById = repository.findById("672a33a932aa022e27e36664");
+
+        documentById.ifPresent(o -> this.logger.info(o.toString()));
+
+        final Optional<Demo> documentByProdId = repository.findByProdId(102);
+
+        documentByProdId.ifPresent(o -> this.logger.info(o.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
