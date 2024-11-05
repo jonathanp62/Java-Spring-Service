@@ -30,6 +30,7 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.List;
 import java.util.Objects;
 
 import static net.jmp.util.logging.LoggerUtils.*;
@@ -40,6 +41,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 /// The main application class.
 ///
@@ -71,9 +74,44 @@ final class Main implements Runnable {
         }
 
         final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        this.sayHello(context);
+        this.mongo(context);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Say hello.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    private void sayHello(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
         final HelloWorldService helloWorldService = context.getBean(HelloWorldService.class);
 
         this.logger.info(helloWorldService.getHelloWorld());
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Do some things with MongoDB.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    private void mongo(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        final MongoTemplate mongoTemplate = context.getBean(MongoTemplate.class);
+        final List<Demo> objects = mongoTemplate.findAll(Demo.class);
+
+        objects.forEach(o -> this.logger.info(o.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

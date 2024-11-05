@@ -30,8 +30,18 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import java.util.Properties;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 /// The Spring application configuration.
 ///
@@ -50,5 +60,35 @@ public class AppConfig {
     @Bean
     public HelloWorldService helloWorldService() {
         return new HelloWorldServiceImpl();
+    }
+
+    /// Create a MongoDB client.
+    ///
+    /// @return com.mongodb.client.MongoClient
+    @Bean
+    public MongoClient mongoClient() {
+        String mongoDbUri = "mongodb+srv://{uri.userid}:{uri.password}@{uri.domain}/?retryWrites=true&w=majority";
+
+        final var secretProperties = new Properties();
+
+        try (final var fis = new FileInputStream("config/secrets.properties")) {
+            secretProperties.load(fis);
+
+            mongoDbUri = mongoDbUri.replace("{uri.userid}", secretProperties.getProperty("mongodb.uri.userid"));
+            mongoDbUri = mongoDbUri.replace("{uri.password}", secretProperties.getProperty("mongodb.uri.password"));
+            mongoDbUri = mongoDbUri.replace("{uri.domain}", secretProperties.getProperty("mongodb.uri.domain"));
+        } catch (final IOException ioe) {
+            ioe.printStackTrace(System.err);
+        }
+
+        return MongoClients.create(mongoDbUri);
+    }
+
+    /// Create a MongoDB template.
+    ///
+    /// @return org.springframework.data.mongodb.core.MongoTemplate
+    @Bean
+    public MongoTemplate mongoTemplate() {
+        return new MongoTemplate(this.mongoClient(), "training");
     }
 }
