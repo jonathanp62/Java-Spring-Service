@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)HelloWorldService.java    0.2.0   11/08/2024
  * (#)HelloWorldService.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
@@ -28,10 +29,13 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import org.springframework.stereotype.Service;
+
 /// The hello world service.
 ///
-/// @version    0.1.0
+/// @version    0.2.0
 /// @since      0.1.0
+@Service
 public interface HelloWorldService {
     /// Get a hello world string.
     ///
