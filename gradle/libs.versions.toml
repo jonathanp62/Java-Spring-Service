@@ -1,8 +1,9 @@
 #
+# (#)libs.versions.toml 0.2.0   11/08/2024
 # (#)libs.versions.toml 0.1.0   11/04/2024
 #
 #  @author   Jonathan Parker
-#  @version  0.1.0
+#  @version  0.2.0
 #  @since    0.1.0
 #
 #  MIT License
@@ -34,8 +35,10 @@ junit-junit = "4.13.2"
 net-jmp-util-logging-logging-utilities = "1.0.0"
 org-mongodb-mongodb-driver-sync = "5.2.0"
 org-slf4j-slf4j-api = "2.0.16"
+org-springframework-boot-spring-boot-starter-data-redis = "3.3.5"
 org-springframework-data-spring-data-mongodb = "4.3.5"
 org-springframework-spring-context = "6.1.14"
+redis-clients-jedis = "5.2.0"
 
 [libraries]
 ch-qos-logback-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "ch-qos-logback-logback-classic" }
@@ -44,5 +47,7 @@ junit-junit = { module = "junit:junit", version.ref = "junit-junit" }
 net-jmp-util-logging-logging-utilities = { module = "net.jmp.util.logging:logging-utilities", version.ref = "net-jmp-util-logging-logging-utilities" }
 org-mongodb-mongodb-driver-sync = { module = "org.mongodb:mongodb-driver-sync", version.ref = "org-mongodb-mongodb-driver-sync" }
 org-slf4j-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "org-slf4j-slf4j-api" }
+org-springframework-boot-spring-boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis", version.ref = "org-springframework-boot-spring-boot-starter-data-redis" }
 org-springframework-data-spring-data-mongodb = { module = "org.springframework.data:spring-data-mongodb", version.ref = "org-springframework-data-spring-data-mongodb" }
 org-springframework-spring-context = { module = "org.springframework:spring-context", version.ref = "org-springframework-spring-context" }
+redis-clients-jedis = { module = "redis.clients:jedis", version.ref = "redis-clients-jedis" }
