@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)AppConfig.java    0.2.0   11/09/2024
  * (#)AppConfig.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
@@ -43,9 +44,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+
+import org.springframework.data.redis.core.RedisTemplate;
+
 /// The Spring application configuration.
 ///
-/// @version    0.1.0
+/// @version    0.2.0
 /// @since      0.1.0
 @Configuration
 @EnableMongoRepositories("net.jmp.spring.java.app")
@@ -91,5 +98,29 @@ public class AppConfig {
     @Bean
     public MongoTemplate mongoTemplate() {
         return new MongoTemplate(this.mongoClient(), "training");
+    }
+
+    /// Create a Jedis connection factory.
+    ///
+    /// @return org.springframework.data.redis.connection.jedis.JedisConnectionFactory
+    /// @since  0.2.0
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory() {
+        final RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("localhost", 6379);
+
+        return new JedisConnectionFactory(redisStandaloneConfiguration);
+    }
+
+    /// Create a Redis template. Both the key and value types are string.
+    ///
+    /// @return org.springframework.data.redis.core.RedisTemplate
+    /// @since  0.2.0
+    @Bean
+    public RedisTemplate<String, String> redisTemplate() {
+        final RedisTemplate<String, String> template = new RedisTemplate<>();
+
+        template.setConnectionFactory(this.jedisConnectionFactory());
+
+        return template;
     }
 }

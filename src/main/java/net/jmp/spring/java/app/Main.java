@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)Main.java 0.2.0   11/09/2024
  * (#)Main.java 0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
@@ -42,10 +43,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /// The main application class.
 ///
-/// @version    0.1.0
+/// @version    0.2.0
 /// @since      0.1.0
 final class Main implements Runnable {
     /** The logger. */
@@ -77,6 +79,7 @@ final class Main implements Runnable {
         this.sayHello(context);
         this.useMongoTemplate(context);
         this.useMongoRepository(context);
+        this.useRedisTemplate(context);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -146,6 +149,36 @@ final class Main implements Runnable {
         final Optional<Demo> documentByProdId = repository.findByProdId(102);
 
         documentByProdId.ifPresent(o -> this.logger.info(o.toString()));
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Use the Redis template to store and fetch objects.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.2.0
+    private void useRedisTemplate(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        @SuppressWarnings("unchecked")
+        final RedisTemplate<String, String> redisTemplate = context.getBean(RedisTemplate.class);
+        final RedisService redisService = new RedisService(redisTemplate);
+
+        redisService.setValue("name", "John Doe");
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(redisService.getValue("name"));
+        }
+
+        if (redisService.delete("name")) {
+            this.logger.info("Object 'name' deleted");
+        } else {
+            this.logger.warn("Object 'name' not deleted");
+        }
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
