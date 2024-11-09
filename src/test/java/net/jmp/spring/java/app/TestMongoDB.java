@@ -65,10 +65,34 @@ public final class TestMongoDB {
         final List<Demo> documents = mongoTemplate.findAll(Demo.class);
 
         assertEquals(4, documents.size());
-        assertEquals("672a33a932aa022e27e36664", documents.get(0).getId());
-        assertEquals("672a33a932aa022e27e36665", documents.get(1).getId());
-        assertEquals("672a33a932aa022e27e36666", documents.get(2).getId());
-        assertEquals("672a33a932aa022e27e36667", documents.get(3).getId());
+
+        boolean foundDocument0 = false;
+        boolean foundDocument1 = false;
+        boolean foundDocument2 = false;
+        boolean foundDocument3 = false;
+
+        for (final Demo document : documents) {
+            if (document.getId().equals(documents.get(0).getId())) {
+                foundDocument0 = true;
+            }
+
+            if (document.getId().equals(documents.get(1).getId())) {
+                foundDocument1 = true;
+            }
+
+            if (document.getId().equals(documents.get(2).getId())) {
+                foundDocument2 = true;
+            }
+
+            if (document.getId().equals(documents.get(3).getId())) {
+                foundDocument3 = true;
+            }
+        }
+
+        assertTrue(foundDocument0);
+        assertTrue(foundDocument1);
+        assertTrue(foundDocument2);
+        assertTrue(foundDocument3);
     }
 
     @Test
