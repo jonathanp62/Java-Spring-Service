@@ -57,6 +57,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 @EnableMongoRepositories("net.jmp.spring.java.app")
 public class AppConfig {
+    /// The name and relative location of the secrets file.
+    private static final String CONFIG_FILE = "config/secrets.properties";
+
     /// The default constructor.
     public AppConfig() {
         super();
@@ -79,7 +82,7 @@ public class AppConfig {
 
         final var secretProperties = new Properties();
 
-        try (final var fis = new FileInputStream("config/secrets.properties")) {
+        try (final var fis = new FileInputStream(CONFIG_FILE)) {
             secretProperties.load(fis);
 
             mongoDbUri = mongoDbUri.replace("{uri.userid}", secretProperties.getProperty("mongodb.uri.userid"));
@@ -106,7 +109,24 @@ public class AppConfig {
     /// @since  0.2.0
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
-        final RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("localhost", 6379);
+        String hostName = null;
+        int port = 0;
+
+        final var secretProperties = new Properties();
+
+        try (final var fis = new FileInputStream(CONFIG_FILE)) {
+            secretProperties.load(fis);
+
+            hostName = secretProperties.getProperty("redis.host");
+            port = Integer.parseInt(secretProperties.getProperty("redis.port"));
+        } catch (final IOException ioe) {
+            ioe.printStackTrace(System.err);
+        }
+
+        assert hostName != null;
+        assert port > 0;
+
+        final RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(hostName, port);
 
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
