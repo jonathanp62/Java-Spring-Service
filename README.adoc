@@ -3,6 +3,15 @@ Spring-Service
 
 A program that demonstrates using Spring features from inside a regular Java application.
 
+Features
+~~~~~~~~
+
+* A plain Java service bean
+* MongoDB beans
+  - MongoTemplate
+  - MongoRepository
+* A Redis bean
+
 Gradle JavaExec Tasks
 ~~~~~~~~~~~~~~~~~~~~~
 
