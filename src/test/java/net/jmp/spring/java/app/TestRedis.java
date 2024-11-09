@@ -64,9 +64,9 @@ public final class TestRedis {
     public void after() {
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
-        final RedisService redisService = new RedisService(redisTemplate);
+        final RedisStringService redisStringService = new RedisStringService(redisTemplate);
 
-        if (!redisService.delete("name")) {
+        if (!redisStringService.deleteValue("name")) {
             this.logger.warn("Object 'name' not deleted");
         }
     }
@@ -75,11 +75,11 @@ public final class TestRedis {
     public void testRedisTemplate() {
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
-        final RedisService redisService = new RedisService(redisTemplate);
+        final RedisStringService redisStringService = new RedisStringService(redisTemplate);
 
-        redisService.setValue("name", "John Doe");
+        redisStringService.setValue("name", "John Doe");
 
-        final String result = redisService.getValue("name");
+        final String result = redisStringService.getValue("name");
 
         assertEquals("John Doe", result);
     }

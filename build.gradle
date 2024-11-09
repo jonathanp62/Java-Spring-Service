@@ -78,14 +78,15 @@ repositories {
 dependencies {
     runtimeOnly         libs.ch.qos.logback.logback.classic
     runtimeOnly         libs.ch.qos.logback.logback.core
+    implementation      libs.com.fasterxml.jackson.core.jackson.databind
     implementation      libs.net.jmp.util.logging.logging.utilities
     implementation      libs.org.mongodb.mongodb.driver.sync
     implementation      libs.org.slf4j.slf4j.api
     implementation      libs.org.springframework.boot.spring.boot.starter.data.redis
     implementation      libs.org.springframework.data.spring.data.mongodb
     implementation      libs.org.springframework.spring.context
-    testImplementation  libs.junit.junit
     implementation      libs.redis.clients.jedis
+    testImplementation  libs.junit.junit
 }
 
 group = 'net.jmp.spring.java.app'

@@ -164,20 +164,52 @@ final class Main implements Runnable {
             this.logger.trace(entryWith(context));
         }
 
+        // String service
+
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = context.getBean(RedisTemplate.class);
-        final RedisService redisService = new RedisService(redisTemplate);
+        final RedisStringService redisStringService = new RedisStringService(redisTemplate);
 
-        redisService.setValue("name", "John Doe");
+        redisStringService.setValue("name", "John Doe");
 
         if (this.logger.isInfoEnabled()) {
-            this.logger.info(redisService.getValue("name"));
+            this.logger.info(redisStringService.getValue("name"));
         }
 
-        if (redisService.delete("name")) {
+        if (redisStringService.deleteValue("name")) {
             this.logger.info("Object 'name' deleted");
         } else {
             this.logger.warn("Object 'name' not deleted");
+        }
+
+        // User service
+
+        @SuppressWarnings("unchecked")
+        final RedisTemplate<String, User> redisUserTemplate = context.getBean(RedisTemplate.class);
+        final RedisUserService redisUserService = new RedisUserService(redisUserTemplate);
+
+        final User user = new User();
+
+        user.setId("123456789abcedf0");
+        user.setUserName("John Doe");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setPassword("secret");
+
+        redisUserService.setUser(user);
+
+        final User john = redisUserService.getUser("123456789abcedf0");
+
+        assert john != null;
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(john.toString());
+        }
+
+        if (redisUserService.deleteUser("123456789abcedf0")) {
+            this.logger.info("User '123456789abcedf0' deleted");
+        } else {
+            this.logger.warn("User '123456789abcedf0' not deleted");
         }
 
         if (this.logger.isTraceEnabled()) {
