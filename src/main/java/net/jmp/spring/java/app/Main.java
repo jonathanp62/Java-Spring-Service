@@ -155,7 +155,8 @@ final class Main implements Runnable {
         }
     }
 
-    /// Use the Redis template to store and fetch objects.
+    /// Use the Redis template to store and fetch objects
+    /// from both the string and user services.
     ///
     /// @param  context org.springframework.context.ApplicationContext
     /// @since          0.2.0
@@ -164,7 +165,22 @@ final class Main implements Runnable {
             this.logger.trace(entryWith(context));
         }
 
-        // String service
+        this.redisStringService(context);
+        this.redisUserService(context);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Work with the Redis string service to store and fetch objects.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.2.0
+    private void redisStringService(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
 
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = context.getBean(RedisTemplate.class);
@@ -182,7 +198,19 @@ final class Main implements Runnable {
             this.logger.warn("Object 'name' not deleted");
         }
 
-        // User service
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+   }
+
+    /// Work with the Redis user service to store and fetch objects.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.2.0
+    private void redisUserService(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
 
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, User> redisUserTemplate = context.getBean(RedisTemplate.class);
@@ -217,3 +245,4 @@ final class Main implements Runnable {
         }
     }
 }
+

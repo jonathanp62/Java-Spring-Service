@@ -66,33 +66,38 @@ public final class TestMongoDB {
 
         assertEquals(4, documents.size());
 
-        boolean foundDocument0 = false;
-        boolean foundDocument1 = false;
-        boolean foundDocument2 = false;
-        boolean foundDocument3 = false;
+        final Demo document0 = new Demo();
 
-        for (final Demo document : documents) {
-            if (document.getId().equals(documents.get(0).getId())) {
-                foundDocument0 = true;
-            }
+        document0.setId("672a33a932aa022e27e36664");
+        document0.setPrice(20);
+        document0.setProdId(100);
+        document0.setQuantity(125);
 
-            if (document.getId().equals(documents.get(1).getId())) {
-                foundDocument1 = true;
-            }
+        final Demo document1 = new Demo();
 
-            if (document.getId().equals(documents.get(2).getId())) {
-                foundDocument2 = true;
-            }
+        document1.setId("672a33a932aa022e27e36665");
+        document1.setPrice(10);
+        document1.setProdId(101);
+        document1.setQuantity(234);
 
-            if (document.getId().equals(documents.get(3).getId())) {
-                foundDocument3 = true;
-            }
-        }
+        final Demo document2 = new Demo();
 
-        assertTrue(foundDocument0);
-        assertTrue(foundDocument1);
-        assertTrue(foundDocument2);
-        assertTrue(foundDocument3);
+        document2.setId("672a33a932aa022e27e36666");
+        document2.setPrice(15);
+        document2.setProdId(102);
+        document2.setQuantity(432);
+
+        final Demo document3 = new Demo();
+
+        document3.setId("672a33a932aa022e27e36667");
+        document3.setPrice(17);
+        document3.setProdId(103);
+        document3.setQuantity(320);
+
+        assertTrue(documents.contains(document0));
+        assertTrue(documents.contains(document1));
+        assertTrue(documents.contains(document2));
+        assertTrue(documents.contains(document3));
     }
 
     @Test

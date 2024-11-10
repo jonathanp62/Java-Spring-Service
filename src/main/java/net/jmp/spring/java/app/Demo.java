@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)Demo.java 0.2.0   11/10/2024
  * (#)Demo.java 0.1.0   11/05/2024
  *
  * @author   Jonathan Parker
@@ -28,13 +29,15 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.Objects;
+
 import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /// A MongoDB document class from the demo collection.
 ///
-/// @version    0.1.0
+/// @version    0.2.0
 /// @since      0.1.0
 @Document
 public class Demo {
@@ -110,6 +113,29 @@ public class Demo {
     /// @param  quantity    int
     public void setQuantity(final int quantity) {
         this.quantity = quantity;
+    }
+
+    /// The equals methods.
+    ///
+    /// @param  o   java.lang.Object
+    /// @return     boolean
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Demo demo = (Demo) o;
+
+        return this.prodId == demo.prodId && this.price == demo.price && this.quantity == demo.quantity && Objects.equals(this.id, demo.id);
+    }
+
+    /// The hash-code method.
+    ///
+    /// @return int
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.prodId, this.price, this.quantity);
     }
 
     /// The to-string method.
