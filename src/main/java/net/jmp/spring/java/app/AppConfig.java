@@ -50,6 +50,9 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
 import org.springframework.data.redis.core.RedisTemplate;
 
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
 /// The Spring application configuration.
 ///
 /// @version    0.2.0
@@ -142,5 +145,28 @@ public class AppConfig {
         template.setConnectionFactory(this.jedisConnectionFactory());
 
         return template;
+    }
+
+    /// Create a Redis student template.
+    ///
+    /// @return org.springframework.data.redis.core.RedisTemplate
+    /// @since  0.2.0
+    private RedisTemplate<String, Student> redisObjectTemplate() {
+        final RedisTemplate<String, Student> template = new RedisTemplate<>();
+
+        template.setConnectionFactory(this.jedisConnectionFactory());
+        template.afterPropertiesSet();
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Student.class));
+
+        return template;
+    }
+
+    /// Get the student repository.
+    ///
+    /// @return net.jmp.spring.java.app.StudentRepository
+    @Bean
+    public StudentRepository studentRepository() {
+        return new StudentRepositoryImpl(this.redisObjectTemplate());
     }
 }

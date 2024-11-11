@@ -80,6 +80,7 @@ final class Main implements Runnable {
         this.useMongoTemplate(context);
         this.useMongoRepository(context);
         this.useRedisTemplate(context);
+        this.useRedisRepository(context);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -239,6 +240,37 @@ final class Main implements Runnable {
         } else {
             this.logger.warn("User '123456789abcedf0' not deleted");
         }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Use the Redis repository to store and fetch objects
+    /// from the student repository.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.2.0
+    private void useRedisRepository(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        final StudentRepository repository = context.getBean(StudentRepository.class);
+        final StudentService studentService = new StudentService(repository);
+
+        final Student student = new Student();
+
+        student.setId("identifier");
+        student.setGender(Student.Gender.FEMALE);
+        student.setName("Bella");
+        student.setGrade(100);
+
+        final Student result = studentService.save(student.getId(), student);
+
+        assert result != null;
+        assert result.equals(student);
+        assert studentService.existsById(result.getId());
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
