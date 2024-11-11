@@ -28,6 +28,8 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.Objects;
+
 /// A user class.
 ///
 /// @version    0.2.0
@@ -121,6 +123,33 @@ public final class User {
     /// @param  password    java.lang.String
     public void setPassword(final String password) {
         this.password = password;
+    }
+
+    /// The equals method.
+    ///
+    /// @param  o   java.lang.Object
+    /// @return     boolean
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final User user = (User) o;
+
+        return Objects.equals(this.id, user.id) &&
+                Objects.equals(this.userName, user.userName) &&
+                Objects.equals(this.firstName, user.firstName) &&
+                Objects.equals(this.lastName, user.lastName) &&
+                Objects.equals(this.password, user.password);
+    }
+
+    /// The hash-code method.
+    ///
+    /// @return int
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.userName, this.firstName, this.lastName, this.password);
     }
 
     /// The to-string method.
