@@ -76,7 +76,7 @@ public class AppConfig {
         return new HelloWorldServiceImpl();
     }
 
-    /// Create a MongoDB client.
+    /// Create and return a MongoDB client.
     ///
     /// @return com.mongodb.client.MongoClient
     @Bean
@@ -106,7 +106,7 @@ public class AppConfig {
         return new MongoTemplate(this.mongoClient(), "training");
     }
 
-    /// Create a Jedis connection factory.
+    /// Create and return a Jedis connection factory.
     ///
     /// @return org.springframework.data.redis.connection.jedis.JedisConnectionFactory
     /// @since  0.2.0
@@ -134,7 +134,7 @@ public class AppConfig {
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
 
-    /// Create a Redis template. Both the key and value types are string.
+    /// Create and return a Redis template. Both the key and value types are string.
     ///
     /// @return org.springframework.data.redis.core.RedisTemplate
     /// @since  0.2.0
@@ -147,11 +147,11 @@ public class AppConfig {
         return template;
     }
 
-    /// Create a Redis student template.
+    /// Create and return a Redis student template.
     ///
     /// @return org.springframework.data.redis.core.RedisTemplate
     /// @since  0.2.0
-    private RedisTemplate<String, Student> redisObjectTemplate() {
+    private RedisTemplate<String, Student> redisStudentTemplate() {
         final RedisTemplate<String, Student> template = new RedisTemplate<>();
 
         template.setConnectionFactory(this.jedisConnectionFactory());
@@ -162,11 +162,11 @@ public class AppConfig {
         return template;
     }
 
-    /// Get the student repository.
+    /// Create and return the student repository.
     ///
     /// @return net.jmp.spring.java.app.StudentRepository
     @Bean
     public StudentRepository studentRepository() {
-        return new StudentRepositoryImpl(this.redisObjectTemplate());
+        return new StudentRepositoryImpl(this.redisStudentTemplate());
     }
 }

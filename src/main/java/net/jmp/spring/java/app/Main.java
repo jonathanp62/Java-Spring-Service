@@ -263,14 +263,26 @@ final class Main implements Runnable {
 
         student.setId("identifier");
         student.setGender(Student.Gender.FEMALE);
-        student.setName("Bella");
+        student.setName("Kristina");
         student.setGrade(100);
 
-        final Student result = studentService.save(student.getId(), student);
+        final Student result = studentService.save(student);
 
         assert result != null;
         assert result.equals(student);
         assert studentService.existsById(result.getId());
+
+        final Optional<Student> fetched = studentService.findById(student.getId());
+
+        assert fetched.isPresent();
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(fetched.toString());
+        }
+
+        studentService.delete(student);
+
+        assert !studentService.existsById(result.getId());
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

@@ -50,23 +50,27 @@ public class StudentRepositoryImpl implements StudentRepository {
     /// Save a student.
     ///
     /// @param  <S>     The student type.
-    /// @param  entity  S
+    /// @param  student S
     /// @return         S
     @Override
-    public <S extends Student> S save(final S entity) {
-        this.redisTemplate.opsForValue().set(entity.getId(), entity);
+    public <S extends Student> S save(final S student) {
+        this.redisTemplate.opsForValue().set(student.getId(), student);
 
-        return entity;
+        return student;
     }
 
     @Override
-    public <S extends Student> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends Student> Iterable<S> saveAll(Iterable<S> students) {
         throw new UnsupportedOperationException();
     }
 
+    /// Find a student by identifier.
+    ///
+    /// @param  id  java.lang.String
+    /// @return     java.util.Optional<net.jmp.spring.java.app.Student>
     @Override
-    public Optional<Student> findById(String s) {
-        return Optional.empty();
+    public Optional<Student> findById(final String id) {
+        return Optional.ofNullable(this.redisTemplate.opsForValue().get(id));
     }
 
     /// Return true if a student exists.
@@ -75,7 +79,7 @@ public class StudentRepositoryImpl implements StudentRepository {
     /// @return     boolean
     @Override
     public boolean existsById(final String id) {
-        return redisTemplate.opsForValue().get(id) != null;
+        return this.redisTemplate.opsForValue().get(id) != null;
     }
 
     @Override
@@ -84,7 +88,7 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public Iterable<Student> findAllById(Iterable<String> strings) {
+    public Iterable<Student> findAllById(Iterable<String> identifiers) {
         return null;
     }
 
@@ -93,23 +97,29 @@ public class StudentRepositoryImpl implements StudentRepository {
         return 0;
     }
 
+    /// Delete a student based on identifier.
+    ///
+    /// @param  id  java.lang.String
     @Override
-    public void deleteById(String s) {
+    public void deleteById(final String id) {
+        this.redisTemplate.delete(id);
+    }
+
+    /// Delete a student.
+    ///
+    /// @param  student net.jmp.spring.java.app.Student
+    @Override
+    public void delete(final Student student) {
+        this.redisTemplate.delete(student.getId());
+    }
+
+    @Override
+    public void deleteAllById(Iterable<? extends String> identifiers) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(Student entity) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void deleteAllById(Iterable<? extends String> strings) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends Student> entities) {
+    public void deleteAll(Iterable<? extends Student> students) {
         throw new UnsupportedOperationException();
     }
 

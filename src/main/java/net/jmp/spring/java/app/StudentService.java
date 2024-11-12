@@ -28,6 +28,8 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 /// A student service.
@@ -50,11 +52,18 @@ public class StudentService {
 
     /// Save the student.
     ///
+    /// @param  student net.jmp.spring.java.app.Student
+    /// @return         net.jmp.spring.java.app.Student
+    public Student save(final Student student) {
+        return this.studentRepository.save(student);
+    }
+
+    /// Find a student by identifier.
+    ///
     /// @param  id  java.lang.String
-    /// @param  s   net.jmp.spring.java.app.Student
-    /// @return     net.jmp.spring.java.app.Student
-    public Student save(final String id, final Student s) {
-        return studentRepository.save(s);
+    /// @return     java.util.Optional<net.jmp.spring.java.app.Student>
+    public Optional<Student> findById(final String id) {
+        return this.studentRepository.findById(id);
     }
 
     /// Save the student.
@@ -62,6 +71,20 @@ public class StudentService {
     /// @param  id  java.lang.String
     /// @return     boolean
     public boolean existsById(final String id) {
-        return studentRepository.existsById(id);
+        return this.studentRepository.existsById(id);
+    }
+
+    /// Delete a student based on identifier.
+    ///
+    /// @param  id  java.lang.String
+    public void deleteById(final String id) {
+        this.studentRepository.deleteById(id);
+    }
+
+    /// Delete a student.
+    ///
+    /// @param  student net.jmp.spring.java.app.Student
+    public void delete(final Student student) {
+        this.studentRepository.delete(student);
     }
 }
