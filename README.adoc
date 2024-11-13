@@ -10,7 +10,10 @@ Features
 * MongoDB beans
   - MongoTemplate
   - MongoRepository
-* A Redis bean
+* Redis beans
+  - CrudRepository
+  - Jedis
+  - RedisTemplate
 
 Gradle JavaExec Tasks
 ~~~~~~~~~~~~~~~~~~~~~

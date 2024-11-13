@@ -43,6 +43,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+
 import org.springframework.data.redis.core.RedisTemplate;
 
 /// The main application class.

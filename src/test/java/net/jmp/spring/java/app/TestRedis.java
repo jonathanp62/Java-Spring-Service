@@ -28,7 +28,9 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import static org.junit.Assert.assertEquals;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -40,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import org.springframework.data.redis.core.RedisTemplate;
 
 /// The test class for the Redis service bean.
@@ -107,5 +110,32 @@ public final class TestRedis {
         if (!redisUserService.deleteUser(user.getId())) {
             this.logger.warn("Object '{}' not deleted", user.getId());
         }
+    }
+
+    @Test
+    public void testRedisStudentService() {
+        final StudentRepository repository = this.context.getBean(StudentRepository.class);
+        final StudentService studentService = new StudentService(repository);
+
+        final Student student = new Student();
+
+        student.setId("identifier");
+        student.setGender(Student.Gender.FEMALE);
+        student.setName("Kristina");
+        student.setGrade(100);
+
+        final Student result = studentService.save(student);
+
+        assertNotNull(result);
+        assertEquals(result, student);
+        assertTrue(studentService.existsById(result.getId()));
+
+        final Optional<Student> fetched = studentService.findById(student.getId());
+
+        assertTrue(fetched.isPresent());
+
+        studentService.delete(student);
+
+        assertFalse(studentService.existsById(result.getId()));
     }
 }
