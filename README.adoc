@@ -13,6 +13,7 @@ Features
 * Redis beans
   - CrudRepository
   - Jedis
+  - Redisson
   - RedisTemplate
 
 Gradle JavaExec Tasks
@@ -24,5 +25,5 @@ Gradle JavaExec Tasks
 |execute                |No arguments
 |=======================
 
-Current version: 0.2.0.
+Current version: 0.3.0.
 ~~~~~~~~~~~~~~~~~~~~~~~
