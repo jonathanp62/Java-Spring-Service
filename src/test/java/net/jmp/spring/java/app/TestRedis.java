@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestRedis.java    0.3.0   11/13/2024
  * (#)TestRedis.java    0.2.0   11/09/2024
  *
  * @author   Jonathan Parker
@@ -36,6 +37,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +53,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 /// Note that because this is not a Spring Boot
 /// application autowiring does not work.
 ///
-/// @version    0.2.0
+/// @version    0.3.0
 /// @since      0.2.0
 public final class TestRedis {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
@@ -137,5 +141,27 @@ public final class TestRedis {
         studentService.delete(student);
 
         assertFalse(studentService.existsById(result.getId()));
+    }
+
+    @Test
+    public void testRedisson() {
+        final RedissonClient client = this.context.getBean(RedissonClient.class);
+
+        try {
+            final RBucket<String> bucket = client.getBucket("my-bucket");
+
+            bucket.set("my-bucket-value");
+
+            final String result = bucket.get();
+
+            assertNotNull(result);
+            assertEquals("my-bucket-value", result);
+
+            if (!bucket.delete()) {
+                this.logger.warn("Bucket 'my-bucket-value' was not deleted");
+            }
+        } finally {
+            client.shutdown();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)Main.java 0.3.0   11/13/2024
  * (#)Main.java 0.2.0   11/09/2024
  * (#)Main.java 0.1.0   11/04/2024
  *
@@ -35,6 +36,9 @@ import java.util.Optional;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +52,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 /// The main application class.
 ///
-/// @version    0.2.0
+/// @version    0.3.0
 /// @since      0.1.0
 final class Main implements Runnable {
     /** The logger. */
@@ -82,6 +86,7 @@ final class Main implements Runnable {
         this.useMongoRepository(context);
         this.useRedisTemplate(context);
         this.useRedisRepository(context);
+        this.useRedisson(context);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -284,6 +289,43 @@ final class Main implements Runnable {
         studentService.delete(student);
 
         assert !studentService.existsById(result.getId());
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Demonstrate the use of the Redisson client.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.3.0
+    private void useRedisson(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        final RedissonClient client = context.getBean(RedissonClient.class);
+
+        try {
+            final RBucket<String> bucket = client.getBucket("my-bucket");
+
+            bucket.set("my-bucket-value");
+
+            final String result = bucket.get();
+
+            assert result != null;
+            assert result.equals("my-bucket-value");
+
+            if (this.logger.isInfoEnabled()) {
+                this.logger.info(result);
+            }
+
+            if (!bucket.delete()) {
+                this.logger.warn("Bucket 'my-bucket-value' was not deleted");
+            }
+        } finally {
+            client.shutdown();
+        }
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

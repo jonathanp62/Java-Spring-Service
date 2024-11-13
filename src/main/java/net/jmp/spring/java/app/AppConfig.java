@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)AppConfig.java    0.3.0   11/13/2024
  * (#)AppConfig.java    0.2.0   11/09/2024
  * (#)AppConfig.java    0.1.0   11/04/2024
  *
@@ -37,6 +38,12 @@ import java.io.IOException;
 
 import java.util.Properties;
 
+import org.redisson.Redisson;
+
+import org.redisson.api.RedissonClient;
+
+import org.redisson.config.Config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -55,7 +62,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /// The Spring application configuration.
 ///
-/// @version    0.2.0
+/// @version    0.3.0
 /// @since      0.1.0
 @Configuration
 @EnableMongoRepositories("net.jmp.spring.java.app")
@@ -165,8 +172,40 @@ public class AppConfig {
     /// Create and return the student repository.
     ///
     /// @return net.jmp.spring.java.app.StudentRepository
+    /// @since  0.2.0
     @Bean
     public StudentRepository studentRepository() {
         return new StudentRepositoryImpl(this.redisStudentTemplate());
+    }
+
+    ///  Create and return a Redisson client.
+    ///
+    /// @return org.redisson.api.RedissonClient
+    /// @since  0.3.0
+    @Bean
+    public RedissonClient redissonClient() {
+        final Config config = new Config();
+
+        String hostName = null;
+        int port = 0;
+
+        final var secretProperties = new Properties();
+
+        try (final var fis = new FileInputStream(CONFIG_FILE)) {
+            secretProperties.load(fis);
+
+            hostName = secretProperties.getProperty("redis.host");
+            port = Integer.parseInt(secretProperties.getProperty("redis.port"));
+        } catch (final IOException ioe) {
+            ioe.printStackTrace(System.err);
+        }
+
+        assert hostName != null;
+        assert port > 0;
+
+        config.useSingleServer()
+                .setAddress("redis://" + hostName + ":" + port);
+
+        return Redisson.create(config);
     }
 }
