@@ -30,9 +30,13 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import static org.junit.Assert.assertEquals;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.junit.Assert.*;
 
 import org.junit.Test;
+
 
 /// The test class for the hello world service.
 ///
@@ -45,5 +49,21 @@ public final class TestHelloWorldService {
         final String result = helloWorldService.getHelloWorld();
 
         assertEquals("Hello, World!!", result);
+    }
+
+    @Test
+    public void testStrings() {
+        final String illegalCharacters = "^[a-zA-Z0-9_\\-$]*$";
+        final Pattern illegal = Pattern.compile(illegalCharacters);
+
+        final Matcher matcherOK = illegal.matcher("This__is__OK--s$123");
+        final Matcher matcherNotOK = illegal.matcher("Key / Value");
+
+        assertTrue(matcherOK.find());
+        assertFalse(matcherNotOK.find());
+
+        final String result1 = "Key / Value".replaceAll("[^a-zA-Z0-9_\\-$]", "");
+
+        assertEquals("KeyValue", result1);
     }
 }
