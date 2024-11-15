@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)AppConfig.java    0.4.0   11/15/2024
  * (#)AppConfig.java    0.3.0   11/13/2024
  * (#)AppConfig.java    0.2.0   11/09/2024
  * (#)AppConfig.java    0.1.0   11/04/2024
@@ -62,7 +63,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /// The Spring application configuration.
 ///
-/// @version    0.3.0
+/// @version    0.4.0
 /// @since      0.1.0
 @Configuration
 @EnableMongoRepositories("net.jmp.spring.java.app")
@@ -207,5 +208,13 @@ public class AppConfig {
                 .setAddress("redis://" + hostName + ":" + port);
 
         return Redisson.create(config);
+    }
+
+    /// The string service.
+    ///
+    /// @return net.jmp.spring.java.app.StringService
+    @Bean
+    public StringService stringService() {
+        return new StringService();
     }
 }

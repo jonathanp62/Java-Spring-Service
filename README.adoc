@@ -6,7 +6,9 @@ A program that demonstrates using Spring features from inside a regular Java app
 Features
 ~~~~~~~~
 
-* A plain Java service bean
+* Plain Java service bean
+  - HelloWorldService
+  - StringService
 * MongoDB beans
   - MongoTemplate
   - MongoRepository
@@ -25,5 +27,5 @@ Gradle JavaExec Tasks
 |execute                |No arguments
 |=======================
 
-Current version: 0.3.0.
+Current version: 0.4.0.
 ~~~~~~~~~~~~~~~~~~~~~~~
