@@ -1,8 +1,9 @@
 package net.jmp.spring.java.app;
 
 /*
- * (#)Demo.java 0.2.0   11/10/2024
- * (#)Demo.java 0.1.0   11/05/2024
+ * (#)DemoDocument.java 0.5.0   11/15/2024
+ * (#)DemoDocument.java 0.2.0   11/10/2024
+ * (#)DemoDocument.java 0.1.0   11/05/2024
  *
  * @author   Jonathan Parker
  *
@@ -37,10 +38,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 /// A MongoDB document class from the demo collection.
 ///
-/// @version    0.2.0
+/// @version    0.5.0
 /// @since      0.1.0
-@Document
-public class Demo {
+@Document(collection = "demo")
+public class DemoDocument {
     /// The identifier.
     @Id
     private String id;
@@ -55,7 +56,7 @@ public class Demo {
     private int quantity;
 
     /// The default constructor.
-    public Demo() {
+    public DemoDocument() {
         super();
     }
 
@@ -125,9 +126,9 @@ public class Demo {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        final Demo demo = (Demo) o;
+        final DemoDocument demoDocument = (DemoDocument) o;
 
-        return this.prodId == demo.prodId && this.price == demo.price && this.quantity == demo.quantity && Objects.equals(this.id, demo.id);
+        return this.prodId == demoDocument.prodId && this.price == demoDocument.price && this.quantity == demoDocument.quantity && Objects.equals(this.id, demoDocument.id);
     }
 
     /// The hash-code method.
@@ -143,7 +144,7 @@ public class Demo {
     /// @return java.lang.String
     @Override
     public String toString() {
-        return "Demo{" +
+        return "DemoDocument{" +
                 "id='" + this.id + '\'' +
                 ", prodId=" + this.prodId +
                 ", price=" + this.price +

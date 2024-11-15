@@ -1,7 +1,8 @@
 package net.jmp.spring.java.app;
 
 /*
- * (#)DemoRepository.java   0.1.0   11/05/2024
+ * (#)DemoDocumentRepository.java   0.5.0   11/15/2024
+ * (#)DemoDocumentRepository.java   0.1.0   11/05/2024
  *
  * @author   Jonathan Parker
  *
@@ -34,36 +35,36 @@ import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-/// The demo repository interface.
+/// The demo document repository interface.
 ///
-/// @version    0.1.0
+/// @version    0.5.0
 /// @since      0.1.0
-public interface DemoRepository extends MongoRepository<Demo, String> {
+public interface DemoDocumentRepository extends MongoRepository<DemoDocument, String> {
     /// Get a document by identifier.
     ///
     /// @param  id  java.lang.String
-    /// @return     java.util.Optional<net.jmp.spring.java.app.Demo>
+    /// @return     java.util.Optional<net.jmp.spring.java.app.DemoDocument>
     @Query("{ 'id' :  ?0}")
-    Optional<Demo> findById(final String id);
+    Optional<DemoDocument> findById(final String id);
 
     /// Get a document by production identifier.
     ///
     /// @param  prodId  int
-    /// @return         java.util.Optional<net.jmp.spring.java.app.Demo>
+    /// @return         java.util.Optional<net.jmp.spring.java.app.DemoDocument>
     @Query("{ 'prodId' :  ?0}")
-    Optional<Demo> findByProdId(final int prodId);
+    Optional<DemoDocument> findByProdId(final int prodId);
 
     /// Get a list of documents by price.
     ///
     /// @param  price   int
-    /// @return         java.util.List<net.jmp.spring.java.app.Demo>
+    /// @return         java.util.List<net.jmp.spring.java.app.DemoDocument>
     @Query("{ 'price' :  ?0}")
-    List<Demo> findByPrice(final int price);
+    List<DemoDocument> findByPrice(final int price);
 
     /// Get a list of documents by quantity.
     ///
     /// @param  quantity    int
-    /// @return             java.util.List<net.jmp.spring.java.app.Demo>
+    /// @return             java.util.List<net.jmp.spring.java.app.DemoDocument>
     @Query("{ 'quantity' :  ?0}")
-    List<Demo> findByQuantity(final int quantity);
+    List<DemoDocument> findByQuantity(final int quantity);
 }

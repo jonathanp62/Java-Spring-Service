@@ -154,9 +154,9 @@ final class Main implements Runnable {
         }
 
         final MongoTemplate mongoTemplate = context.getBean(MongoTemplate.class);
-        final List<Demo> documents = mongoTemplate.findAll(Demo.class);
+        final List<DemoDocument> documents = mongoTemplate.findAll(DemoDocument.class);
 
-        documents.forEach(o -> this.logger.info(o.toString()));
+        documents.forEach(document -> this.logger.info(document.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -173,22 +173,22 @@ final class Main implements Runnable {
             this.logger.trace(entryWith(context));
         }
 
-        final DemoRepository repository = context.getBean(DemoRepository.class);
-        final List<Demo> documentsByPrice = repository.findByPrice(17);
+        final DemoDocumentRepository repository = context.getBean(DemoDocumentRepository.class);
+        final List<DemoDocument> documentsByPrice = repository.findByPrice(17);
 
-        documentsByPrice.forEach(o -> this.logger.info(o.toString()));
+        documentsByPrice.forEach(document -> this.logger.info(document.toString()));
 
-        final List<Demo> documentsByQuantity = repository.findByQuantity(234);
+        final List<DemoDocument> documentsByQuantity = repository.findByQuantity(234);
 
-        documentsByQuantity.forEach(o -> this.logger.info(o.toString()));
+        documentsByQuantity.forEach(document -> this.logger.info(document.toString()));
 
-        final Optional<Demo> documentById = repository.findById("672a33a932aa022e27e36664");
+        final Optional<DemoDocument> documentById = repository.findById("672a33a932aa022e27e36664");
 
-        documentById.ifPresent(o -> this.logger.info(o.toString()));
+        documentById.ifPresent(document -> this.logger.info(document.toString()));
 
-        final Optional<Demo> documentByProdId = repository.findByProdId(102);
+        final Optional<DemoDocument> documentByProdId = repository.findByProdId(102);
 
-        documentByProdId.ifPresent(o -> this.logger.info(o.toString()));
+        documentByProdId.ifPresent(document -> this.logger.info(document.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
