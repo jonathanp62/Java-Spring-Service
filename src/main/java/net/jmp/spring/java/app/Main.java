@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)Main.java 0.5.0   11/15/2024
  * (#)Main.java 0.3.0   11/13/2024
  * (#)Main.java 0.2.0   11/09/2024
  * (#)Main.java 0.1.0   11/04/2024
@@ -30,6 +31,7 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -52,7 +54,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 /// The main application class.
 ///
-/// @version    0.3.0
+/// @version    0.5.0
 /// @since      0.1.0
 final class Main implements Runnable {
     /** The logger. */
@@ -79,6 +81,8 @@ final class Main implements Runnable {
             this.logger.trace(entry());
         }
 
+        this.greeting();
+
         final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
         this.sayHello(context);
@@ -87,6 +91,35 @@ final class Main implements Runnable {
         this.useRedisTemplate(context);
         this.useRedisRepository(context);
         this.useRedisson(context);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Log the greeting.
+    private void greeting() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        if (this.arguments.length == 0) {
+            if (this.logger.isDebugEnabled()) { // Covers trace, too
+                this.logger.debug("{} {}", Name.NAME_STRING, Version.VERSION_STRING);
+            } else if (this.logger.isInfoEnabled() || this.logger.isWarnEnabled()) {
+                this.logger.info("{} {}", Name.NAME_STRING, Version.VERSION_STRING);
+            } else {    // Error or off
+                System.out.format("%s %s%n", Name.NAME_STRING, Version.VERSION_STRING);
+            }
+        } else {
+            if (this.logger.isDebugEnabled()) { // Covers trace, too
+                this.logger.debug("{} {}: {}", Name.NAME_STRING, Version.VERSION_STRING, this.arguments);
+            } else if (this.logger.isInfoEnabled() || this.logger.isWarnEnabled()) {
+                this.logger.info("{} {}: {}", Name.NAME_STRING, Version.VERSION_STRING, this.arguments);
+            } else {    // Error or off
+                System.out.format("%s %s: %s%n", Name.NAME_STRING, Version.VERSION_STRING, Arrays.toString(this.arguments));
+            }
+        }
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
