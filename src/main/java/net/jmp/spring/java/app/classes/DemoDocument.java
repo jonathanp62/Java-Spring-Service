@@ -1,4 +1,4 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.classes;
 
 /*
  * (#)DemoDocument.java 0.5.0   11/15/2024

@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)StudentRepository.java    0.5.0   11/15/2024
  * (#)StudentRepository.java    0.2.0   11/11/2024
  *
  * @author   Jonathan Parker
@@ -28,13 +29,15 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.classes.Student;
+
 import org.springframework.data.repository.CrudRepository;
 
 import org.springframework.stereotype.Repository;
 
 /// A student repository interface.
 ///
-/// @version    0.2.0
+/// @version    0.5.0
 /// @since      0.2.0
 @Repository
 public interface StudentRepository extends CrudRepository<Student, String> {

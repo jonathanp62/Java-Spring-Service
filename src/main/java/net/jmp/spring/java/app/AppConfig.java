@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)AppConfig.java    0.5.0   11/15/2024
  * (#)AppConfig.java    0.4.0   11/15/2024
  * (#)AppConfig.java    0.3.0   11/13/2024
  * (#)AppConfig.java    0.2.0   11/09/2024
@@ -39,6 +40,8 @@ import java.io.IOException;
 
 import java.util.Properties;
 
+import net.jmp.spring.java.app.classes.Student;
+
 import org.redisson.Redisson;
 
 import org.redisson.api.RedissonClient;
@@ -63,7 +66,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /// The Spring application configuration.
 ///
-/// @version    0.4.0
+/// @version    0.5.0
 /// @since      0.1.0
 @Configuration
 @EnableMongoRepositories("net.jmp.spring.java.app")

@@ -32,6 +32,8 @@ package net.jmp.spring.java.app;
 import java.util.List;
 import java.util.Optional;
 
+import net.jmp.spring.java.app.classes.DemoDocument;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -43,28 +45,28 @@ public interface DemoDocumentRepository extends MongoRepository<DemoDocument, St
     /// Get a document by identifier.
     ///
     /// @param  id  java.lang.String
-    /// @return     java.util.Optional<net.jmp.spring.java.app.DemoDocument>
+    /// @return     java.util.Optional<net.jmp.spring.java.app.classes.DemoDocument>
     @Query("{ 'id' :  ?0}")
     Optional<DemoDocument> findById(final String id);
 
     /// Get a document by production identifier.
     ///
     /// @param  prodId  int
-    /// @return         java.util.Optional<net.jmp.spring.java.app.DemoDocument>
+    /// @return         java.util.Optional<net.jmp.spring.java.app.classes.DemoDocument>
     @Query("{ 'prodId' :  ?0}")
     Optional<DemoDocument> findByProdId(final int prodId);
 
     /// Get a list of documents by price.
     ///
     /// @param  price   int
-    /// @return         java.util.List<net.jmp.spring.java.app.DemoDocument>
+    /// @return         java.util.List<net.jmp.spring.java.app.classes.DemoDocument>
     @Query("{ 'price' :  ?0}")
     List<DemoDocument> findByPrice(final int price);
 
     /// Get a list of documents by quantity.
     ///
     /// @param  quantity    int
-    /// @return             java.util.List<net.jmp.spring.java.app.DemoDocument>
+    /// @return             java.util.List<net.jmp.spring.java.app.classes.DemoDocument>
     @Query("{ 'quantity' :  ?0}")
     List<DemoDocument> findByQuantity(final int quantity);
 }

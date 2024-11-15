@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)StudentService.java   0.5.0   11/15/2024
  * (#)StudentService.java   0.2.0   11/11/2024
  *
  * @author   Jonathan Parker
@@ -30,11 +31,13 @@ package net.jmp.spring.java.app;
 
 import java.util.Optional;
 
+import net.jmp.spring.java.app.classes.Student;
+
 import org.springframework.stereotype.Service;
 
 /// A student service.
 ///
-/// @version    0.2.0
+/// @version    0.5.0
 /// @since      0.2.0
 @Service
 public class StudentService {
@@ -52,8 +55,8 @@ public class StudentService {
 
     /// Save the student.
     ///
-    /// @param  student net.jmp.spring.java.app.Student
-    /// @return         net.jmp.spring.java.app.Student
+    /// @param  student net.jmp.spring.java.app.classes.Student
+    /// @return         net.jmp.spring.java.app.classes.Student
     public Student save(final Student student) {
         return this.studentRepository.save(student);
     }
@@ -61,7 +64,7 @@ public class StudentService {
     /// Find a student by identifier.
     ///
     /// @param  id  java.lang.String
-    /// @return     java.util.Optional<net.jmp.spring.java.app.Student>
+    /// @return     java.util.Optional<net.jmp.spring.java.app.classes.Student>
     public Optional<Student> findById(final String id) {
         return this.studentRepository.findById(id);
     }
@@ -83,7 +86,7 @@ public class StudentService {
 
     /// Delete a student.
     ///
-    /// @param  student net.jmp.spring.java.app.Student
+    /// @param  student net.jmp.spring.java.app.classes.Student
     public void delete(final Student student) {
         this.studentRepository.delete(student);
     }

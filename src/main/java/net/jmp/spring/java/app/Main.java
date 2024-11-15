@@ -38,6 +38,9 @@ import java.util.Optional;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
+import net.jmp.spring.java.app.classes.DemoDocument;
+import net.jmp.spring.java.app.classes.Student;
+
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 

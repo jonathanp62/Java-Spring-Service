@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestRedis.java    0.5.0   11/15/2024
  * (#)TestRedis.java    0.3.0   11/13/2024
  * (#)TestRedis.java    0.2.0   11/09/2024
  *
@@ -33,6 +34,8 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+import net.jmp.spring.java.app.classes.Student;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +56,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 /// Note that because this is not a Spring Boot
 /// application autowiring does not work.
 ///
-/// @version    0.3.0
+/// @version    0.5.0
 /// @since      0.2.0
 public final class TestRedis {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

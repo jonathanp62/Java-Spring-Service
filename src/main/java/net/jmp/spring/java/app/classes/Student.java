@@ -1,6 +1,7 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.classes;
 
 /*
+ * (#)Student.java  0.5.0   11/15/2024
  * (#)Student.java  0.2.0   11/11/2024
  *
  * @author   Jonathan Parker
@@ -36,7 +37,7 @@ import org.springframework.data.redis.core.RedisHash;
 
 /// A student class.
 ///
-/// @version    0.2.0
+/// @version    0.5.0
 /// @since      0.2.0
 @RedisHash
 public class Student implements Serializable {
@@ -96,14 +97,14 @@ public class Student implements Serializable {
 
     /// Get the gender.
     ///
-    /// @return net.jmp.spring.java.app.Student.Gender
+    /// @return net.jmp.spring.java.app.classes.Student.Gender
     public Gender getGender() {
         return this.gender;
     }
 
     /// Set the gender.
     ///
-    /// @param  gender  net.jmp.spring.java.app.Student.Gender
+    /// @param  gender  net.jmp.spring.java.app.classes.Student.Gender
     public void setGender(final Gender gender) {
         this.gender = gender;
     }

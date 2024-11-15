@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)StudentRepositoryImpl.java    0.5.0   11/15/2024
  * (#)StudentRepositoryImpl.java    0.2.0   11/11/2024
  *
  * @author   Jonathan Parker
@@ -30,11 +31,13 @@ package net.jmp.spring.java.app;
 
 import java.util.Optional;
 
+import net.jmp.spring.java.app.classes.Student;
+
 import org.springframework.data.redis.core.RedisTemplate;
 
 /// A student repository implementation.
 ///
-/// @version    0.2.0
+/// @version    0.5.0
 /// @since      0.2.0
 public class StudentRepositoryImpl implements StudentRepository {
     /// The Redis template.
@@ -67,7 +70,7 @@ public class StudentRepositoryImpl implements StudentRepository {
     /// Find a student by identifier.
     ///
     /// @param  id  java.lang.String
-    /// @return     java.util.Optional<net.jmp.spring.java.app.Student>
+    /// @return     java.util.Optional<net.jmp.spring.java.app.classes.Student>
     @Override
     public Optional<Student> findById(final String id) {
         return Optional.ofNullable(this.redisTemplate.opsForValue().get(id));
@@ -107,7 +110,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     /// Delete a student.
     ///
-    /// @param  student net.jmp.spring.java.app.Student
+    /// @param  student net.jmp.spring.java.app.classes.Student
     @Override
     public void delete(final Student student) {
         this.redisTemplate.delete(student.getId());
