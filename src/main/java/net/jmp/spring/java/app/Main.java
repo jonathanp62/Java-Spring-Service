@@ -71,12 +71,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 ///
 /// @version    0.5.0
 /// @since      0.1.0
-final class Main implements Runnable {
+public final class Main implements Runnable {
     /** The logger. */
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     /// The command line arguments.
     private final String[] arguments;
+
+    /// The application context.
+    public static ApplicationContext APPLICATION_CONTEXT;
 
     /// A constructor that takes the
     /// command line arguments from
@@ -98,6 +101,8 @@ final class Main implements Runnable {
 
         this.greeting();
 
+        APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(AppConfig.class);
+
         try {
             final var config = this.loadConfiguration();
 
@@ -106,14 +111,11 @@ final class Main implements Runnable {
             this.logger.error(catching(e));
         }
 
-        final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-
-        this.sayHello(context);
-        this.useMongoTemplate(context);
-        this.useMongoRepository(context);
-        this.useRedisTemplate(context);
-        this.useRedisRepository(context);
-        this.useRedisson(context);
+        this.useMongoTemplate(APPLICATION_CONTEXT);
+        this.useMongoRepository(APPLICATION_CONTEXT);
+        this.useRedisTemplate(APPLICATION_CONTEXT);
+        this.useRedisRepository(APPLICATION_CONTEXT);
+        this.useRedisson(APPLICATION_CONTEXT);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -202,23 +204,6 @@ final class Main implements Runnable {
         config.getDemosAsStream()
                 .map(demo -> config.getPackageName() + "." + demo)
                 .forEach(demoRunner);
-
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exit());
-        }
-    }
-
-    /// Say hello.
-    ///
-    /// @param  context org.springframework.context.ApplicationContext
-    private void sayHello(final ApplicationContext context) {
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entryWith(context));
-        }
-
-        final HelloWorldService helloWorldService = context.getBean(HelloWorldService.class);
-
-        this.logger.info(helloWorldService.getHelloWorld());
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

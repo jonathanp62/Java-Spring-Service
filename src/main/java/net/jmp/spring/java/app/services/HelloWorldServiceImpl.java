@@ -1,4 +1,4 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.services;
 
 /*
  * (#)HelloWorldServiceImpl.java    0.1.0   11/04/2024

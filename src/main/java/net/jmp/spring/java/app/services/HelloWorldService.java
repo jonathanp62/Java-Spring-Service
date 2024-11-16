@@ -1,7 +1,8 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.services;
 
 /*
- * (#)TestHelloWorldServiceBean.java    0.1.0   11/04/2024
+ * (#)HelloWorldService.java    0.2.0   11/08/2024
+ * (#)HelloWorldService.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
  *
@@ -28,39 +29,16 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import static org.junit.Assert.assertEquals;
+import org.springframework.stereotype.Service;
 
-import net.jmp.spring.java.app.services.HelloWorldService;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import org.springframework.context.ApplicationContext;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-/// The test class for the hello world service bean.
-/// Note that because this is not a Spring Boot
-/// application autowiring does not work.
+/// The hello world service.
 ///
-/// @version    0.1.0
+/// @version    0.2.0
 /// @since      0.1.0
-public final class TestHelloWorldServiceBean {
-    private HelloWorldService helloWorldService;
-
-    @Before
-    public void before() {
-        if (this.helloWorldService == null) {
-            final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-
-            this.helloWorldService = context.getBean(HelloWorldService.class);
-        }
-    }
-
-    @Test
-    public void testGetHelloWorld() {
-        final String result = helloWorldService.getHelloWorld();
-
-        assertEquals("Hello, World!!", result);
-    }
+@Service
+public interface HelloWorldService {
+    /// Get a hello world string.
+    ///
+    /// @return java.lang.String
+    public String getHelloWorld();
 }

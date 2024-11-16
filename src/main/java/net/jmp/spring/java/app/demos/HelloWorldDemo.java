@@ -28,6 +28,12 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.AppConfig;
+
+import net.jmp.spring.java.app.Main;
+
+import net.jmp.spring.java.app.services.HelloWorldService;
+
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
 import net.jmp.util.extra.demo.DemoVersion;
@@ -57,6 +63,12 @@ public final class HelloWorldDemo implements Demo {
     public void demo() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
+        }
+
+        final HelloWorldService helloWorldService = Main.APPLICATION_CONTEXT.getBean(HelloWorldService.class);
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(helloWorldService.getHelloWorld());
         }
 
         if (this.logger.isTraceEnabled()) {

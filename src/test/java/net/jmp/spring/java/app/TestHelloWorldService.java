@@ -32,6 +32,9 @@ package net.jmp.spring.java.app;
 
 import static org.junit.Assert.*;
 
+import net.jmp.spring.java.app.services.HelloWorldService;
+import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
+
 import org.junit.Test;
 
 /// The test class for the hello world service.

@@ -42,6 +42,9 @@ import java.util.Properties;
 
 import net.jmp.spring.java.app.classes.Student;
 
+import net.jmp.spring.java.app.services.HelloWorldService;
+import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
+
 import org.redisson.Redisson;
 
 import org.redisson.api.RedissonClient;
@@ -81,7 +84,7 @@ public class AppConfig {
 
     /// The hello world service.
     ///
-    /// @return net.jmp.spring.java.app.HelloWorldService
+    /// @return net.jmp.spring.java.app.services.HelloWorldService
     @Bean
     public HelloWorldService helloWorldService() {
         return new HelloWorldServiceImpl();
