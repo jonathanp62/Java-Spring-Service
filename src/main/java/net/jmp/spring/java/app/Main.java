@@ -99,6 +99,20 @@ public final class Main implements Runnable {
             this.logger.trace(entry());
         }
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            this.logger.debug("Entering shutdown hook");
+
+            if (APPLICATION_CONTEXT != null) {
+                final RedissonClient client = APPLICATION_CONTEXT.getBean(RedissonClient.class);
+
+                if (!client.isShutdown()) {
+                    client.shutdown();
+                }
+            }
+
+            this.logger.debug("Exiting shutdown hook");
+        }));
+
         this.greeting();
 
         APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(AppConfig.class);
