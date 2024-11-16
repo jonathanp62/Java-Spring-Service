@@ -28,6 +28,15 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import java.util.List;
+import java.util.Optional;
+
+import net.jmp.spring.java.app.Main;
+
+import net.jmp.spring.java.app.classes.DemoDocument;
+
+import net.jmp.spring.java.app.repositories.DemoDocumentRepository;
+
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
 import net.jmp.util.extra.demo.DemoVersion;
@@ -58,6 +67,23 @@ public final class MongoRepositoryDemo implements Demo {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
         }
+
+        final DemoDocumentRepository repository = Main.APPLICATION_CONTEXT.getBean(DemoDocumentRepository.class);
+        final List<DemoDocument> documentsByPrice = repository.findByPrice(17);
+
+        documentsByPrice.forEach(document -> this.logger.info(document.toString()));
+
+        final List<DemoDocument> documentsByQuantity = repository.findByQuantity(234);
+
+        documentsByQuantity.forEach(document -> this.logger.info(document.toString()));
+
+        final Optional<DemoDocument> documentById = repository.findById("672a33a932aa022e27e36664");
+
+        documentById.ifPresent(document -> this.logger.info(document.toString()));
+
+        final Optional<DemoDocument> documentByProdId = repository.findByProdId(102);
+
+        documentByProdId.ifPresent(document -> this.logger.info(document.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

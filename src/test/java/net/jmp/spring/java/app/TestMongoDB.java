@@ -37,6 +37,8 @@ import static org.junit.Assert.assertTrue;
 
 import net.jmp.spring.java.app.classes.DemoDocument;
 
+import net.jmp.spring.java.app.repositories.DemoDocumentRepository;
+
 import org.junit.Before;
 import org.junit.Test;
 

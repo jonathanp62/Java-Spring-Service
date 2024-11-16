@@ -39,7 +39,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -50,7 +49,6 @@ import net.jmp.util.extra.demo.*;
 import static net.jmp.util.logging.LoggerUtils.*;
 
 import net.jmp.spring.java.app.classes.Config;
-import net.jmp.spring.java.app.classes.DemoDocument;
 import net.jmp.spring.java.app.classes.Student;
 
 import org.redisson.api.RBucket;
@@ -117,7 +115,6 @@ public final class Main implements Runnable {
             this.logger.error(catching(e));
         }
 
-        this.useMongoRepository(APPLICATION_CONTEXT);
         this.useRedisTemplate(APPLICATION_CONTEXT);
         this.useRedisRepository(APPLICATION_CONTEXT);
         this.useRedisson(APPLICATION_CONTEXT);
@@ -209,38 +206,6 @@ public final class Main implements Runnable {
         config.getDemosAsStream()
                 .map(demo -> config.getPackageName() + "." + demo)
                 .forEach(demoRunner);
-
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exit());
-        }
-    }
-
-    /// Find documents in the demo collection
-    /// of the training database in MongoDB using the
-    /// custom queries in the DemoRepository.
-    ///
-    /// @param  context org.springframework.context.ApplicationContext
-    private void useMongoRepository(final ApplicationContext context) {
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entryWith(context));
-        }
-
-        final DemoDocumentRepository repository = context.getBean(DemoDocumentRepository.class);
-        final List<DemoDocument> documentsByPrice = repository.findByPrice(17);
-
-        documentsByPrice.forEach(document -> this.logger.info(document.toString()));
-
-        final List<DemoDocument> documentsByQuantity = repository.findByQuantity(234);
-
-        documentsByQuantity.forEach(document -> this.logger.info(document.toString()));
-
-        final Optional<DemoDocument> documentById = repository.findById("672a33a932aa022e27e36664");
-
-        documentById.ifPresent(document -> this.logger.info(document.toString()));
-
-        final Optional<DemoDocument> documentByProdId = repository.findByProdId(102);
-
-        documentByProdId.ifPresent(document -> this.logger.info(document.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
