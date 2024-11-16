@@ -28,6 +28,12 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import java.util.List;
+
+import net.jmp.spring.java.app.Main;
+
+import net.jmp.spring.java.app.classes.DemoDocument;
+
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
 import net.jmp.util.extra.demo.DemoVersion;
@@ -36,6 +42,8 @@ import static net.jmp.util.logging.LoggerUtils.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 /// The MongoDB template demonstration.
 ///
@@ -57,6 +65,13 @@ public final class MongoTemplateDemo implements Demo {
     public void demo() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
+        }
+
+        final MongoTemplate mongoTemplate = Main.APPLICATION_CONTEXT.getBean(MongoTemplate.class);
+        final List<DemoDocument> documents = mongoTemplate.findAll(DemoDocument.class);
+
+        if (this.logger.isInfoEnabled()) {
+            documents.forEach(document -> this.logger.info(document.toString()));
         }
 
         if (this.logger.isTraceEnabled()) {

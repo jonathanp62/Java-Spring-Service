@@ -63,8 +63,6 @@ import org.springframework.context.ApplicationContext;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import org.springframework.data.mongodb.core.MongoTemplate;
-
 import org.springframework.data.redis.core.RedisTemplate;
 
 /// The main application class.
@@ -119,7 +117,6 @@ public final class Main implements Runnable {
             this.logger.error(catching(e));
         }
 
-        this.useMongoTemplate(APPLICATION_CONTEXT);
         this.useMongoRepository(APPLICATION_CONTEXT);
         this.useRedisTemplate(APPLICATION_CONTEXT);
         this.useRedisRepository(APPLICATION_CONTEXT);
@@ -212,26 +209,6 @@ public final class Main implements Runnable {
         config.getDemosAsStream()
                 .map(demo -> config.getPackageName() + "." + demo)
                 .forEach(demoRunner);
-
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exit());
-        }
-    }
-
-    /// Find all the documents in the demo collection
-    /// of the training database in MongoDB using the
-    /// MongoTemplate.
-    ///
-    /// @param  context org.springframework.context.ApplicationContext
-    private void useMongoTemplate(final ApplicationContext context) {
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entryWith(context));
-        }
-
-        final MongoTemplate mongoTemplate = context.getBean(MongoTemplate.class);
-        final List<DemoDocument> documents = mongoTemplate.findAll(DemoDocument.class);
-
-        documents.forEach(document -> this.logger.info(document.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
