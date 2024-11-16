@@ -28,9 +28,39 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import net.jmp.util.extra.demo.Demo;
+import net.jmp.util.extra.demo.DemoClass;
+import net.jmp.util.extra.demo.DemoVersion;
+
+import static net.jmp.util.logging.LoggerUtils.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /// The Redisson demonstration.
 ///
 /// @version    0.5.0
 /// @since      0.5.0
-public final class RedissonDemo {
+@DemoClass
+@DemoVersion(0.5)
+public final class RedissonDemo implements Demo {
+    /// The logger.
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
+    /// The default constructor.
+    public RedissonDemo() {
+        super();
+    }
+
+    /// The demo method.
+    @Override
+    public void demo() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
 }

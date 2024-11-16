@@ -1,0 +1,12 @@
+{
+  "version": 0.5,
+  "package": "net.jmp.spring.java.app.demos",
+  "demos": [
+    "HelloWorldDemo",
+    "MongoRepositoryDemo",
+    "MongoTemplateDemo",
+    "RedissonDemo",
+    "RedisTemplateDemo",
+    "StringDemo"
+  ]
+}

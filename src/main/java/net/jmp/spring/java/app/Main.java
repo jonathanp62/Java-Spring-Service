@@ -31,13 +31,25 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import com.google.gson.Gson;
+
+import com.google.gson.stream.JsonReader;
+
+import java.io.FileReader;
+import java.io.IOException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import java.util.function.Consumer;
+
+import net.jmp.util.extra.demo.*;
+
 import static net.jmp.util.logging.LoggerUtils.*;
 
+import net.jmp.spring.java.app.classes.Config;
 import net.jmp.spring.java.app.classes.DemoDocument;
 import net.jmp.spring.java.app.classes.Student;
 
@@ -86,6 +98,14 @@ final class Main implements Runnable {
 
         this.greeting();
 
+        try {
+            final var config = this.loadConfiguration();
+
+            this.runDemos(config);
+        } catch (final Exception e) {
+            this.logger.error(catching(e));
+        }
+
         final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
         this.sayHello(context);
@@ -123,6 +143,65 @@ final class Main implements Runnable {
                 System.out.format("%s %s: %s%n", Name.NAME_STRING, Version.VERSION_STRING, Arrays.toString(this.arguments));
             }
         }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Load the application configuration
+    ///
+    /// @return net.jmp.spring.java.app.classes.Config
+    /// @throws java.io.IOException When an I/O error occurs reading the configuration file
+    /// @since  0.5.0
+    private Config loadConfiguration() throws IOException {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        Config config = null;
+
+        final String appConfigFileName = System.getProperty("app.configurationFile", "config/config.json");
+        final Gson gson = new Gson();
+
+        try (final JsonReader reader = new JsonReader(new FileReader(appConfigFileName))) {
+            config = gson.fromJson(reader, Config.class);
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(config));
+        }
+
+        return config;
+    }
+
+    /// Run the demonstration classes.
+    ///
+    /// @param  config  net.jmp.spring.java.app.classes.Config
+    private void runDemos(final Config config) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(config));
+        }
+
+        final Consumer<String> demoRunner = className -> {
+            try {
+                final double version = DemoUtils.getDemoClassVersion(className);
+
+                if (version > 0) {
+                    if (config.getVersion() >= version) {
+                        DemoUtils.runDemoClassDemo(className);
+                    }
+                } else {
+                    DemoUtils.runDemoClassDemo(className);
+                }
+            } catch (final DemoUtilException due) {
+                this.logger.error(catching(due));
+            }
+        };
+
+        config.getDemosAsStream()
+                .map(demo -> config.getPackageName() + "." + demo)
+                .forEach(demoRunner);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
