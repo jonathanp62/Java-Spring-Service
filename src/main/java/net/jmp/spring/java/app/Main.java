@@ -79,7 +79,7 @@ public final class Main implements Runnable {
     private final String[] arguments;
 
     /// The application context.
-    public static ApplicationContext APPLICATION_CONTEXT;
+    public static final ApplicationContext APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(AppConfig.class);
 
     /// A constructor that takes the
     /// command line arguments from
@@ -102,12 +102,10 @@ public final class Main implements Runnable {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             this.logger.debug("Entering shutdown hook");
 
-            if (APPLICATION_CONTEXT != null) {
-                final RedissonClient client = APPLICATION_CONTEXT.getBean(RedissonClient.class);
+            final RedissonClient client = APPLICATION_CONTEXT.getBean(RedissonClient.class);
 
-                if (!client.isShutdown()) {
-                    client.shutdown();
-                }
+            if (!client.isShutdown()) {
+                client.shutdown();
             }
 
             this.logger.debug("Exiting shutdown hook");
@@ -115,12 +113,8 @@ public final class Main implements Runnable {
 
         this.greeting();
 
-        APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(AppConfig.class);
-
         try {
-            final var config = this.loadConfiguration();
-
-            this.runDemos(config);
+            this.runDemos(this.loadConfiguration());
         } catch (final Exception e) {
             this.logger.error(catching(e));
         }
