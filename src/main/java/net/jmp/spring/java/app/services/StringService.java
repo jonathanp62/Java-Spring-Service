@@ -1,4 +1,4 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.services;
 
 /*
  * (#)StringService.java    0.4.0   11/15/2024

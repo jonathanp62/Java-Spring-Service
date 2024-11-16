@@ -30,6 +30,8 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.services.StringService;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;

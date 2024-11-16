@@ -28,6 +28,10 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.Main;
+
+import net.jmp.spring.java.app.services.StringService;
+
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
 import net.jmp.util.extra.demo.DemoVersion;
@@ -57,6 +61,18 @@ public final class StringDemo implements Demo {
     public void demo() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
+        }
+
+        final StringService stringService = Main.APPLICATION_CONTEXT.getBean(StringService.class);
+
+        final String result1 = stringService.sanitize("Key / Value");
+        final String result2 = stringService.sanitize("Key-Value");
+        final String result3 = stringService.sanitize("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/");
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info("Sanitized Key / Value -> '" + result1 + "'");
+            this.logger.info("Sanitized Key-Value -> '" + result2 + "'");
+            this.logger.info("Sanitized ~`!@#%^&*()+={}[]\\|;:'\"<>,.?/ -> '" + result3 + "'");
         }
 
         if (this.logger.isTraceEnabled()) {

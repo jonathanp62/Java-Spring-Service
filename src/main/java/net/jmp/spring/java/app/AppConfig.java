@@ -44,6 +44,7 @@ import net.jmp.spring.java.app.classes.Student;
 
 import net.jmp.spring.java.app.services.HelloWorldService;
 import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
+import net.jmp.spring.java.app.services.StringService;
 
 import org.redisson.Redisson;
 
@@ -218,7 +219,7 @@ public class AppConfig {
 
     /// The string service.
     ///
-    /// @return net.jmp.spring.java.app.StringService
+    /// @return net.jmp.spring.java.app.services.StringService
     @Bean
     public StringService stringService() {
         return new StringService();

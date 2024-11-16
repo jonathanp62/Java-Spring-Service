@@ -30,10 +30,10 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import static org.junit.Assert.*;
-
 import net.jmp.spring.java.app.services.HelloWorldService;
 import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
+
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 

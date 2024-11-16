@@ -28,9 +28,9 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import static org.junit.Assert.assertEquals;
-
 import net.jmp.spring.java.app.services.HelloWorldService;
+
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
