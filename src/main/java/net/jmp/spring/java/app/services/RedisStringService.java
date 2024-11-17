@@ -1,7 +1,7 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.services;
 
 /*
- * (#)RedisUserService.java 0.2.0   11/09/2024
+ * (#)RedisStringService.java   0.2.0   11/09/2024
  *
  * @author   Jonathan Parker
  *
@@ -30,50 +30,45 @@ package net.jmp.spring.java.app;
 
 import org.springframework.data.redis.core.RedisTemplate;
 
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-
 import org.springframework.stereotype.Service;
 
-/// The Redis user service.
+/// The Redis string service.
 ///
 /// @version    0.2.0
 /// @since      0.2.0
 @Service
-public class RedisUserService {
+public class RedisStringService {
     /// The Redis template.
-    private final RedisTemplate<String, User> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     /// The constructor.
     ///
     /// @param  redisTemplate   org.springframework.data.redis.core.RedisTemplate
-    public RedisUserService(final RedisTemplate<String, User> redisTemplate) {
+    public RedisStringService(final RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    /// Set the user.
+    /// Set the value.
     ///
-    /// @param  user    net.jmp.spring.java.app.User
-    public void setUser(final User user) {
-        this.redisTemplate.setKeySerializer(new StringRedisSerializer());
-        this.redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(User.class));
-
-        this.redisTemplate.opsForValue().set(user.getId(), user);
+    /// @param  key     java.lang.String
+    /// @param  value   java.lang.String
+    public void setValue(final String key, final String value) {
+        this.redisTemplate.opsForValue().set(key, value);
     }
 
-    /// Get the user.
+    /// Get the value.
     ///
-    /// @param  id  java.lang.String
-    /// @return     net.jmp.spring.java.app.User
-    public User getUser(final String id) {
-        return this.redisTemplate.opsForValue().get(id);
+    /// @param  key java.lang.String
+    /// @return     java.lang.String
+    public String getValue(final String key) {
+        return this.redisTemplate.opsForValue().get(key);
     }
 
-    /// Delete the user.
+    /// Delete the value.
     ///
-    /// @param  id  java.lang.String
+    /// @param  key java.lang.String
     /// @return     boolean
-    public boolean deleteUser(final String id) {
-        return Boolean.TRUE.equals(this.redisTemplate.delete(id));
+    public boolean deleteValue(final String key) {
+        return Boolean.TRUE.equals(this.redisTemplate.delete(key));
     }
 }

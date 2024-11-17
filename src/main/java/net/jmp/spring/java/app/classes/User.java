@@ -1,4 +1,4 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.classes;
 
 /*
  * (#)User.java 0.2.0   11/09/2024
@@ -51,7 +51,7 @@ public final class User {
     private String password;
 
     /// The default constructor.
-    User() {
+    public User() {
         super();
     }
 

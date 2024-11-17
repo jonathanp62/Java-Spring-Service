@@ -32,9 +32,13 @@ package net.jmp.spring.java.app;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-
 import net.jmp.spring.java.app.classes.Student;
+import net.jmp.spring.java.app.classes.User;
+
+import net.jmp.spring.java.app.services.RedisStringService;
+import net.jmp.spring.java.app.services.RedisUserService;
+
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;

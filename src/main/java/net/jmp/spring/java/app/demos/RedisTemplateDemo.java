@@ -28,6 +28,13 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.Main;
+
+import net.jmp.spring.java.app.classes.User;
+
+import net.jmp.spring.java.app.services.RedisStringService;
+import net.jmp.spring.java.app.services.RedisUserService;
+
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
 import net.jmp.util.extra.demo.DemoVersion;
@@ -36,6 +43,10 @@ import static net.jmp.util.logging.LoggerUtils.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.data.redis.core.RedisTemplate;
 
 /// The Redis template demonstration.
 ///
@@ -57,6 +68,83 @@ public final class RedisTemplateDemo implements Demo {
     public void demo() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
+        }
+
+        final ApplicationContext context = Main.APPLICATION_CONTEXT;
+
+        this.stringService(context);
+        this.userService(context);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Work with the Redis string service to store and fetch objects.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.2.0
+    private void stringService(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        @SuppressWarnings("unchecked")
+        final RedisTemplate<String, String> redisTemplate = context.getBean(RedisTemplate.class);
+        final RedisStringService redisStringService = new RedisStringService(redisTemplate);
+
+        redisStringService.setValue("name", "John Doe");
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(redisStringService.getValue("name"));
+        }
+
+        if (redisStringService.deleteValue("name")) {
+            this.logger.info("Object 'name' deleted");
+        } else {
+            this.logger.warn("Object 'name' not deleted");
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Work with the Redis user service to store and fetch objects.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.2.0
+    private void userService(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        @SuppressWarnings("unchecked")
+        final RedisTemplate<String, User> redisUserTemplate = context.getBean(RedisTemplate.class);
+        final RedisUserService redisUserService = new RedisUserService(redisUserTemplate);
+
+        final User user = new User();
+
+        user.setId("123456789abcedf0");
+        user.setUserName("John Doe");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setPassword("secret");
+
+        redisUserService.setUser(user);
+
+        final User john = redisUserService.getUser("123456789abcedf0");
+
+        assert john != null;
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(john.toString());
+        }
+
+        if (redisUserService.deleteUser("123456789abcedf0")) {
+            this.logger.info("User '123456789abcedf0' deleted");
+        } else {
+            this.logger.warn("User '123456789abcedf0' not deleted");
         }
 
         if (this.logger.isTraceEnabled()) {
