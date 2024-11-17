@@ -28,11 +28,16 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.Main;
+
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
 import net.jmp.util.extra.demo.DemoVersion;
 
 import static net.jmp.util.logging.LoggerUtils.*;
+
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +62,29 @@ public final class RedissonDemo implements Demo {
     public void demo() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
+        }
+
+        final RedissonClient client = Main.APPLICATION_CONTEXT.getBean(RedissonClient.class);
+
+        try {
+            final RBucket<String> bucket = client.getBucket("my-bucket");
+
+            bucket.set("my-bucket-value");
+
+            final String result = bucket.get();
+
+            assert result != null;
+            assert result.equals("my-bucket-value");
+
+            if (this.logger.isInfoEnabled()) {
+                this.logger.info(result);
+            }
+
+            if (!bucket.delete()) {
+                this.logger.warn("Bucket 'my-bucket-value' was not deleted");
+            }
+        } finally {
+            client.shutdown();
         }
 
         if (this.logger.isTraceEnabled()) {

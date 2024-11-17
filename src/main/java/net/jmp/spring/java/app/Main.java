@@ -49,7 +49,6 @@ import static net.jmp.util.logging.LoggerUtils.*;
 
 import net.jmp.spring.java.app.classes.Config;
 
-import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 
 import org.slf4j.Logger;
@@ -110,8 +109,6 @@ public final class Main implements Runnable {
         } catch (final Exception e) {
             this.logger.error(catching(e));
         }
-
-        this.useRedisson(APPLICATION_CONTEXT);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -205,42 +202,4 @@ public final class Main implements Runnable {
             this.logger.trace(exit());
         }
     }
-
-    /// Demonstrate the use of the Redisson client.
-    ///
-    /// @param  context org.springframework.context.ApplicationContext
-    /// @since          0.3.0
-    private void useRedisson(final ApplicationContext context) {
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entryWith(context));
-        }
-
-        final RedissonClient client = context.getBean(RedissonClient.class);
-
-        try {
-            final RBucket<String> bucket = client.getBucket("my-bucket");
-
-            bucket.set("my-bucket-value");
-
-            final String result = bucket.get();
-
-            assert result != null;
-            assert result.equals("my-bucket-value");
-
-            if (this.logger.isInfoEnabled()) {
-                this.logger.info(result);
-            }
-
-            if (!bucket.delete()) {
-                this.logger.warn("Bucket 'my-bucket-value' was not deleted");
-            }
-        } finally {
-            client.shutdown();
-        }
-
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exit());
-        }
-    }
 }
-
