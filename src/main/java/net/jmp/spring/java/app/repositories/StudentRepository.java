@@ -1,4 +1,4 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.repositories;
 
 /*
  * (#)StudentRepository.java    0.5.0   11/15/2024

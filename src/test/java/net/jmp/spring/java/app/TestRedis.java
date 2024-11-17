@@ -35,8 +35,11 @@ import java.util.Optional;
 import net.jmp.spring.java.app.classes.Student;
 import net.jmp.spring.java.app.classes.User;
 
+import net.jmp.spring.java.app.repositories.StudentRepository;
+
 import net.jmp.spring.java.app.services.RedisStringService;
 import net.jmp.spring.java.app.services.RedisUserService;
+import net.jmp.spring.java.app.services.StudentService;
 
 import static org.junit.Assert.*;
 

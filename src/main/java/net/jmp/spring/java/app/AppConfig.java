@@ -42,6 +42,9 @@ import java.util.Properties;
 
 import net.jmp.spring.java.app.classes.Student;
 
+import net.jmp.spring.java.app.repositories.StudentRepository;
+import net.jmp.spring.java.app.repositories.StudentRepositoryImpl;
+
 import net.jmp.spring.java.app.services.HelloWorldService;
 import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
 import net.jmp.spring.java.app.services.StringService;
@@ -179,7 +182,7 @@ public class AppConfig {
 
     /// Create and return the student repository.
     ///
-    /// @return net.jmp.spring.java.app.StudentRepository
+    /// @return net.jmp.spring.java.app.repositories.StudentRepository
     /// @since  0.2.0
     @Bean
     public StudentRepository studentRepository() {

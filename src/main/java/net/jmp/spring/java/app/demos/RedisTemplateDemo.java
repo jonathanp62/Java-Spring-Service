@@ -28,12 +28,18 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
+import java.util.Optional;
+
 import net.jmp.spring.java.app.Main;
 
+import net.jmp.spring.java.app.classes.Student;
 import net.jmp.spring.java.app.classes.User;
+
+import net.jmp.spring.java.app.repositories.StudentRepository;
 
 import net.jmp.spring.java.app.services.RedisStringService;
 import net.jmp.spring.java.app.services.RedisUserService;
+import net.jmp.spring.java.app.services.StudentService;
 
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
@@ -74,6 +80,7 @@ public final class RedisTemplateDemo implements Demo {
 
         this.stringService(context);
         this.userService(context);
+        this.studentRepository(context);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -146,6 +153,49 @@ public final class RedisTemplateDemo implements Demo {
         } else {
             this.logger.warn("User '123456789abcedf0' not deleted");
         }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Use the Redis repository to store and fetch objects
+    /// from the student repository.
+    ///
+    /// @param  context org.springframework.context.ApplicationContext
+    /// @since          0.2.0
+    private void studentRepository(final ApplicationContext context) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(context));
+        }
+
+        final StudentRepository repository = context.getBean(StudentRepository.class);
+        final StudentService studentService = new StudentService(repository);
+
+        final Student student = new Student();
+
+        student.setId("identifier");
+        student.setGender(Student.Gender.FEMALE);
+        student.setName("Kristina");
+        student.setGrade(100);
+
+        final Student result = studentService.save(student);
+
+        assert result != null;
+        assert result.equals(student);
+        assert studentService.existsById(result.getId());
+
+        final Optional<Student> fetched = studentService.findById(student.getId());
+
+        assert fetched.isPresent();
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(fetched.toString());
+        }
+
+        studentService.delete(student);
+
+        assert !studentService.existsById(result.getId());
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

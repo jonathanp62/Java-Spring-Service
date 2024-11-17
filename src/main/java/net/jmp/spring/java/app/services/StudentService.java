@@ -1,4 +1,4 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.services;
 
 /*
  * (#)StudentService.java   0.5.0   11/15/2024
@@ -33,6 +33,8 @@ import java.util.Optional;
 
 import net.jmp.spring.java.app.classes.Student;
 
+import net.jmp.spring.java.app.repositories.StudentRepository;
+
 import org.springframework.stereotype.Service;
 
 /// A student service.
@@ -42,11 +44,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentService {
     /// The repository.
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     /// The constructor.
     ///
-    /// @param  studentRepository   net.jmp.spring.java.app.StudentRepository
+    /// @param  studentRepository   net.jmp.spring.java.app.repositories.StudentRepository
     public StudentService(final StudentRepository studentRepository) {
         super();
 
