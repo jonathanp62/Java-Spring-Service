@@ -30,7 +30,7 @@ package net.jmp.spring.java.app.demos;
 
 import java.util.Optional;
 
-import net.jmp.spring.java.app.Main;
+import net.jmp.spring.java.app.AppContext;
 
 import net.jmp.spring.java.app.classes.Student;
 import net.jmp.spring.java.app.classes.User;
@@ -76,7 +76,7 @@ public final class RedisTemplateDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final ApplicationContext context = Main.APPLICATION_CONTEXT;
+        final ApplicationContext context = AppContext.getInstance().getApplicationContext();
 
         this.stringService(context);
         this.userService(context);

@@ -31,7 +31,7 @@ package net.jmp.spring.java.app.demos;
 import java.util.List;
 import java.util.Optional;
 
-import net.jmp.spring.java.app.Main;
+import net.jmp.spring.java.app.AppContext;
 
 import net.jmp.spring.java.app.classes.DemoDocument;
 
@@ -68,7 +68,7 @@ public final class MongoRepositoryDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final DemoDocumentRepository repository = Main.APPLICATION_CONTEXT.getBean(DemoDocumentRepository.class);
+        final DemoDocumentRepository repository = AppContext.getInstance().getApplicationContext().getBean(DemoDocumentRepository.class);
         final List<DemoDocument> documentsByPrice = repository.findByPrice(17);
 
         documentsByPrice.forEach(document -> this.logger.info(document.toString()));

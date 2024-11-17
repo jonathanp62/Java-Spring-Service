@@ -39,8 +39,6 @@ import org.junit.Test;
 
 import org.springframework.context.ApplicationContext;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 /// The test class for the string service.
 ///
 /// @version    0.4.0
@@ -51,7 +49,7 @@ public final class TestStringService {
     @Before
     public void before() {
         if (this.context == null) {
-            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+            this.context = AppContext.getInstance().getApplicationContext();
         }
     }
 

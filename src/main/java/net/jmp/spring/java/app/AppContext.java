@@ -1,7 +1,7 @@
-package net.jmp.spring.java.app.demos;
+package net.jmp.spring.java.app;
 
 /*
- * (#)HelloWorldDemo.java   0.5.0   11/15/2024
+ * (#)AppContext.java   0.5.0   11/17/2024
  *
  * @author   Jonathan Parker
  *
@@ -28,49 +28,41 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
-import net.jmp.spring.java.app.AppContext;
+import org.springframework.context.ApplicationContext;
 
-import net.jmp.spring.java.app.services.HelloWorldService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import net.jmp.util.extra.demo.Demo;
-import net.jmp.util.extra.demo.DemoClass;
-import net.jmp.util.extra.demo.DemoVersion;
-
-import static net.jmp.util.logging.LoggerUtils.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-/// The hello world service demonstration.
+/// The application context singleton.
 ///
 /// @version    0.5.0
 /// @since      0.5.0
-@DemoClass
-@DemoVersion(0.5)
-public final class HelloWorldDemo implements Demo {
-    /// The logger.
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+public final class AppContext {
+    /// The singleton instance.
+    private static AppContext instance;
+
+    /// The Spring application context.
+    private final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
     /// The default constructor.
-    public HelloWorldDemo() {
+    private AppContext() {
         super();
     }
 
-    /// The demo method.
-    @Override
-    public void demo() {
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entry());
+    /// Return the singleton instance.
+    ///
+    /// @return net.jmp.spring.java.app.AppContext
+    public static synchronized AppContext getInstance() {
+        if (instance == null) {
+            instance = new AppContext();
         }
 
-        final HelloWorldService helloWorldService = AppContext.getInstance().getApplicationContext().getBean(HelloWorldService.class);
+        return instance;
+    }
 
-        if (this.logger.isInfoEnabled()) {
-            this.logger.info(helloWorldService.getHelloWorld());
-        }
-
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exit());
-        }
+    /// Return the Spring application context.
+    ///
+    /// @return org.springframework.context.ApplicationContext
+    public ApplicationContext getApplicationContext() {
+        return this.applicationContext;
     }
 }

@@ -37,8 +37,6 @@ import org.junit.Test;
 
 import org.springframework.context.ApplicationContext;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 /// The test class for the hello world service bean.
 /// Note that because this is not a Spring Boot
 /// application autowiring does not work.
@@ -51,7 +49,7 @@ public final class TestHelloWorldServiceBean {
     @Before
     public void before() {
         if (this.helloWorldService == null) {
-            final ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+            final ApplicationContext context = AppContext.getInstance().getApplicationContext();
 
             this.helloWorldService = context.getBean(HelloWorldService.class);
         }
@@ -59,7 +57,7 @@ public final class TestHelloWorldServiceBean {
 
     @Test
     public void testGetHelloWorld() {
-        final String result = helloWorldService.getHelloWorld();
+        final String result = this.helloWorldService.getHelloWorld();
 
         assertEquals("Hello, World!!", result);
     }

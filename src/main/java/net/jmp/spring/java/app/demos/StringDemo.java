@@ -28,7 +28,7 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
-import net.jmp.spring.java.app.Main;
+import net.jmp.spring.java.app.AppContext;
 
 import net.jmp.spring.java.app.services.StringService;
 
@@ -63,7 +63,7 @@ public final class StringDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final StringService stringService = Main.APPLICATION_CONTEXT.getBean(StringService.class);
+        final StringService stringService = AppContext.getInstance().getApplicationContext().getBean(StringService.class);
 
         final String result1 = stringService.sanitize("Key / Value");
         final String result2 = stringService.sanitize("Key-Value");

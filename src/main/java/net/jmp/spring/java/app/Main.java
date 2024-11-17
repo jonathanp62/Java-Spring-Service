@@ -54,10 +54,6 @@ import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.context.ApplicationContext;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 /// The main application class.
 ///
 /// @version    0.5.0
@@ -68,9 +64,6 @@ public final class Main implements Runnable {
 
     /// The command line arguments.
     private final String[] arguments;
-
-    /// The application context.
-    public static final ApplicationContext APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(AppConfig.class);
 
     /// A constructor that takes the
     /// command line arguments from
@@ -93,7 +86,7 @@ public final class Main implements Runnable {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             this.logger.debug("Entering shutdown hook");
 
-            final RedissonClient client = APPLICATION_CONTEXT.getBean(RedissonClient.class);
+            final RedissonClient client = AppContext.getInstance().getApplicationContext().getBean(RedissonClient.class);
 
             if (!client.isShutdown()) {
                 client.shutdown();

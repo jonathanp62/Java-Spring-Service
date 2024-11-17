@@ -44,8 +44,6 @@ import org.junit.Test;
 
 import org.springframework.context.ApplicationContext;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 /// The test class for the hello world service bean.
@@ -60,7 +58,7 @@ public final class TestMongoDB {
     @Before
     public void before() {
         if (this.context == null) {
-            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+            this.context = AppContext.getInstance().getApplicationContext();
         }
     }
 

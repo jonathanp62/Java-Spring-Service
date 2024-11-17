@@ -28,7 +28,7 @@ package net.jmp.spring.java.app.demos;
  * SOFTWARE.
  */
 
-import net.jmp.spring.java.app.Main;
+import net.jmp.spring.java.app.AppContext;
 
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoClass;
@@ -64,7 +64,7 @@ public final class RedissonDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final RedissonClient client = Main.APPLICATION_CONTEXT.getBean(RedissonClient.class);
+        final RedissonClient client = AppContext.getInstance().getApplicationContext().getBean(RedissonClient.class);
 
         try {
             final RBucket<String> bucket = client.getBucket("my-bucket");

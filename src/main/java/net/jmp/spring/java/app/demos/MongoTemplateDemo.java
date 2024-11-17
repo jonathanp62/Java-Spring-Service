@@ -30,7 +30,7 @@ package net.jmp.spring.java.app.demos;
 
 import java.util.List;
 
-import net.jmp.spring.java.app.Main;
+import net.jmp.spring.java.app.AppContext;
 
 import net.jmp.spring.java.app.classes.DemoDocument;
 
@@ -67,7 +67,7 @@ public final class MongoTemplateDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final MongoTemplate mongoTemplate = Main.APPLICATION_CONTEXT.getBean(MongoTemplate.class);
+        final MongoTemplate mongoTemplate = AppContext.getInstance().getApplicationContext().getBean(MongoTemplate.class);
         final List<DemoDocument> documents = mongoTemplate.findAll(DemoDocument.class);
 
         if (this.logger.isInfoEnabled()) {
