@@ -34,6 +34,8 @@ import net.jmp.spring.java.app.services.StringService;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.ApplicationContext;
@@ -42,39 +44,47 @@ import org.springframework.context.ApplicationContext;
 ///
 /// @version    0.6.0
 /// @since      0.4.0
+@DisplayName("String Service")
 final class TestStringService {
     private ApplicationContext context;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         if (this.context == null) {
             this.context = AppContext.getInstance().getApplicationContext();
         }
     }
 
-    @Test
-    void testIsStringLegal() {
-        final StringService stringService = this.context.getBean(StringService.class);
+    @DisplayName("String service helper methods")
+    @Nested
+    class TestHelperMethods {
+        @DisplayName("Test is string legal?")
+        @Test
+        void testIsStringLegal() {
+            final StringService stringService = context.getBean(StringService.class);
 
-        assertTrue(stringService.isStringLegal("JohnDoe"));
-        assertFalse(stringService.isStringLegal("John Doe"));
-        assertTrue(stringService.isStringLegal("123456789abcedf0-_$"));
-        assertFalse(stringService.isStringLegal("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/\""));
+            assertTrue(stringService.isStringLegal("JohnDoe"));
+            assertFalse(stringService.isStringLegal("John Doe"));
+            assertTrue(stringService.isStringLegal("123456789abcedf0-_$"));
+            assertFalse(stringService.isStringLegal("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/\""));
+        }
+
+        @DisplayName("Test remove illegal characters")
+        @Test
+        void testRemoveIllegalCharacters() {
+            final StringService stringService = context.getBean(StringService.class);
+
+            final String result1 = stringService.removeIllegalCharacters("Key / Value");
+            final String result2 = stringService.removeIllegalCharacters("Key-Value");
+            final String result3 = stringService.removeIllegalCharacters("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/");
+
+            assertEquals("KeyValue", result1);
+            assertEquals("Key-Value", result2);
+            assertEquals("", result3);
+        }
     }
 
-    @Test
-    void testRemoveIllegalCharacters() {
-        final StringService stringService = this.context.getBean(StringService.class);
-
-        final String result1 = stringService.removeIllegalCharacters("Key / Value");
-        final String result2 = stringService.removeIllegalCharacters("Key-Value");
-        final String result3 = stringService.removeIllegalCharacters("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/");
-
-        assertEquals("KeyValue", result1);
-        assertEquals("Key-Value", result2);
-        assertEquals("", result3);
-    }
-
+    @DisplayName("Test sanitize")
     @Test
     void testSanitizeString() {
         final StringService stringService = this.context.getBean(StringService.class);

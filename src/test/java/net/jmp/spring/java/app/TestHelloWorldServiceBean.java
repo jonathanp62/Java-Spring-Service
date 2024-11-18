@@ -34,6 +34,7 @@ import net.jmp.spring.java.app.services.HelloWorldService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.ApplicationContext;
@@ -44,11 +45,12 @@ import org.springframework.context.ApplicationContext;
 ///
 /// @version    0.6.0
 /// @since      0.1.0
+@DisplayName("Hello World Service Bean")
 final class TestHelloWorldServiceBean {
     private HelloWorldService helloWorldService;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         if (this.helloWorldService == null) {
             final ApplicationContext context = AppContext.getInstance().getApplicationContext();
 
@@ -56,6 +58,7 @@ final class TestHelloWorldServiceBean {
         }
     }
 
+    @DisplayName("Test hello world service bean")
     @Test
     void testGetHelloWorld() {
         final String result = this.helloWorldService.getHelloWorld();

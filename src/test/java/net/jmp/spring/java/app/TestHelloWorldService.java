@@ -34,13 +34,16 @@ import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /// The test class for the hello world service.
 ///
 /// @version    0.6.0
 /// @since      0.1.0
+@DisplayName("Hello World Service")
 final class TestHelloWorldService {
+    @DisplayName("Test hello world service implementation")
     @Test
     void testGetHelloWorld() {
         final HelloWorldService helloWorldService = new HelloWorldServiceImpl();

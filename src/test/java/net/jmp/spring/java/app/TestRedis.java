@@ -44,9 +44,7 @@ import net.jmp.spring.java.app.services.StudentService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
@@ -66,20 +64,21 @@ import org.springframework.data.redis.core.RedisTemplate;
 ///
 /// @version    0.6.0
 /// @since      0.2.0
+@DisplayName("Redis template and Redisson client")
 final class TestRedis {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     private ApplicationContext context;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         if (this.context == null) {
             this.context = new AnnotationConfigApplicationContext(AppConfig.class);
         }
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
         final RedisStringService redisStringService = new RedisStringService(redisTemplate);
@@ -89,71 +88,79 @@ final class TestRedis {
         }
     }
 
-    @Test
-    void testRedisStringService() {
-        @SuppressWarnings("unchecked")
-        final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
-        final RedisStringService redisStringService = new RedisStringService(redisTemplate);
+    @DisplayName("Redis template")
+    @Nested
+    class TestRedisTemplate {
+        @DisplayName("Test string service")
+        @Test
+        void testRedisStringService() {
+            @SuppressWarnings("unchecked")
+            final RedisTemplate<String, String> redisTemplate = context.getBean(RedisTemplate.class);
+            final RedisStringService redisStringService = new RedisStringService(redisTemplate);
 
-        redisStringService.setValue("name", "John Doe");
+            redisStringService.setValue("name", "John Doe");
 
-        final String result = redisStringService.getValue("name");
+            final String result = redisStringService.getValue("name");
 
-        assertEquals("John Doe", result);
-    }
+            assertEquals("John Doe", result);
+        }
 
-    @Test
-    void testRedisUserService() {
-        @SuppressWarnings("unchecked")
-        final RedisTemplate<String, User> redisTemplate = this.context.getBean(RedisTemplate.class);
-        final RedisUserService redisUserService = new RedisUserService(redisTemplate);
+        @DisplayName("Test user service")
+        @Test
+        void testRedisUserService() {
+            @SuppressWarnings("unchecked")
+            final RedisTemplate<String, User> redisTemplate = context.getBean(RedisTemplate.class);
+            final RedisUserService redisUserService = new RedisUserService(redisTemplate);
 
-        final User user = new User();
+            final User user = new User();
 
-        user.setId("123456789abcedf0");
-        user.setUserName("John Doe");
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setPassword("secret");
+            user.setId("123456789abcedf0");
+            user.setUserName("John Doe");
+            user.setFirstName("John");
+            user.setLastName("Doe");
+            user.setPassword("secret");
 
-        redisUserService.setUser(user);
+            redisUserService.setUser(user);
 
-        final User result = redisUserService.getUser("123456789abcedf0");
+            final User result = redisUserService.getUser("123456789abcedf0");
 
-        assertEquals(user, result);
+            assertEquals(user, result);
 
-        if (!redisUserService.deleteUser(user.getId())) {
-            this.logger.warn("Object '{}' not deleted", user.getId());
+            if (!redisUserService.deleteUser(user.getId())) {
+                logger.warn("Object '{}' not deleted", user.getId());
+            }
+        }
+
+        @DisplayName("Test student service")
+        @Test
+        void testRedisStudentService() {
+            final StudentRepository repository = context.getBean(StudentRepository.class);
+            final StudentService studentService = new StudentService(repository);
+
+            final Student student = new Student();
+
+            student.setId("identifier");
+            student.setGender(Student.Gender.FEMALE);
+            student.setName("Kristina");
+            student.setGrade(100);
+
+            final Student result = studentService.save(student);
+
+            assertNotNull(result);
+            assertEquals(result, student);
+            assertTrue(studentService.existsById(result.getId()));
+
+            final Optional<Student> fetched = studentService.findById(student.getId());
+
+            assertTrue(fetched.isPresent());
+
+            studentService.delete(student);
+
+            assertFalse(studentService.existsById(result.getId()));
         }
     }
 
-    @Test
-    void testRedisStudentService() {
-        final StudentRepository repository = this.context.getBean(StudentRepository.class);
-        final StudentService studentService = new StudentService(repository);
-
-        final Student student = new Student();
-
-        student.setId("identifier");
-        student.setGender(Student.Gender.FEMALE);
-        student.setName("Kristina");
-        student.setGrade(100);
-
-        final Student result = studentService.save(student);
-
-        assertNotNull(result);
-        assertEquals(result, student);
-        assertTrue(studentService.existsById(result.getId()));
-
-        final Optional<Student> fetched = studentService.findById(student.getId());
-
-        assertTrue(fetched.isPresent());
-
-        studentService.delete(student);
-
-        assertFalse(studentService.existsById(result.getId()));
-    }
-
+    @DisplayName("Test Redisson client")
     @Test
     void testRedisson() {
         final RedissonClient client = this.context.getBean(RedissonClient.class);

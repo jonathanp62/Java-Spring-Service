@@ -41,6 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.ApplicationContext;
@@ -53,16 +55,18 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 ///
 /// @version    0.6.0
 /// @since      0.1.0
+@DisplayName("MongoDB template and repository")
 final class TestMongoDB {
     private ApplicationContext context;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         if (this.context == null) {
             this.context = AppContext.getInstance().getApplicationContext();
         }
     }
 
+    @DisplayName("Test MongoDB template")
     @Test
     void testMongoTemplate() {
         final MongoTemplate mongoTemplate = this.context.getBean(MongoTemplate.class);
@@ -104,39 +108,47 @@ final class TestMongoDB {
         assertTrue(documents.contains(document3));
     }
 
-    @Test
-    void testMongoRepositoryByPrice() {
-        final DemoDocumentRepository demoDocumentRepository = this.context.getBean(DemoDocumentRepository.class);
-        final List<DemoDocument> documents = demoDocumentRepository.findByPrice(17);
+    @DisplayName("MongoDB repository")
+    @Nested
+    class TestMongoRepository {
+        @DisplayName("Test by price")
+        @Test
+        void testMongoRepositoryByPrice() {
+            final DemoDocumentRepository demoDocumentRepository = context.getBean(DemoDocumentRepository.class);
+            final List<DemoDocument> documents = demoDocumentRepository.findByPrice(17);
 
-        assertEquals(1, documents.size());
-        assertEquals("672a33a932aa022e27e36667", documents.getFirst().getId());
-    }
+            assertEquals(1, documents.size());
+            assertEquals("672a33a932aa022e27e36667", documents.getFirst().getId());
+        }
 
-    @Test
-    void testMongoRepositoryByQuantity() {
-        final DemoDocumentRepository demoDocumentRepository = this.context.getBean(DemoDocumentRepository.class);
-        final List<DemoDocument> documents = demoDocumentRepository.findByQuantity(234);
+        @DisplayName("Test by quantity")
+        @Test
+        void testMongoRepositoryByQuantity() {
+            final DemoDocumentRepository demoDocumentRepository = context.getBean(DemoDocumentRepository.class);
+            final List<DemoDocument> documents = demoDocumentRepository.findByQuantity(234);
 
-        assertEquals(1, documents.size());
-        assertEquals("672a33a932aa022e27e36665", documents.getFirst().getId());
-    }
+            assertEquals(1, documents.size());
+            assertEquals("672a33a932aa022e27e36665", documents.getFirst().getId());
+        }
 
-    @Test
-    void testMongoRepositoryById() {
-        final DemoDocumentRepository demoDocumentRepository = this.context.getBean(DemoDocumentRepository.class);
-        final Optional<DemoDocument> document = demoDocumentRepository.findById("672a33a932aa022e27e36664");
+        @DisplayName("Test by ID")
+        @Test
+        void testMongoRepositoryById() {
+            final DemoDocumentRepository demoDocumentRepository = context.getBean(DemoDocumentRepository.class);
+            final Optional<DemoDocument> document = demoDocumentRepository.findById("672a33a932aa022e27e36664");
 
-        assertTrue(document.isPresent());
-        assertEquals("672a33a932aa022e27e36664", document.get().getId());
-    }
+            assertTrue(document.isPresent());
+            assertEquals("672a33a932aa022e27e36664", document.get().getId());
+        }
 
-    @Test
-    void testMongoRepositoryByProdId() {
-        final DemoDocumentRepository demoDocumentRepository = this.context.getBean(DemoDocumentRepository.class);
-        final Optional<DemoDocument> document = demoDocumentRepository.findByProdId(102);
+        @DisplayName("Test by prod ID")
+        @Test
+        void testMongoRepositoryByProdId() {
+            final DemoDocumentRepository demoDocumentRepository = context.getBean(DemoDocumentRepository.class);
+            final Optional<DemoDocument> document = demoDocumentRepository.findByProdId(102);
 
-        assertTrue(document.isPresent());
-        assertEquals("672a33a932aa022e27e36666", document.get().getId());
+            assertTrue(document.isPresent());
+            assertEquals("672a33a932aa022e27e36666", document.get().getId());
+        }
     }
 }
