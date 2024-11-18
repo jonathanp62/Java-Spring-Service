@@ -1,11 +1,10 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestStringService.java    0.6.0   11/18/2024
  * (#)TestStringService.java    0.4.0   11/15/2024
  *
  * @author   Jonathan Parker
- * @version  0.4.0
- * @since    0.4.0
  *
  * MIT License
  *
@@ -32,29 +31,29 @@ package net.jmp.spring.java.app;
 
 import net.jmp.spring.java.app.services.StringService;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.context.ApplicationContext;
 
 /// The test class for the string service.
 ///
-/// @version    0.4.0
+/// @version    0.6.0
 /// @since      0.4.0
-public final class TestStringService {
+final class TestStringService {
     private ApplicationContext context;
 
-    @Before
-    public void before() {
+    @BeforeEach
+    public void beforeEach() {
         if (this.context == null) {
             this.context = AppContext.getInstance().getApplicationContext();
         }
     }
 
     @Test
-    public void testIsStringLegal() {
+    void testIsStringLegal() {
         final StringService stringService = this.context.getBean(StringService.class);
 
         assertTrue(stringService.isStringLegal("JohnDoe"));
@@ -64,7 +63,7 @@ public final class TestStringService {
     }
 
     @Test
-    public void testRemoveIllegalCharacters() {
+    void testRemoveIllegalCharacters() {
         final StringService stringService = this.context.getBean(StringService.class);
 
         final String result1 = stringService.removeIllegalCharacters("Key / Value");
@@ -77,7 +76,7 @@ public final class TestStringService {
     }
 
     @Test
-    public void testSanitizeString() {
+    void testSanitizeString() {
         final StringService stringService = this.context.getBean(StringService.class);
 
         assertEquals("JohnDoe", stringService.sanitize("John Doe"));

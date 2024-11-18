@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestRedis.java    0.6.0   11/18/2024
  * (#)TestRedis.java    0.5.0   11/15/2024
  * (#)TestRedis.java    0.3.0   11/13/2024
  * (#)TestRedis.java    0.2.0   11/09/2024
@@ -41,11 +42,11 @@ import net.jmp.spring.java.app.services.RedisStringService;
 import net.jmp.spring.java.app.services.RedisUserService;
 import net.jmp.spring.java.app.services.StudentService;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
@@ -63,22 +64,22 @@ import org.springframework.data.redis.core.RedisTemplate;
 /// Note that because this is not a Spring Boot
 /// application autowiring does not work.
 ///
-/// @version    0.5.0
+/// @version    0.6.0
 /// @since      0.2.0
-public final class TestRedis {
+final class TestRedis {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     private ApplicationContext context;
 
-    @Before
-    public void before() {
+    @BeforeEach
+    public void beforeEach() {
         if (this.context == null) {
             this.context = new AnnotationConfigApplicationContext(AppConfig.class);
         }
     }
 
-    @After
-    public void after() {
+    @AfterEach
+    public void afterEach() {
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
         final RedisStringService redisStringService = new RedisStringService(redisTemplate);
@@ -89,7 +90,7 @@ public final class TestRedis {
     }
 
     @Test
-    public void testRedisStringService() {
+    void testRedisStringService() {
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
         final RedisStringService redisStringService = new RedisStringService(redisTemplate);
@@ -102,7 +103,7 @@ public final class TestRedis {
     }
 
     @Test
-    public void testRedisUserService() {
+    void testRedisUserService() {
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, User> redisTemplate = this.context.getBean(RedisTemplate.class);
         final RedisUserService redisUserService = new RedisUserService(redisTemplate);
@@ -127,7 +128,7 @@ public final class TestRedis {
     }
 
     @Test
-    public void testRedisStudentService() {
+    void testRedisStudentService() {
         final StudentRepository repository = this.context.getBean(StudentRepository.class);
         final StudentService studentService = new StudentService(repository);
 
@@ -154,7 +155,7 @@ public final class TestRedis {
     }
 
     @Test
-    public void testRedisson() {
+    void testRedisson() {
         final RedissonClient client = this.context.getBean(RedissonClient.class);
 
         try {

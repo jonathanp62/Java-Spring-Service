@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestHelloWorldServiceBean.java    0.6.0   11/18/2024
  * (#)TestHelloWorldServiceBean.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
@@ -30,10 +31,10 @@ package net.jmp.spring.java.app;
 
 import net.jmp.spring.java.app.services.HelloWorldService;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.context.ApplicationContext;
 
@@ -41,13 +42,13 @@ import org.springframework.context.ApplicationContext;
 /// Note that because this is not a Spring Boot
 /// application autowiring does not work.
 ///
-/// @version    0.1.0
+/// @version    0.6.0
 /// @since      0.1.0
-public final class TestHelloWorldServiceBean {
+final class TestHelloWorldServiceBean {
     private HelloWorldService helloWorldService;
 
-    @Before
-    public void before() {
+    @BeforeEach
+    public void beforeEach() {
         if (this.helloWorldService == null) {
             final ApplicationContext context = AppContext.getInstance().getApplicationContext();
 
@@ -56,7 +57,7 @@ public final class TestHelloWorldServiceBean {
     }
 
     @Test
-    public void testGetHelloWorld() {
+    void testGetHelloWorld() {
         final String result = this.helloWorldService.getHelloWorld();
 
         assertEquals("Hello, World!!", result);

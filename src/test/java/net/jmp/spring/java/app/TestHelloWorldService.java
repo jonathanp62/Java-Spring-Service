@@ -1,11 +1,10 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestHelloWorldService.java    0.6.0   11/18/2024
  * (#)TestHelloWorldService.java    0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
- * @version  0.1.0
- * @since    0.1.0
  *
  * MIT License
  *
@@ -33,17 +32,17 @@ package net.jmp.spring.java.app;
 import net.jmp.spring.java.app.services.HelloWorldService;
 import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /// The test class for the hello world service.
 ///
-/// @version    0.1.0
+/// @version    0.6.0
 /// @since      0.1.0
-public final class TestHelloWorldService {
+final class TestHelloWorldService {
     @Test
-    public void testGetHelloWorld() {
+    void testGetHelloWorld() {
         final HelloWorldService helloWorldService = new HelloWorldServiceImpl();
         final String result = helloWorldService.getHelloWorld();
 
