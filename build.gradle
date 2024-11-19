@@ -94,6 +94,7 @@ dependencies {
     implementation      libs.org.springframework.spring.context
     implementation      libs.redis.clients.jedis
     testRuntimeOnly     libs.org.junit.platform.junit.platform.launcher
+    testImplementation  libs.org.assertj.assertj.core
     testImplementation  platform(libs.org.junit.junit.bom)
     testImplementation  libs.org.junit.jupiter.junit.jupiter
     testImplementation  libs.org.junit.jupiter.junit.jupiter.api

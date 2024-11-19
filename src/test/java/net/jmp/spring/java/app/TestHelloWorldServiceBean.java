@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.ApplicationContext;
@@ -46,6 +47,7 @@ import org.springframework.context.ApplicationContext;
 /// @version    0.6.0
 /// @since      0.1.0
 @DisplayName("Hello World Service Bean")
+@Tag("Service")
 final class TestHelloWorldServiceBean {
     private HelloWorldService helloWorldService;
 
@@ -64,5 +66,6 @@ final class TestHelloWorldServiceBean {
         final String result = this.helloWorldService.getHelloWorld();
 
         assertEquals("Hello, World!!", result);
+        assertEquals("Hello, World!!", result, () -> "'Hello, World!!' is expected");
     }
 }

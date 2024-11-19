@@ -31,12 +31,15 @@ package net.jmp.spring.java.app;
 
 import net.jmp.spring.java.app.services.StringService;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
+import org.junit.jupiter.params.ParameterizedTest;
+
+import org.junit.jupiter.params.provider.ValueSource;
 
 import org.springframework.context.ApplicationContext;
 
@@ -45,6 +48,7 @@ import org.springframework.context.ApplicationContext;
 /// @version    0.6.0
 /// @since      0.4.0
 @DisplayName("String Service")
+@Tag("Service")
 final class TestStringService {
     private ApplicationContext context;
 
@@ -67,6 +71,44 @@ final class TestStringService {
             assertFalse(stringService.isStringLegal("John Doe"));
             assertTrue(stringService.isStringLegal("123456789abcedf0-_$"));
             assertFalse(stringService.isStringLegal("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/\""));
+
+            assertAll(
+                    () -> assertFalse(stringService.isStringLegal(null)),
+                    () -> assertFalse(stringService.isStringLegal("")),
+                    () -> assertFalse(stringService.isStringLegal(" ")),
+                    () -> assertTrue(stringService.isStringLegal("JohnDoe")),
+                    () -> assertFalse(stringService.isStringLegal("John Doe")),
+                    () -> assertTrue(stringService.isStringLegal("123456789abcedf0-_$")),
+                    () -> assertFalse(stringService.isStringLegal("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/\""))
+            );
+
+            assertAll(
+                    () -> assertThat(stringService.isStringLegal(null)).isFalse(),
+                    () -> assertThat(stringService.isStringLegal("")).isFalse(),
+                    () -> assertThat(stringService.isStringLegal(" ")).isFalse(),
+                    () -> assertThat(stringService.isStringLegal("JohnDoe")).isTrue(),
+                    () -> assertThat(stringService.isStringLegal("John Doe")).isFalse(),
+                    () -> assertThat(stringService.isStringLegal("123456789abcedf0-_$")).isTrue(),
+                    () -> assertThat(stringService.isStringLegal("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/\"")).isFalse()
+            );
+        }
+
+        @DisplayName("Test is string legal? with false values")
+        @ParameterizedTest
+        @ValueSource(strings = {"", " ", "John Doe", "~`!@#%^&*()+={}[]\\|;:'\"<>,.?/"})
+        void testIsStringLegalFalse(final String string) {
+            final StringService stringService = context.getBean(StringService.class);
+
+            assertThat(stringService.isStringLegal(string)).isFalse();
+        }
+
+        @DisplayName("Test is string legal? with true values")
+        @ParameterizedTest
+        @ValueSource(strings = {"JohnDoe", "123456789abcedf0-_$"})
+        void testIsStringLegalTrue(final String string) {
+            final StringService stringService = context.getBean(StringService.class);
+
+            assertThat(stringService.isStringLegal(string)).isTrue();
         }
 
         @DisplayName("Test remove illegal characters")
@@ -81,6 +123,15 @@ final class TestStringService {
             assertEquals("KeyValue", result1);
             assertEquals("Key-Value", result2);
             assertEquals("", result3);
+
+            assertAll(
+                    () -> assertThat(stringService.removeIllegalCharacters(null)).isNull(),
+                    () -> assertThat(stringService.removeIllegalCharacters("")).isEmpty(),
+                    () -> assertThat(stringService.removeIllegalCharacters(" ")).isBlank(),
+                    () -> assertThat(result1).isEqualTo("KeyValue"),
+                    () -> assertThat(result2).isEqualTo("Key-Value"),
+                    () -> assertThat(result3).isEmpty()
+            );
         }
     }
 
@@ -98,5 +149,14 @@ final class TestStringService {
         assertEquals("KeyValue", result1);
         assertEquals("Key-Value", result2);
         assertEquals("", result3);
+
+        assertAll(
+                () -> assertThat(stringService.sanitize(null)).isNull(),
+                () -> assertThat(stringService.sanitize("")).isEmpty(),
+                () -> assertThat(stringService.sanitize(" ")).isBlank(),
+                () -> assertThat(result1).isEqualTo("KeyValue"),
+                () -> assertThat(result2).isEqualTo("Key-Value"),
+                () -> assertThat(result3).isEmpty()
+        );
     }
 }

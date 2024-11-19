@@ -32,9 +32,12 @@ package net.jmp.spring.java.app;
 import net.jmp.spring.java.app.services.HelloWorldService;
 import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /// The test class for the hello world service.
@@ -42,6 +45,7 @@ import org.junit.jupiter.api.Test;
 /// @version    0.6.0
 /// @since      0.1.0
 @DisplayName("Hello World Service")
+@Tag("Service")
 final class TestHelloWorldService {
     @DisplayName("Test hello world service implementation")
     @Test
@@ -50,5 +54,6 @@ final class TestHelloWorldService {
         final String result = helloWorldService.getHelloWorld();
 
         assertEquals("Hello, World!!", result);
+        assertThat(result).withFailMessage(() -> "'Hello, World!!' is expected").isEqualTo("Hello, World!!");
     }
 }

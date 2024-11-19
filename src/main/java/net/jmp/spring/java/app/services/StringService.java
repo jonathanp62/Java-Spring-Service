@@ -1,11 +1,10 @@
 package net.jmp.spring.java.app.services;
 
 /*
+ * (#)StringService.java    0.6.0   11/19/2024
  * (#)StringService.java    0.4.0   11/15/2024
  *
  * @author   Jonathan Parker
- * @version  0.4.0
- * @since    0.4.0
  *
  * MIT License
  *
@@ -36,7 +35,7 @@ import org.springframework.stereotype.Service;
 
 /// The string service.
 ///
-/// @version    0.4.0
+/// @version    0.6.0
 /// @since      0.4.0
 @Service
 public class StringService {
@@ -59,7 +58,11 @@ public class StringService {
     /// @param  input   java.lang.String
     /// @return         boolean
     public boolean isStringLegal(final String input) {
-        return ILLEGAL_REGEX_PATTERN.matcher(input).find();
+        if (input == null || input.isEmpty()) {
+            return false;
+        } else {
+            return ILLEGAL_REGEX_PATTERN.matcher(input).find();
+        }
     }
 
     /// Return the string with illegal characters removed.
@@ -67,7 +70,13 @@ public class StringService {
     /// @param  input   java.lang.String
     /// @return         java.lang.String
     public String removeIllegalCharacters(final String input) {
-        return input.replaceAll(REMOVE_ILLEGAL_CHARACTERS, "");
+        if (input == null) {
+            return null;
+        } else if (input.isEmpty()) {
+            return input;
+        } else {
+            return input.replaceAll(REMOVE_ILLEGAL_CHARACTERS, "");
+        }
     }
 
     /// Return a sanitized string.

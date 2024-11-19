@@ -37,6 +37,7 @@ ch-qos-logback-logback-core = "1.5.7"
 com-fasterxml-jackson-core-jackson-databind = "2.18.1"
 net-jmp-util-extra-extra-utilities = "1.4.1"
 net-jmp-util-logging-logging-utilities = "1.2.0"
+org-assertj-assertj-core = "3.26.3"
 org-junit-junit-bom = "5.11.3"
 org-junit-jupiter-junit-jupiter = "5.11.3"
 org-junit-jupiter-junit-jupiter-api = "5.11.3"
@@ -57,6 +58,7 @@ ch-qos-logback-logback-core = { module = "ch.qos.logback:logback-core", version.
 com-fasterxml-jackson-core-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "com-fasterxml-jackson-core-jackson-databind" }
 net-jmp-util-extra-extra-utilities = { module = "net.jmp.util.extra:extra-utilities", version.ref = "net-jmp-util-extra-extra-utilities" }
 net-jmp-util-logging-logging-utilities = { module = "net.jmp.util.logging:logging-utilities", version.ref = "net-jmp-util-logging-logging-utilities" }
+org-assertj-assertj-core = { module = "org.assertj:assertj-core", version.ref = "org-assertj-assertj-core" }
 org-junit-junit-bom = { module = "org.junit:junit-bom", version.ref = "org-junit-junit-bom" }
 org-junit-jupiter-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "org-junit-jupiter-junit-jupiter" }
 org-junit-jupiter-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "org-junit-jupiter-junit-jupiter-api" }
