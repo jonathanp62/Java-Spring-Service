@@ -107,10 +107,10 @@ final class TestMongoDB {
         assertTrue(documents.contains(document3));
 
         assertAll(
-                () -> assertThat(documents.contains(document0)).isTrue(),
-                () -> assertThat(documents.contains(document1)).isTrue(),
-                () -> assertThat(documents.contains(document2)).isTrue(),
-                () -> assertThat(documents.contains(document3)).isTrue()
+                () -> assertThat(documents).contains(document0),
+                () -> assertThat(documents).contains(document1),
+                () -> assertThat(documents).contains(document2),
+                () -> assertThat(documents).contains(document3)
         );
     }
 
@@ -123,12 +123,12 @@ final class TestMongoDB {
             final DemoDocumentRepository demoDocumentRepository = context.getBean(DemoDocumentRepository.class);
             final List<DemoDocument> documents = demoDocumentRepository.findByPrice(17);
 
-            assertEquals(1, documents.size());
-            assertEquals("672a33a932aa022e27e36667", documents.getFirst().getId());
+            assertEquals(1, documents.size(), () -> "1 is expected");
+            assertEquals("672a33a932aa022e27e36667", documents.getFirst().getId(), () -> "'672a33a932aa022e27e36667' is expected");
 
             assertAll(
                     () -> assertThat(1).isEqualTo(documents.size()),
-                    () -> assertThat("672a33a932aa022e27e36667").isEqualTo(documents.getFirst().getId())
+                    () -> assertThat("672a33a932aa022e27e36667").withFailMessage(() -> "'672a33a932aa022e27e36667' is expected").isEqualTo(documents.getFirst().getId())
             );
         }
 
@@ -138,11 +138,11 @@ final class TestMongoDB {
             final DemoDocumentRepository demoDocumentRepository = context.getBean(DemoDocumentRepository.class);
             final List<DemoDocument> documents = demoDocumentRepository.findByQuantity(234);
 
-            assertEquals(1, documents.size());
+            assertEquals(1, documents.size(), () -> "1 is expected");
             assertEquals("672a33a932aa022e27e36665", documents.getFirst().getId());
 
             assertAll(
-                    () -> assertThat(1).isEqualTo(documents.size()),
+                    () -> assertThat(1).withFailMessage(() -> "1 is expected").isEqualTo(documents.size()),
                     () -> assertThat("672a33a932aa022e27e36665").isEqualTo(documents.getFirst().getId())
             );
         }
@@ -157,7 +157,7 @@ final class TestMongoDB {
             assertEquals("672a33a932aa022e27e36664", document.get().getId());
 
             assertAll(
-                    () -> assertThat(document.isPresent()).isTrue(),
+                    () -> assertThat(document).withFailMessage(() -> "Optional document is expected").isPresent(),
                     () -> assertThat("672a33a932aa022e27e36664").isEqualTo(document.get().getId())
             );
         }
@@ -172,7 +172,7 @@ final class TestMongoDB {
             assertEquals("672a33a932aa022e27e36666", document.get().getId());
 
             assertAll(
-                    () -> assertThat(document.isPresent()).isTrue(),
+                    () -> assertThat(document).withFailMessage(() -> "Optional document is expected").isPresent(),
                     () -> assertThat("672a33a932aa022e27e36666").isEqualTo(document.get().getId())
             );
         }
