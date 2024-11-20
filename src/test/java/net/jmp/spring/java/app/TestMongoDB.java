@@ -37,8 +37,9 @@ import net.jmp.spring.java.app.classes.DemoDocument;
 
 import net.jmp.spring.java.app.repositories.DemoDocumentRepository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
@@ -104,6 +105,13 @@ final class TestMongoDB {
         assertTrue(documents.contains(document1));
         assertTrue(documents.contains(document2));
         assertTrue(documents.contains(document3));
+
+        assertAll(
+                () -> assertThat(documents.contains(document0)).isTrue(),
+                () -> assertThat(documents.contains(document1)).isTrue(),
+                () -> assertThat(documents.contains(document2)).isTrue(),
+                () -> assertThat(documents.contains(document3)).isTrue()
+        );
     }
 
     @DisplayName("MongoDB repository")
@@ -117,6 +125,11 @@ final class TestMongoDB {
 
             assertEquals(1, documents.size());
             assertEquals("672a33a932aa022e27e36667", documents.getFirst().getId());
+
+            assertAll(
+                    () -> assertThat(1).isEqualTo(documents.size()),
+                    () -> assertThat("672a33a932aa022e27e36667").isEqualTo(documents.getFirst().getId())
+            );
         }
 
         @DisplayName("Test by quantity")
@@ -127,6 +140,11 @@ final class TestMongoDB {
 
             assertEquals(1, documents.size());
             assertEquals("672a33a932aa022e27e36665", documents.getFirst().getId());
+
+            assertAll(
+                    () -> assertThat(1).isEqualTo(documents.size()),
+                    () -> assertThat("672a33a932aa022e27e36665").isEqualTo(documents.getFirst().getId())
+            );
         }
 
         @DisplayName("Test by ID")
@@ -137,6 +155,11 @@ final class TestMongoDB {
 
             assertTrue(document.isPresent());
             assertEquals("672a33a932aa022e27e36664", document.get().getId());
+
+            assertAll(
+                    () -> assertThat(document.isPresent()).isTrue(),
+                    () -> assertThat("672a33a932aa022e27e36664").isEqualTo(document.get().getId())
+            );
         }
 
         @DisplayName("Test by prod ID")
@@ -147,6 +170,11 @@ final class TestMongoDB {
 
             assertTrue(document.isPresent());
             assertEquals("672a33a932aa022e27e36666", document.get().getId());
+
+            assertAll(
+                    () -> assertThat(document.isPresent()).isTrue(),
+                    () -> assertThat("672a33a932aa022e27e36666").isEqualTo(document.get().getId())
+            );
         }
     }
 }
