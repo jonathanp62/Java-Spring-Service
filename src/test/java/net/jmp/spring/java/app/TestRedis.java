@@ -42,6 +42,8 @@ import net.jmp.spring.java.app.services.RedisStringService;
 import net.jmp.spring.java.app.services.RedisUserService;
 import net.jmp.spring.java.app.services.StudentService;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
@@ -104,6 +106,7 @@ final class TestRedis {
             final String result = redisStringService.getValue("name");
 
             assertEquals("John Doe", result);
+            assertThat(result).isEqualTo("John Doe");
         }
 
         @DisplayName("Test user service")
@@ -126,6 +129,7 @@ final class TestRedis {
             final User result = redisUserService.getUser("123456789abcedf0");
 
             assertEquals(user, result);
+            assertThat(result).isEqualTo(user);
 
             if (!redisUserService.deleteUser(user.getId())) {
                 logger.warn("Object '{}' not deleted", user.getId());
@@ -151,13 +155,21 @@ final class TestRedis {
             assertEquals(result, student);
             assertTrue(studentService.existsById(result.getId()));
 
+            assertAll(
+                    () -> assertThat(result).isNotNull(),
+                    () -> assertThat(result).isEqualTo(student),
+                    () -> assertThat(studentService.existsById(result.getId())).isTrue()
+            );
+
             final Optional<Student> fetched = studentService.findById(student.getId());
 
             assertTrue(fetched.isPresent());
+            assertThat(fetched.isPresent()).isTrue();
 
             studentService.delete(student);
 
             assertFalse(studentService.existsById(result.getId()));
+            assertThat(studentService.existsById(result.getId())).isFalse();
         }
     }
 
@@ -175,6 +187,11 @@ final class TestRedis {
 
             assertNotNull(result);
             assertEquals("my-bucket-value", result);
+
+            assertAll(
+                    () -> assertNotNull(result),
+                    () -> assertEquals("my-bucket-value", result)
+            );
 
             if (!bucket.delete()) {
                 this.logger.warn("Bucket 'my-bucket-value' was not deleted");
