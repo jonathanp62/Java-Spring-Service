@@ -53,7 +53,7 @@ final class TestHelloWorldService {
         final HelloWorldService helloWorldService = new HelloWorldServiceImpl();
         final String result = helloWorldService.getHelloWorld();
 
-        assertEquals("Hello, World!!", result);
+        assertEquals("Hello, World!!", result, () -> "'Hello, World!!' is expected");
         assertThat(result).withFailMessage(() -> "'Hello, World!!' is expected").isEqualTo("Hello, World!!");
     }
 }

@@ -39,6 +39,8 @@ import org.junit.jupiter.api.*;
 
 import org.junit.jupiter.params.ParameterizedTest;
 
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import org.springframework.context.ApplicationContext;
@@ -91,6 +93,24 @@ final class TestStringService {
                     () -> assertThat(stringService.isStringLegal("123456789abcedf0-_$")).isTrue(),
                     () -> assertThat(stringService.isStringLegal("~`!@#%^&*()+={}[]\\|;:'\"<>,.?/\"")).isFalse()
             );
+        }
+
+        @DisplayName("Test is string legal? with a null value")
+        @ParameterizedTest
+        @NullSource
+        void testIsStringLegalNull(final String string) {
+            final StringService stringService = context.getBean(StringService.class);
+
+            assertThat(stringService.isStringLegal(string)).isFalse();
+        }
+
+        @DisplayName("Test is string legal? with an empty value")
+        @ParameterizedTest
+        @EmptySource
+        void testIsStringLegalempty(final String string) {
+            final StringService stringService = context.getBean(StringService.class);
+
+            assertThat(stringService.isStringLegal(string)).isFalse();
         }
 
         @DisplayName("Test is string legal? with false values")
