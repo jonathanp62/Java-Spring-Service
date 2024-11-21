@@ -42,4 +42,21 @@ import org.junit.jupiter.params.provider.CsvSource;
 /// @since      0.6.0
 @DisplayName("Testing CSV source")
 final class TestCsvSource {
+    @DisplayName("Test to upper case")
+    @ParameterizedTest
+    @CsvSource({ "test,TEST", "tEst,TEST", "Java,JAVA" })
+    void testToUpperCase(final String input, final String expected) {
+        final String actualValue = input.toUpperCase();
+
+        assertThat(actualValue).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
+    }
+
+    @DisplayName("Test to lower case")
+    @ParameterizedTest
+    @CsvSource(value = { "test:test", "tEst:test", "Java:java" }, delimiter = ':' )
+    void testToLowerCase(final String input, final String expected) {
+        final String actualValue = input.toLowerCase();
+
+        assertThat(actualValue).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
+    }
 }
