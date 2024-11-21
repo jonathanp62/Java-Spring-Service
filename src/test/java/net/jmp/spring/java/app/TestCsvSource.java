@@ -34,6 +34,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import org.junit.jupiter.params.ParameterizedTest;
 
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
 /// The test class demonstrating the use of CsvSource.
@@ -58,5 +59,18 @@ final class TestCsvSource {
         final String actualValue = input.toLowerCase();
 
         assertThat(actualValue).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
+    }
+
+    @DisplayName("Test first letter to upper case")
+    @ParameterizedTest
+    @CsvFileSource(resources = "/test-input.csv", numLinesToSkip = 1)
+    void testFirstLetterToUpperCase(final String input, final String expected) {
+        final String actualValue = this.firstLettertoUpperCase(input);
+
+        assertThat(actualValue).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
+    }
+
+    private String firstLettertoUpperCase(final String input) {
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 }
