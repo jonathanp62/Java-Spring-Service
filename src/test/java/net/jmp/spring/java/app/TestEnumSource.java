@@ -30,6 +30,8 @@ package net.jmp.spring.java.app;
 
 import java.time.Month;
 
+import java.util.EnumSet;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
@@ -51,5 +53,34 @@ final class TestEnumSource {
         final int monthNumber = month.getValue();
 
         assertThat(monthNumber).isIn(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+    }
+
+    @DisplayName("Test months with 30 days")
+    @ParameterizedTest
+    @EnumSource(value = Month.class, names = { "APRIL", "JUNE", "SEPTEMBER", "NOVEMBER" })
+    void testMonthsWithThirtyDays(final Month month) {
+        assertThat(month).isIn(Month.APRIL, Month.JUNE, Month.SEPTEMBER, Month.NOVEMBER);
+    }
+
+    @DisplayName("Test months with 31 days")
+    @ParameterizedTest
+    @EnumSource(value = Month.class,
+            names = { "FEBRUARY", "APRIL", "JUNE", "SEPTEMBER", "NOVEMBER" },
+            mode = EnumSource.Mode.EXCLUDE)
+    void testMonthsWithThirtyOneDays(final Month month) {
+        final boolean isLeapYear = false;
+
+        assertThat(month.length(isLeapYear)).isEqualTo(31);
+    }
+
+    @DisplayName("Test months that end in 'ber'")
+    @ParameterizedTest
+    @EnumSource(value = Month.class,
+            names = ".+BER",
+            mode = EnumSource.Mode.MATCH_ANY)
+    void testMonthsThatEndWithBer(final Month month) {
+        final EnumSet<Month> months =
+                EnumSet.of(Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER);
+        assertThat(months).contains(month);
     }
 }
