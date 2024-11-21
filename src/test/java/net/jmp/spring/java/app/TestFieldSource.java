@@ -28,12 +28,34 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.FieldSource;
 
 /// The test class demonstrating the use of FieldSource.
 ///
 /// @version    0.6.0
 /// @since      0.6.0
 @DisplayName("Testing field source")
-public final class TestFieldSource {
+final class TestFieldSource {
+    private static final List<String> cities = Arrays.asList("Madrid", "Rome", "Paris", "London");
+
+    @DisplayName("Testing isBlank method")
+    @ParameterizedTest
+    @FieldSource("cities")
+    void testIsBlank(final String input) {
+        assertThat(Strings.isBlank(input)).isFalse();
+    }
+
+    static class Strings {
+        static boolean isBlank(final String input) {
+            return input == null || input.trim().isEmpty();
+        }
+    }
 }
