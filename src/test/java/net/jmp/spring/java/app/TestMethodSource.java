@@ -28,12 +28,18 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 
 import org.junit.jupiter.params.ParameterizedTest;
 
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /// The test class demonstrating the use of MethodSource.
@@ -41,5 +47,45 @@ import org.junit.jupiter.params.provider.MethodSource;
 /// @version    0.6.0
 /// @since      0.6.0
 @DisplayName("Testing method source")
-public final class TestMethodSource {
+final class TestMethodSource {
+    @DisplayName("Test is blank")
+    @ParameterizedTest
+    @MethodSource("provideStringsForIsNullOrBlankTest")
+    void testNullOrBlankStrings(final String input, final boolean expected) {
+        assertThat(Strings.isBlank(input)).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
+    }
+
+    @DisplayName("Test only is blank")
+    @ParameterizedTest
+    @MethodSource("provideStringsForOnlyIsNullOrBlankTest")
+    void testOnlyNullOrBlankStrings(final String input) {
+        assertThat(Strings.isBlank(input)).isTrue();
+    }
+
+    private static Stream<Arguments> provideStringsForIsNullOrBlankTest() {
+        return Stream.of(
+                Arguments.of(null, true),
+                Arguments.of("", true),
+                Arguments.of(" ", true),
+                Arguments.of("  ", true),
+                Arguments.of("not blank", false)
+        );
+    }
+
+    private static List<String> provideStringsForOnlyIsNullOrBlankTest() {
+        final List<String> list = new ArrayList<>();
+
+        list.add(null);
+        list.add("");
+        list.add(" ");
+        list.add("  ");
+
+        return list;
+    }
+
+    static class Strings {
+        static boolean isBlank(final String input) {
+            return input == null || input.trim().isEmpty();
+        }
+    }
 }
