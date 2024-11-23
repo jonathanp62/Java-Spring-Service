@@ -28,6 +28,8 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.classes.Person;
+import net.jmp.spring.java.app.classes.PersonAggregator;
 import net.jmp.spring.java.app.classes.SlashyDateConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +37,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 
 import org.junit.jupiter.params.ParameterizedTest;
+
+import org.junit.jupiter.params.aggregator.AggregateWith;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 
 import org.junit.jupiter.params.converter.ConvertWith;
 
@@ -81,6 +86,29 @@ final class TestCsvSource {
     @CsvSource( { "2018/12/25, 2018", "2019/02/11, 2019" } )
     void testArgumentConverter(@ConvertWith(SlashyDateConverter.class) final LocalDate input, final int expected) {
         assertThat(input.getYear()).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
+    }
+
+    @DisplayName("Test argument accessor")
+    @ParameterizedTest
+    @CsvSource(value = { "Isaac,,Newton,Isaac Newton", "Charles,Robert,Darwin,Charles Robert Darwin" } )
+    void testArgumentAccessor(final ArgumentsAccessor argumentsAccessor) {
+        final String firstName = argumentsAccessor.getString(0);
+        final String middleName = (String) argumentsAccessor.get(1);
+        final String lastName = argumentsAccessor.get(2, String.class);
+        final String expectedFullName = argumentsAccessor.getString(3);
+
+        final Person person = new Person(firstName, middleName, lastName);
+
+        assertThat(person.fullName()).withFailMessage(() -> "'" + expectedFullName + "' is expected").isEqualTo(expectedFullName);
+    }
+
+    @DisplayName("Test argument aggregation")
+    @ParameterizedTest
+    @CsvSource(value = { "Virgil Fox,Virgil,,Fox", "Jonathan Martin Parker,Jonathan,Martin,Parker" } )
+    void testArgumentAggregation(final String expectedFullName,
+                              @AggregateWith(PersonAggregator.class) final Person person) {
+
+        assertThat(person.fullName()).withFailMessage(() -> "'" + expectedFullName + "' is expected").isEqualTo(expectedFullName);
     }
 
     private String firstLettertoUpperCase(final String input) {
