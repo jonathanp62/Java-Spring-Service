@@ -146,7 +146,7 @@ final class TestRedis {
 
             student.setId("identifier");
             student.setGender(Student.Gender.FEMALE);
-            student.setName("Kristina");
+            student.setName("Oriole");
             student.setGrade(100);
 
             final Student result = studentService.save(student);
