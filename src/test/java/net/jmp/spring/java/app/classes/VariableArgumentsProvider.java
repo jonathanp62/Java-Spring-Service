@@ -45,7 +45,7 @@ import org.junit.jupiter.params.support.AnnotationConsumer;
 ///
 /// @version    0.6.0
 /// @since      0.6.0
-public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationConsumer<VariableSource> {
+public final class VariableArgumentsProvider implements ArgumentsProvider, AnnotationConsumer<VariableSource> {
     /// The name of the variable.
     private String variableName;
 

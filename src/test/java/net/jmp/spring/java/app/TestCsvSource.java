@@ -28,14 +28,20 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import net.jmp.spring.java.app.classes.SlashyDateConverter;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 
 import org.junit.jupiter.params.ParameterizedTest;
 
+import org.junit.jupiter.params.converter.ConvertWith;
+
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import java.time.LocalDate;
 
 /// The test class demonstrating the use of CsvSource.
 ///
@@ -68,6 +74,13 @@ final class TestCsvSource {
         final String actualValue = this.firstLettertoUpperCase(input);
 
         assertThat(actualValue).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
+    }
+
+    @DisplayName("Test argument converter")
+    @ParameterizedTest
+    @CsvSource( { "2018/12/25, 2018", "2019/02/11, 2019" } )
+    void testArgumentConverter(@ConvertWith(SlashyDateConverter.class) final LocalDate input, final int expected) {
+        assertThat(input.getYear()).withFailMessage(() -> "'" + expected + "' is expected").isEqualTo(expected);
     }
 
     private String firstLettertoUpperCase(final String input) {
