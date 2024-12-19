@@ -1,4 +1,5 @@
 /*
+ * (#)build.gradle  0.7.0   12/19/2024
  * (#)build.gradle  0.6.0   11/18/2024
  * (#)build.gradle  0.5.0   11/15/2024
  * (#)build.gradle  0.4.0   11/15/2024
@@ -7,7 +8,7 @@
  * (#)build.gradle  0.1.0   11/04/2024
  *
  * @author   Jonathan Parker
- * @version  0.6.0
+ * @version  0.7.0
  * @since    0.1.0
  *
  * MIT License
@@ -83,6 +84,7 @@ repositories {
 dependencies {
     runtimeOnly         libs.ch.qos.logback.logback.classic
     runtimeOnly         libs.ch.qos.logback.logback.core
+    runtimeOnly         libs.com.mysql.mysql.connection.j
     implementation      libs.com.fasterxml.jackson.core.jackson.databind
     implementation      libs.net.jmp.util.extra.extra.utilities
     implementation      libs.net.jmp.util.logging.logging.utilities
@@ -90,6 +92,7 @@ dependencies {
     implementation      libs.org.redisson.redisson
     implementation      libs.org.slf4j.slf4j.api
     implementation      libs.org.springframework.boot.spring.boot.starter.data.redis
+    implementation      libs.org.springframework.data.spring.data.jdbc
     implementation      libs.org.springframework.data.spring.data.mongodb
     implementation      libs.org.springframework.spring.context
     implementation      libs.redis.clients.jedis
@@ -103,7 +106,7 @@ dependencies {
 }
 
 group = 'net.jmp.spring.java.app'
-version = '0.6.0'
+version = '0.7.0'
 description = 'Spring-Service'
 
 println "The groupId is ${project.group}"
