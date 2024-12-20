@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)AppConfig.java    0.7.0   12/20/2024
  * (#)AppConfig.java    0.5.0   11/15/2024
  * (#)AppConfig.java    0.4.0   11/15/2024
  * (#)AppConfig.java    0.3.0   11/13/2024
@@ -40,6 +41,8 @@ import java.io.IOException;
 
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import net.jmp.spring.java.app.classes.Student;
 
 import net.jmp.spring.java.app.repositories.StudentRepository;
@@ -54,6 +57,8 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 
 import org.redisson.config.Config;
+
+import org.springframework.boot.jdbc.DataSourceBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -73,7 +78,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /// The Spring application configuration.
 ///
-/// @version    0.5.0
+/// @version    0.7.0
 /// @since      0.1.0
 @Configuration
 @EnableMongoRepositories("net.jmp.spring.java.app")
@@ -114,6 +119,29 @@ public class AppConfig {
         }
 
         return MongoClients.create(mongoDbUri);
+    }
+
+    /// Create and return a MySQL JDBC data source.
+    ///
+    /// @return javax.sql.DataSource
+    /// @since  0.7.0
+    @Bean
+    public DataSource jdbcDataSource() {
+        final var dataSourceBuilder = DataSourceBuilder.create();
+        final var secretProperties = new Properties();
+
+        try (final var fis = new FileInputStream(CONFIG_FILE)) {
+            secretProperties.load(fis);
+
+            dataSourceBuilder.url(secretProperties.getProperty("mysql.connection.url"));
+            dataSourceBuilder.username(secretProperties.getProperty("mysql.connection.username"));
+            dataSourceBuilder.password(secretProperties.getProperty("mysql.connection.password"));
+            dataSourceBuilder.driverClassName(secretProperties.getProperty("mysql.connection.driver"));
+        } catch (final IOException ioe) {
+            ioe.printStackTrace(System.err);
+        }
+
+        return dataSourceBuilder.build();
     }
 
     /// Create a MongoDB template.

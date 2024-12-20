@@ -1,7 +1,8 @@
 /*
+ * (#)module-info.java  0.7.0   12/20/2024
  * (#)module-info.java  0.6.0   11/28/2024
  *
- * @version 0.6.0
+ * @version 0.7.0
  * @since   0.6.0
  *
  * MIT License
@@ -33,15 +34,16 @@
  * @since 0.6.0
  */
 module spring.service.main {
-    requires java.base;
-
     requires com.google.gson;
     requires com.fasterxml.jackson.databind;
     requires extra.utilities;
+    requires java.sql;
     requires logging.utilities;
     requires org.mongodb.driver.sync.client;
     requires org.slf4j;
     requires redisson;
+    requires spring.boot;
+    requires spring.boot.autoconfigure;
     requires spring.context;
     requires spring.data.commons;
     requires spring.data.mongodb;
