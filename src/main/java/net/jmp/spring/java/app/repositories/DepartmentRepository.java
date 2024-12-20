@@ -1,9 +1,9 @@
+package net.jmp.spring.java.app.repositories;
+
 /*
- * (#)module-info.java  0.7.0   12/20/2024
- * (#)module-info.java  0.6.0   11/28/2024
+ * (#)DepartmentRepository.java 0.7.0   12/20/2024
  *
- * @version 0.7.0
- * @since   0.6.0
+ * @author   Jonathan Parker
  *
  * MIT License
  *
@@ -28,25 +28,16 @@
  * SOFTWARE.
  */
 
-/**
- * The application module. No packages are provided.
- *
- * @since 0.6.0
- */
-module spring.service.main {
-    requires com.google.gson;
-    requires com.fasterxml.jackson.databind;
-    requires extra.utilities;
-    requires java.sql;
-    requires logging.utilities;
-    requires org.mongodb.driver.sync.client;
-    requires org.slf4j;
-    requires redisson;
-    requires spring.boot;
-    requires spring.boot.autoconfigure;
-    requires spring.context;
-    requires spring.data.commons;
-    requires spring.data.mongodb;
-    requires spring.data.redis;
-    requires spring.jdbc;
+import net.jmp.spring.java.app.classes.Department;
+
+import org.springframework.data.repository.CrudRepository;
+
+import org.springframework.stereotype.Repository;
+
+/// A department repository interface.
+///
+/// @version    0.7.0
+/// @since      0.7.0
+@Repository
+public interface DepartmentRepository extends CrudRepository<Department, String> {
 }

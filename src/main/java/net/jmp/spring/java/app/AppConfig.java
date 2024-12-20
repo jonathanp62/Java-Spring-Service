@@ -45,6 +45,8 @@ import javax.sql.DataSource;
 
 import net.jmp.spring.java.app.classes.Student;
 
+import net.jmp.spring.java.app.repositories.DepartmentRepository;
+import net.jmp.spring.java.app.repositories.DepartmentRepositoryImpl;
 import net.jmp.spring.java.app.repositories.StudentRepository;
 import net.jmp.spring.java.app.repositories.StudentRepositoryImpl;
 
@@ -75,6 +77,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /// The Spring application configuration.
 ///
@@ -142,6 +146,15 @@ public class AppConfig {
         }
 
         return dataSourceBuilder.build();
+    }
+
+    /// Create and return a JDBC template.
+    ///
+    /// @return org.springframework.jdbc.core.JdbcTemplate
+    /// @since  0.7.0
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(this.jdbcDataSource());
     }
 
     /// Create a MongoDB template.
@@ -215,6 +228,15 @@ public class AppConfig {
     @Bean
     public StudentRepository studentRepository() {
         return new StudentRepositoryImpl(this.redisStudentTemplate());
+    }
+
+    /// Create and return the department repository.
+    ///
+    /// @return net.jmp.spring.java.app.repositories.DepartmentRepository
+    /// @since  0.7.0
+    @Bean
+    public DepartmentRepository departmentRepository() {
+        return new DepartmentRepositoryImpl(this.jdbcTemplate());
     }
 
     ///  Create and return a Redisson client.

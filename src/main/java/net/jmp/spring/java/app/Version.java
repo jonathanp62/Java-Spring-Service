@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)Version.java  0.7.0   12/20/2024
  * (#)Version.java  0.5.0   11/15/2024
  *
  * MIT License
@@ -28,11 +29,11 @@ package net.jmp.spring.java.app;
 
 /// The version class.
 ///
-/// @version    0.5.0
+/// @version    0.7.0
 /// @since      0.5.0
 public final class Version {
     /// The version.
-    static final String VERSION_STRING = "0.5.0";
+    static final String VERSION_STRING = "0.7.0";
 
     /// The default constructor.
     private Version() {

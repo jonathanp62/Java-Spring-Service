@@ -82,6 +82,7 @@ repositories {
 }
 
 dependencies {
+    runtimeOnly         ("io.netty:netty-resolver-dns-native-macos:4.1.109.Final:osx-aarch_64")
     runtimeOnly         libs.ch.qos.logback.logback.classic
     runtimeOnly         libs.ch.qos.logback.logback.core
     runtimeOnly         libs.com.mysql.mysql.connection.j
