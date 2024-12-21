@@ -61,7 +61,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @return         S
     @Override
     public <S extends Department> S save(final S entity) {
-        return null;
+        if (entity instanceof Department d) {
+            return this.jdbcTemplate.update("INSERT INTO departments (dept_no, dept_name) VALUES (?, ?)", d.getNumber(), d.getName()) > 0 ? entity : null;
+        } else {
+            return null;
+        }
     }
 
     /// Save an iterable of departments.

@@ -104,4 +104,12 @@ public class DepartmentService {
     public Optional<Department> findByName(final String name) {
         return this.departmentRepository.findByName(name);
     }
+
+    /// Save the department.
+    ///
+    /// @param  department  net.jmp.spring.java.app.classes.Department
+    /// @return             net.jmp.spring.java.app.classes.Department
+    public Department save(final Department department) {
+        return this.departmentRepository.save(department);
+    }
 }

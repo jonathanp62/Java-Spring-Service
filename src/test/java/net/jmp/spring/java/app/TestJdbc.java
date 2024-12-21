@@ -156,4 +156,19 @@ final class TestJdbc {
 
         assertThat(result).isPresent();
     }
+
+    @Test
+    void testDepartmentServiceSave() {
+        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+
+        assertThat(departmentRepository).isNotNull();
+
+        final DepartmentService departmentService = new DepartmentService(departmentRepository);
+        final Department newDdepartment = new Department("d999", "Engineering");
+        final Department saved = departmentService.save(newDdepartment);
+
+        assertThat(saved).isNotNull();
+        assertThat(saved.getNumber()).isEqualTo("d999");
+        assertThat(saved.getName()).isEqualTo("Engineering");
+    }
 }
