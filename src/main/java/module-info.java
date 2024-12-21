@@ -49,4 +49,5 @@ module spring.service.main {
     requires spring.data.mongodb;
     requires spring.data.redis;
     requires spring.jdbc;
+    requires spring.tx;
 }

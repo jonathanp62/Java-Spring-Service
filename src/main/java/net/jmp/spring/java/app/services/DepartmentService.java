@@ -30,6 +30,7 @@ package net.jmp.spring.java.app.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.jmp.spring.java.app.classes.Department;
 
@@ -86,5 +87,21 @@ public class DepartmentService {
     /// @return     boolean
     public boolean existsById(final String id) {
         return this.departmentRepository.existsById(id);
+    }
+
+    /// Find a department by identifier.
+    ///
+    /// @param  id  java.lang.String
+    /// @return     java.util.Optional<net.jmp.spring.java.app.classes.Department>
+    public Optional<Department> findById(final String id) {
+        return this.departmentRepository.findById(id);
+    }
+
+    /// Find a department by name.
+    ///
+    /// @param  name    java.lang.String
+    /// @return         java.util.Optional<net.jmp.spring.java.app.classes.Department>
+    public Optional<Department> findByName(final String name) {
+        return this.departmentRepository.findByName(name);
     }
 }

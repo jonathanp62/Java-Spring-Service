@@ -46,6 +46,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /// The test class for the JDBC beans.
 /// Note that because this is not a Spring Boot
@@ -120,5 +121,39 @@ final class TestJdbc {
         exists = departmentService.existsById("d001");
 
         assertThat(exists).isTrue();
+    }
+
+    @Test
+    void testDepartmentServiceFindById() {
+        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+
+        assertThat(departmentRepository).isNotNull();
+
+        final DepartmentService departmentService = new DepartmentService(departmentRepository);
+
+        Optional<Department> result = departmentService.findById("not-found");
+
+        assertThat(result).isNotPresent();
+
+        result = departmentService.findById("d001");
+
+        assertThat(result).isPresent();
+    }
+
+    @Test
+    void testDepartmentServiceFindByName() {
+        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+
+        assertThat(departmentRepository).isNotNull();
+
+        final DepartmentService departmentService = new DepartmentService(departmentRepository);
+
+        Optional<Department> result = departmentService.findByName("not-found");
+
+        assertThat(result).isNotPresent();
+
+        result = departmentService.findByName("Research");
+
+        assertThat(result).isPresent();
     }
 }

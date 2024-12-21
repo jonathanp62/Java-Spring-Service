@@ -28,6 +28,8 @@ package net.jmp.spring.java.app.repositories;
  * SOFTWARE.
  */
 
+import java.util.Optional;
+
 import net.jmp.spring.java.app.classes.Department;
 
 import org.springframework.data.repository.CrudRepository;
@@ -40,4 +42,9 @@ import org.springframework.stereotype.Repository;
 /// @since      0.7.0
 @Repository
 public interface DepartmentRepository extends CrudRepository<Department, String> {
+    /// Returns a department by name if found.
+    ///
+    /// @param  name    java.lang.String
+    /// @return         java.util.Optional<net.jmp.spring.java.app.classes.Department>
+    public Optional<Department> findByName(final String name);
 }

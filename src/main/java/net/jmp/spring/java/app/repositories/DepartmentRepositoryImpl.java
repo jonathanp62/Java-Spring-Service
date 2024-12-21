@@ -32,6 +32,8 @@ import java.util.Optional;
 
 import net.jmp.spring.java.app.classes.Department;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -77,7 +79,30 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @return     java.util.Optional<net.jmp.spring.java.app.classes.Department>
     @Override
     public Optional<Department> findById(final String s) {
-        return Optional.empty();
+        final NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
+        final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("dept_no", s);
+
+        try {
+            return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject("SELECT * FROM departments WHERE dept_no = :dept_no", namedParameters, Department::new));
+        } catch (final EmptyResultDataAccessException erdae) {
+            return Optional.empty();
+        }
+    }
+
+    /// Returns a department by name if found.
+    ///
+    /// @param  name    java.lang.String
+    /// @return         java.util.Optional<net.jmp.spring.java.app.classes.Department>
+    @Override
+    public Optional<Department> findByName(final String name) {
+        final NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
+        final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("dept_name", name);
+
+        try {
+            return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject("SELECT * FROM departments WHERE dept_name = :dept_name", namedParameters, Department::new));
+        } catch (final EmptyResultDataAccessException erdae) {
+            return Optional.empty();
+        }
     }
 
     /// Return true if a department exists.
