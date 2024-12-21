@@ -28,6 +28,9 @@ package net.jmp.spring.java.app.services;
  * SOFTWARE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.jmp.spring.java.app.classes.Department;
 
 import net.jmp.spring.java.app.repositories.DepartmentRepository;
@@ -57,5 +60,31 @@ public class DepartmentService {
     /// @return java.lang.Iterable<net.jmp.spring.java.app.classes.Department>
     public Iterable<Department> findAll() {
         return this.departmentRepository.findAll();
+    }
+
+    /// Fetch all departments.
+    ///
+    /// @return java.util.List<net.jmp.spring.java.app.classes.Department>
+    public List<Department> fetchAll() {
+        final List<Department> departments = new ArrayList<>();
+
+        this.findAll().forEach(departments::add);
+
+        return departments;
+    }
+
+    /// Return the number of departments in the repository.
+    ///
+    /// @return long
+    public long count() {
+        return this.departmentRepository.count();
+    }
+
+    /// Return true if a department exists by identifier.
+    ///
+    /// @param  id  java.lang.String
+    /// @return     boolean
+    public boolean existsById(final String id) {
+        return this.departmentRepository.existsById(id);
     }
 }

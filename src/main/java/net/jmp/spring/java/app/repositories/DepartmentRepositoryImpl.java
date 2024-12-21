@@ -34,6 +34,10 @@ import net.jmp.spring.java.app.classes.Department;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+
 /// The department repository implementation.
 ///
 /// @version    0.7.0
@@ -76,9 +80,22 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
         return Optional.empty();
     }
 
+    /// Return true if a department exists.
+    ///
+    /// @param  s   java.lang.String
+    /// @return     boolean
     @Override
-    public boolean existsById(String s) {
-        return false;
+    public boolean existsById(final String s) {
+        final NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
+        final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("dept_no", s);
+
+        final Integer count = namedParameterJdbcTemplate.queryForObject("SELECT COUNT(*) FROM departments WHERE dept_no = :dept_no", namedParameters, Integer.class);
+
+        if (count == null) {
+            return false;
+        } else {
+            return count > 0;
+        }
     }
 
     /// Return all departments.
@@ -103,7 +120,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @return java.lang.long
     @Override
     public long count() {
-        return 0;
+        return this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM departments", Long.class);
     }
 
     /// Delete a department by identifier.
