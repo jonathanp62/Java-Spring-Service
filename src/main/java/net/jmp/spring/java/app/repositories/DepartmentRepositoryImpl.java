@@ -61,10 +61,12 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @return         S
     @Override
     public <S extends Department> S save(final S entity) {
-        if (entity instanceof Department d) {
-            return this.jdbcTemplate.update("INSERT INTO departments (dept_no, dept_name) VALUES (?, ?)", d.getNumber(), d.getName()) > 0 ? entity : null;
+        final int rowsAffected = this.jdbcTemplate.update("INSERT INTO departments (dept_no, dept_name) VALUES (?, ?)", entity.getNumber(), entity.getName());
+
+        if (rowsAffected == 1) {
+            return entity;
         } else {
-            return null;
+            throw new RuntimeException("Failed to save department: " + entity);
         }
     }
 
@@ -88,7 +90,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
         try {
             return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject("SELECT * FROM departments WHERE dept_no = :dept_no", namedParameters, Department::new));
-        } catch (final EmptyResultDataAccessException erdae) {
+        } catch (final EmptyResultDataAccessException _) {
             return Optional.empty();
         }
     }
@@ -104,7 +106,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
         try {
             return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject("SELECT * FROM departments WHERE dept_name = :dept_name", namedParameters, Department::new));
-        } catch (final EmptyResultDataAccessException erdae) {
+        } catch (final EmptyResultDataAccessException _) {
             return Optional.empty();
         }
     }
@@ -149,7 +151,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @return java.lang.long
     @Override
     public long count() {
-        return this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM departments", Long.class);
+        final Long count = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM departments", Long.class);
+
+        return (count == null) ? 0 : count;
     }
 
     /// Delete a department by identifier.
@@ -157,15 +161,27 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @param  s   java.lang.String
     @Override
     public void deleteById(final String s) {
+        final NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
+        final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("dept_no", s);
+        final int rowsAffected = namedParameterJdbcTemplate.update("DELETE FROM departments WHERE dept_no = :dept_no", namedParameters);
 
+        if (rowsAffected != 1) {
+            throw new RuntimeException("Failed to delete department: " + s);
+        }
     }
 
     /// Delete a department.
     ///
-    /// @param  entity  net.jmp.spring.java.app.classes.Department
+    /// @param  department  net.jmp.spring.java.app.classes.Department
     @Override
-    public void delete(final Department entity) {
+    public void delete(final Department department) {
+        final NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
+        final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("dept_no", department.getNumber());
+        final int rowsAffected = namedParameterJdbcTemplate.update("DELETE FROM departments WHERE dept_no = :dept_no", namedParameters);
 
+        if (rowsAffected != 1) {
+            throw new RuntimeException("Failed to delete department: " + department);
+        }
     }
 
     /// Delete all departments with the given identifiers.

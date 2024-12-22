@@ -66,8 +66,22 @@ final class TestJdbc {
         }
     }
 
+    @AfterEach
+    void afterEach() {
+        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+        final DepartmentService departmentService = new DepartmentService(departmentRepository);
+
+        if (departmentService.existsById("d998")) {
+            departmentService.delete(new Department("d998", "Food Services"));
+        }
+
+        if (departmentService.existsById("d999")) {
+            departmentService.delete(new Department("d999", "Engineering"));
+        }
+    }
+
     @Test
-    void testDepartmentServiceFinalAll() {
+    void testDepartmentServiceFindAll() {
         final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
 
         assertThat(departmentRepository).isNotNull();
@@ -77,8 +91,10 @@ final class TestJdbc {
 
         departmentService.findAll().forEach(departments::add);
 
-        assertThat(departments).isNotNull();
-        assertThat(departments.size()).isEqualTo(9);
+        assertAll(
+                () -> assertThat(departments).isNotNull(),
+                () -> assertThat(departments).hasSize(9)
+        );
     }
 
     @Test
@@ -90,8 +106,10 @@ final class TestJdbc {
         final DepartmentService departmentService = new DepartmentService(departmentRepository);
         final List<Department> departments = departmentService.fetchAll();
 
-        assertThat(departments).isNotNull();
-        assertThat(departments.size()).isEqualTo(9);
+        assertAll(
+                () -> assertThat(departments).isNotNull(),
+                () -> assertThat(departments).hasSize(9)
+        );
     }
 
     @Test
@@ -164,11 +182,55 @@ final class TestJdbc {
         assertThat(departmentRepository).isNotNull();
 
         final DepartmentService departmentService = new DepartmentService(departmentRepository);
-        final Department newDdepartment = new Department("d999", "Engineering");
-        final Department saved = departmentService.save(newDdepartment);
+        final Department newDepartment = new Department("d999", "Engineering");
+        final Department saved = departmentService.save(newDepartment);
 
-        assertThat(saved).isNotNull();
-        assertThat(saved.getNumber()).isEqualTo("d999");
-        assertThat(saved.getName()).isEqualTo("Engineering");
+        assertAll(
+                () -> assertThat(saved).isNotNull(),
+                () -> assertThat(saved.getNumber()).isNotNull(),
+                () -> assertThat(saved.getNumber()).isEqualTo("d999"),
+                () -> assertThat(saved.getName()).isNotNull(),
+                () -> assertThat(saved.getName()).isEqualTo("Engineering")
+        );
+    }
+
+    @Test
+    void testDepartmentServiceDelete() {
+        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+
+        assertThat(departmentRepository).isNotNull();
+
+        final DepartmentService departmentService = new DepartmentService(departmentRepository);
+        final Department newDepartment = new Department("d998", "Food Services");
+        final Department saved = departmentService.save(newDepartment);
+
+        assertAll(
+                () -> assertThat(saved).isNotNull(),
+                () -> assertThat(departmentService.existsById("d998")).isTrue()
+        );
+
+        departmentService.delete(saved);
+
+        assertThat(departmentService.existsById("d998")).isFalse();
+    }
+
+    @Test
+    void testDepartmentServiceDeleteById() {
+        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+
+        assertThat(departmentRepository).isNotNull();
+
+        final DepartmentService departmentService = new DepartmentService(departmentRepository);
+        final Department newDepartment = new Department("d998", "Food Services");
+        final Department saved = departmentService.save(newDepartment);
+
+        assertAll(
+                () -> assertThat(saved).isNotNull(),
+                () -> assertThat(departmentService.existsById("d998")).isTrue()
+        );
+
+        departmentService.deleteById("d998");
+
+        assertThat(departmentService.existsById("d998")).isFalse();
     }
 }

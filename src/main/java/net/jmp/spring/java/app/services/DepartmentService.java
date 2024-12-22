@@ -112,4 +112,18 @@ public class DepartmentService {
     public Department save(final Department department) {
         return this.departmentRepository.save(department);
     }
+
+    /// Delete the department.
+    ///
+    /// @param  department  net.jmp.spring.java.app.classes.Department
+    public void delete(final Department department) {
+        this.departmentRepository.delete(department);
+    }
+
+    /// Delete a department by identifier.
+    ///
+    /// @param  id  java.lang.String
+    public void deleteById(final String id) {
+        this.departmentRepository.deleteById(id);
+    }
 }
