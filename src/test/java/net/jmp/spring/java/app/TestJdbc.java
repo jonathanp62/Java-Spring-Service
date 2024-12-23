@@ -76,7 +76,7 @@ final class TestJdbc {
         }
 
         if (departmentService.existsById("d999")) {
-            departmentService.delete(new Department("d999", "Engineering"));
+            departmentService.deleteById("d999");
         }
     }
 
@@ -176,7 +176,7 @@ final class TestJdbc {
     }
 
     @Test
-    void testDepartmentServiceSave() {
+    void testDepartmentServiceSaveInsert() {
         final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
 
         assertThat(departmentRepository).isNotNull();
@@ -191,6 +191,37 @@ final class TestJdbc {
                 () -> assertThat(saved.getNumber()).isEqualTo("d999"),
                 () -> assertThat(saved.getName()).isNotNull(),
                 () -> assertThat(saved.getName()).isEqualTo("Engineering")
+        );
+    }
+
+    @Test
+    void testDepartmentServiceSaveUpdate() {
+        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+
+        assertThat(departmentRepository).isNotNull();
+
+        final DepartmentService departmentService = new DepartmentService(departmentRepository);
+        final Department newDepartment = new Department("d999", "Engineering");
+        final Department saved = departmentService.save(newDepartment);
+
+        assertAll(
+                () -> assertThat(saved).isNotNull(),
+                () -> assertThat(saved.getNumber()).isNotNull(),
+                () -> assertThat(saved.getNumber()).isEqualTo("d999"),
+                () -> assertThat(saved.getName()).isNotNull(),
+                () -> assertThat(saved.getName()).isEqualTo("Engineering")
+        );
+
+        saved.setName("Engineering Services");
+
+        final Department updated = departmentService.save(saved);
+
+        assertAll(
+                () -> assertThat(updated).isNotNull(),
+                () -> assertThat(updated.getNumber()).isNotNull(),
+                () -> assertThat(updated.getNumber()).isEqualTo("d999"),
+                () -> assertThat(updated.getName()).isNotNull(),
+                () -> assertThat(updated.getName()).isEqualTo("Engineering Services")
         );
     }
 

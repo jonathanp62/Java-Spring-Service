@@ -61,9 +61,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @return         S
     @Override
     public <S extends Department> S save(final S entity) {
-        final int rowsAffected = this.jdbcTemplate.update("INSERT INTO departments (dept_no, dept_name) VALUES (?, ?)", entity.getNumber(), entity.getName());
+        final int rowsAffected = this.jdbcTemplate.update("INSERT INTO departments (dept_no, dept_name) VALUES (?, ?) ON DUPLICATE KEY UPDATE dept_name = ?", entity.getNumber(), entity.getName(), entity.getName());
 
-        if (rowsAffected == 1) {
+        // If the number of rows affected is 1 then it is an insert, if it is 2 then it is an update
+
+        if (rowsAffected == 1 || rowsAffected == 2) {
             return entity;
         } else {
             throw new RuntimeException("Failed to save department: " + entity);
