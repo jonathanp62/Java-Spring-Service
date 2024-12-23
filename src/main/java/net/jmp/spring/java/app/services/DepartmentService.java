@@ -113,6 +113,14 @@ public class DepartmentService {
         return this.departmentRepository.save(department);
     }
 
+    /// Save an iterable of departments.
+    ///
+    /// @param  departments java.lang.Iterable<net.jmp.spring.java.app.classes.Department>
+    /// @return             java.lang.Iterable<net.jmp.spring.java.app.classes.Department>
+    public Iterable<Department> saveAll(final Iterable<Department> departments) {
+        return this.departmentRepository.saveAll(departments);
+    }
+
     /// Delete the department.
     ///
     /// @param  department  net.jmp.spring.java.app.classes.Department

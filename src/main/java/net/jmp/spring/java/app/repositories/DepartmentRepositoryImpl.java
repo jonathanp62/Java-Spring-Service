@@ -78,7 +78,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @return             java.lang.Iterable<S>
     @Override
     public <S extends Department> Iterable<S> saveAll(final Iterable<S> entities) {
-        return null;
+        entities.forEach(this::save);
+
+        return entities;
     }
 
     /// Find a department by identifier.
@@ -165,11 +167,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     public void deleteById(final String s) {
         final NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
         final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("dept_no", s);
-        final int rowsAffected = namedParameterJdbcTemplate.update("DELETE FROM departments WHERE dept_no = :dept_no", namedParameters);
-
-        if (rowsAffected != 1) {
-            throw new RuntimeException("Failed to delete department: " + s);
-        }
+        final int _ = namedParameterJdbcTemplate.update("DELETE FROM departments WHERE dept_no = :dept_no", namedParameters);
     }
 
     /// Delete a department.
@@ -179,11 +177,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     public void delete(final Department department) {
         final NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
         final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("dept_no", department.getNumber());
-        final int rowsAffected = namedParameterJdbcTemplate.update("DELETE FROM departments WHERE dept_no = :dept_no", namedParameters);
-
-        if (rowsAffected != 1) {
-            throw new RuntimeException("Failed to delete department: " + department);
-        }
+        final int _ = namedParameterJdbcTemplate.update("DELETE FROM departments WHERE dept_no = :dept_no", namedParameters);
     }
 
     /// Delete all departments with the given identifiers.

@@ -58,38 +58,33 @@ import java.util.Optional;
 @Tag("JDBC")
 final class TestJdbc {
     private ApplicationContext context;
+    private DepartmentService departmentService;
 
     @BeforeEach
     void beforeEach() {
         if (this.context == null) {
             this.context = new AnnotationConfigApplicationContext(AppConfig.class);
         }
+
+        if (this.departmentService == null) {
+            final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+
+            this.departmentService = new DepartmentService(departmentRepository);
+        }
     }
 
     @AfterEach
     void afterEach() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
-
-        if (departmentService.existsById("d998")) {
-            departmentService.delete(new Department("d998", "Food Services"));
-        }
-
-        if (departmentService.existsById("d999")) {
-            departmentService.deleteById("d999");
-        }
+        this.departmentService.delete(new Department("d997", "Motor Pool"));
+        this.departmentService.delete(new Department("d998", "Food Services"));
+        this.departmentService.deleteById("d999");
     }
 
     @Test
     void testDepartmentServiceFindAll() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
         final List<Department> departments = new ArrayList<>();
 
-        departmentService.findAll().forEach(departments::add);
+        this.departmentService.findAll().forEach(departments::add);
 
         assertAll(
                 () -> assertThat(departments).isNotNull(),
@@ -99,12 +94,7 @@ final class TestJdbc {
 
     @Test
     void testDepartmentServiceFetchAll() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
-        final List<Department> departments = departmentService.fetchAll();
+        final List<Department> departments = this.departmentService.fetchAll();
 
         assertAll(
                 () -> assertThat(departments).isNotNull(),
@@ -114,154 +104,132 @@ final class TestJdbc {
 
     @Test
     void testDepartmentServiceCount() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
-        final long count = departmentService.count();
+        final long count = this.departmentService.count();
 
         assertThat(count).isEqualTo(9);
     }
 
     @Test
     void testDepartmentServiceExistsById() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
-
-        boolean exists = departmentService.existsById("not-found");
+        boolean exists = this.departmentService.existsById("not-found");
 
         assertThat(exists).isFalse();
 
-        exists = departmentService.existsById("d001");
+        exists = this.departmentService.existsById("d001");
 
         assertThat(exists).isTrue();
     }
 
     @Test
     void testDepartmentServiceFindById() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
-
-        Optional<Department> result = departmentService.findById("not-found");
+        Optional<Department> result = this.departmentService.findById("not-found");
 
         assertThat(result).isNotPresent();
 
-        result = departmentService.findById("d001");
+        result = this.departmentService.findById("d001");
 
         assertThat(result).isPresent();
     }
 
     @Test
     void testDepartmentServiceFindByName() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
-
-        Optional<Department> result = departmentService.findByName("not-found");
+        Optional<Department> result = this.departmentService.findByName("not-found");
 
         assertThat(result).isNotPresent();
 
-        result = departmentService.findByName("Research");
+        result = this.departmentService.findByName("Research");
 
         assertThat(result).isPresent();
     }
 
     @Test
     void testDepartmentServiceSaveInsert() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
         final Department newDepartment = new Department("d999", "Engineering");
-        final Department saved = departmentService.save(newDepartment);
+        final Department _ = this.departmentService.save(newDepartment);
+        final Department fetched = this.departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
 
         assertAll(
-                () -> assertThat(saved).isNotNull(),
-                () -> assertThat(saved.getNumber()).isNotNull(),
-                () -> assertThat(saved.getNumber()).isEqualTo("d999"),
-                () -> assertThat(saved.getName()).isNotNull(),
-                () -> assertThat(saved.getName()).isEqualTo("Engineering")
+                () -> assertThat(fetched).isNotNull(),
+                () -> assertThat(fetched.getNumber()).isNotNull(),
+                () -> assertThat(fetched.getNumber()).isEqualTo("d999"),
+                () -> assertThat(fetched.getName()).isNotNull(),
+                () -> assertThat(fetched.getName()).isEqualTo("Engineering")
         );
     }
 
     @Test
     void testDepartmentServiceSaveUpdate() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
         final Department newDepartment = new Department("d999", "Engineering");
-        final Department saved = departmentService.save(newDepartment);
+        final Department saved = this.departmentService.save(newDepartment);
+        final Department fetchedAfterInsert = this.departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
 
         assertAll(
-                () -> assertThat(saved).isNotNull(),
-                () -> assertThat(saved.getNumber()).isNotNull(),
-                () -> assertThat(saved.getNumber()).isEqualTo("d999"),
-                () -> assertThat(saved.getName()).isNotNull(),
-                () -> assertThat(saved.getName()).isEqualTo("Engineering")
+                () -> assertThat(fetchedAfterInsert).isNotNull(),
+                () -> assertThat(fetchedAfterInsert.getNumber()).isNotNull(),
+                () -> assertThat(fetchedAfterInsert.getNumber()).isEqualTo("d999"),
+                () -> assertThat(fetchedAfterInsert.getName()).isNotNull(),
+                () -> assertThat(fetchedAfterInsert.getName()).isEqualTo("Engineering")
         );
 
         saved.setName("Engineering Services");
 
-        final Department updated = departmentService.save(saved);
+        final Department _ = departmentService.save(saved);
+        final Department fetchedAfterUpdate = this.departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
 
         assertAll(
-                () -> assertThat(updated).isNotNull(),
-                () -> assertThat(updated.getNumber()).isNotNull(),
-                () -> assertThat(updated.getNumber()).isEqualTo("d999"),
-                () -> assertThat(updated.getName()).isNotNull(),
-                () -> assertThat(updated.getName()).isEqualTo("Engineering Services")
+                () -> assertThat(fetchedAfterUpdate).isNotNull(),
+                () -> assertThat(fetchedAfterUpdate.getNumber()).isNotNull(),
+                () -> assertThat(fetchedAfterUpdate.getNumber()).isEqualTo("d999"),
+                () -> assertThat(fetchedAfterUpdate.getName()).isNotNull(),
+                () -> assertThat(fetchedAfterUpdate.getName()).isEqualTo("Engineering Services")
+        );
+    }
+
+    @Test
+    void testDepartmentServiceSaveAll() {
+        final List<Department> newDepartments = List.of(
+                new Department("d999", "Engineering"),
+                new Department("d998", "Food Services"),
+                new Department("d997", "Motor Pool")
+        );
+
+        final List<Department> savedDepartments = new ArrayList<>();
+
+        this.departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
+
+        assertAll(
+                () -> assertThat(savedDepartments).isNotNull(),
+                () -> assertThat(savedDepartments).hasSize(3)
         );
     }
 
     @Test
     void testDepartmentServiceDelete() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
         final Department newDepartment = new Department("d998", "Food Services");
-        final Department saved = departmentService.save(newDepartment);
+        final Department saved = this.departmentService.save(newDepartment);
 
         assertAll(
                 () -> assertThat(saved).isNotNull(),
-                () -> assertThat(departmentService.existsById("d998")).isTrue()
+                () -> assertThat(this.departmentService.existsById("d998")).isTrue()
         );
 
-        departmentService.delete(saved);
+        this.departmentService.delete(saved);
 
-        assertThat(departmentService.existsById("d998")).isFalse();
+        assertThat(this.departmentService.existsById("d998")).isFalse();
     }
 
     @Test
     void testDepartmentServiceDeleteById() {
-        final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
-
-        assertThat(departmentRepository).isNotNull();
-
-        final DepartmentService departmentService = new DepartmentService(departmentRepository);
         final Department newDepartment = new Department("d998", "Food Services");
-        final Department saved = departmentService.save(newDepartment);
+        final Department saved = this.departmentService.save(newDepartment);
 
         assertAll(
                 () -> assertThat(saved).isNotNull(),
-                () -> assertThat(departmentService.existsById("d998")).isTrue()
+                () -> assertThat(this.departmentService.existsById("d998")).isTrue()
         );
 
-        departmentService.deleteById("d998");
+        this.departmentService.deleteById("d998");
 
-        assertThat(departmentService.existsById("d998")).isFalse();
+        assertThat(this.departmentService.existsById("d998")).isFalse();
     }
 }
