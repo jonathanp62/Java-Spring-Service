@@ -130,7 +130,7 @@ public class DepartmentService {
 
     /// Delete all departments.
     ///
-    /// @param  entities    java.lang.Iterable<? extends net.jmp.spring.java.app.classes.Department>
+    /// @param  departments java.lang.Iterable<net.jmp.spring.java.app.classes.Department>
     public void deleteAll(final Iterable<Department> departments) {
         this.departmentRepository.deleteAll(departments);
     }
@@ -140,5 +140,12 @@ public class DepartmentService {
     /// @param  id  java.lang.String
     public void deleteById(final String id) {
         this.departmentRepository.deleteById(id);
+    }
+
+    /// Delete all departments with the given identifiers.
+    ///
+    /// @param  ids java.lang.Iterable<String>
+    public void deleteAllById(final Iterable<String> ids) {
+        this.departmentRepository.deleteAllById(ids);
     }
 }

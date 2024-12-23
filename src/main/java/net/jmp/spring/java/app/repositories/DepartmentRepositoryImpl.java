@@ -185,7 +185,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @param  strings java.lang.Iterable<? extends java.lang.String>
     @Override
     public void deleteAllById(final Iterable<? extends String> strings) {
-
+        strings.forEach(this::deleteById);
     }
 
     /// Delete all departments.
