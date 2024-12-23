@@ -57,8 +57,8 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     /// Save a department.
     ///
-    /// @param  entity  S
-    /// @return         S
+    /// @param  entity  S extends net.jmp.spring.java.app.classes.Department
+    /// @return         S extends net.jmp.spring.java.app.classes.Department
     @Override
     public <S extends Department> S save(final S entity) {
         final int rowsAffected = this.jdbcTemplate.update("INSERT INTO departments (dept_no, dept_name) VALUES (?, ?) ON DUPLICATE KEY UPDATE dept_name = ?", entity.getNumber(), entity.getName(), entity.getName());
@@ -74,8 +74,8 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     /// Save an iterable of departments.
     ///
-    /// @param  entities    java.lang.Iterable<S>
-    /// @return             java.lang.Iterable<S>
+    /// @param  entities    java.lang.Iterable<S extends net.jmp.spring.java.app.classes.Department>
+    /// @return             java.lang.Iterable<S extends net.jmp.spring.java.app.classes.Department>
     @Override
     public <S extends Department> Iterable<S> saveAll(final Iterable<S> entities) {
         entities.forEach(this::save);
@@ -199,6 +199,6 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// Delete all departments.
     @Override
     public void deleteAll() {
-
+        final int _ = this.jdbcTemplate.update("DELETE FROM departments");
     }
 }

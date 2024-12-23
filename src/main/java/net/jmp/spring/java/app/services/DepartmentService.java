@@ -107,17 +107,19 @@ public class DepartmentService {
 
     /// Save the department.
     ///
+    /// @param  <S>         java.lang.Class<? extends net.jmp.spring.java.app.classes.Department>
     /// @param  department  net.jmp.spring.java.app.classes.Department
     /// @return             net.jmp.spring.java.app.classes.Department
-    public Department save(final Department department) {
+    public <S extends Department> S save(final S department) {
         return this.departmentRepository.save(department);
     }
 
     /// Save an iterable of departments.
     ///
-    /// @param  departments java.lang.Iterable<net.jmp.spring.java.app.classes.Department>
-    /// @return             java.lang.Iterable<net.jmp.spring.java.app.classes.Department>
-    public Iterable<Department> saveAll(final Iterable<Department> departments) {
+    /// @param  <S>         java.lang.Class<? extends net.jmp.spring.java.app.classes.Department>
+    /// @param  departments java.lang.Iterable<? extends net.jmp.spring.java.app.classes.Department>
+    /// @return             java.lang.Iterable<? extends net.jmp.spring.java.app.classes.Department>
+    public <S extends Department> Iterable<S> saveAll(final Iterable<S> departments) {
         return this.departmentRepository.saveAll(departments);
     }
 
@@ -130,8 +132,9 @@ public class DepartmentService {
 
     /// Delete all departments.
     ///
-    /// @param  departments java.lang.Iterable<net.jmp.spring.java.app.classes.Department>
-    public void deleteAll(final Iterable<Department> departments) {
+    /// @param  <S>         java.lang.Class<? extends net.jmp.spring.java.app.classes.Department>
+    /// @param  departments java.lang.Iterable<? extends net.jmp.spring.java.app.classes.Department>
+    public <S extends Department> void deleteAll(final Iterable<S> departments) {
         this.departmentRepository.deleteAll(departments);
     }
 
@@ -144,8 +147,14 @@ public class DepartmentService {
 
     /// Delete all departments with the given identifiers.
     ///
-    /// @param  ids java.lang.Iterable<String>
-    public void deleteAllById(final Iterable<String> ids) {
+    /// @param  <S> java.lang.Class<? extends java.lang.String>
+    /// @param  ids java.lang.Iterable<? extends java.lang.String>
+    public <S extends String> void deleteAllById(final Iterable<S> ids) {
         this.departmentRepository.deleteAllById(ids);
+    }
+
+    /// Delete all departments.
+    public void deleteAll() {
+        this.departmentRepository.deleteAll();
     }
 }
