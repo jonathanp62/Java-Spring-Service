@@ -1,9 +1,9 @@
+package net.jmp.spring.java.app.repositories;
+
 /*
- * (#)module-info.java  0.7.0   12/20/2024
- * (#)module-info.java  0.6.0   11/28/2024
+ * (#)EmployeeRepository.java   0.7.0   12/23/2024
  *
- * @version 0.7.0
- * @since   0.6.0
+ * @author   Jonathan Parker
  *
  * MIT License
  *
@@ -28,29 +28,16 @@
  * SOFTWARE.
  */
 
-/**
- * The application module. No packages are provided.
- *
- * @since 0.6.0
- */
-module spring.service.main {
-    requires com.google.gson;
-    requires com.fasterxml.jackson.databind;
-    requires extra.utilities;
-    requires jakarta.persistence;
-    requires logging.utilities;
-    requires org.mongodb.driver.sync.client;
-    requires org.slf4j;
-    requires redisson;
-    requires spring.beans;
-    requires spring.boot;
-    requires spring.boot.autoconfigure;
-    requires spring.context;
-    requires spring.data.commons;
-    requires spring.data.mongodb;
-    requires spring.data.redis;
-    requires spring.jdbc;
-    requires spring.orm;
-    requires spring.tx;
-    requires spring.data.jpa;
+import net.jmp.spring.java.app.entities.Employee;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.stereotype.Repository;
+
+/// An employee repository interface.
+///
+/// @version    0.7.0
+/// @since      0.7.0
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 }

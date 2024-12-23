@@ -93,6 +93,7 @@ dependencies {
     implementation      libs.org.redisson.redisson
     implementation      libs.org.slf4j.slf4j.api
     implementation      libs.org.springframework.boot.spring.boot.starter.data.jdbc
+    implementation      libs.org.springframework.boot.spring.boot.starter.data.jpa
     implementation      libs.org.springframework.boot.spring.boot.starter.data.redis
     implementation      libs.org.springframework.data.spring.data.mongodb
     implementation      libs.org.springframework.spring.context

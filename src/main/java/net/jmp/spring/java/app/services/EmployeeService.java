@@ -1,9 +1,9 @@
+package net.jmp.spring.java.app.services;
+
 /*
- * (#)module-info.java  0.7.0   12/20/2024
- * (#)module-info.java  0.6.0   11/28/2024
+ * (#)EmployeeService.java  0.7.0   12/23/2024
  *
- * @version 0.7.0
- * @since   0.6.0
+ * @author   Jonathan Parker
  *
  * MIT License
  *
@@ -28,29 +28,25 @@
  * SOFTWARE.
  */
 
-/**
- * The application module. No packages are provided.
- *
- * @since 0.6.0
- */
-module spring.service.main {
-    requires com.google.gson;
-    requires com.fasterxml.jackson.databind;
-    requires extra.utilities;
-    requires jakarta.persistence;
-    requires logging.utilities;
-    requires org.mongodb.driver.sync.client;
-    requires org.slf4j;
-    requires redisson;
-    requires spring.beans;
-    requires spring.boot;
-    requires spring.boot.autoconfigure;
-    requires spring.context;
-    requires spring.data.commons;
-    requires spring.data.mongodb;
-    requires spring.data.redis;
-    requires spring.jdbc;
-    requires spring.orm;
-    requires spring.tx;
-    requires spring.data.jpa;
+import net.jmp.spring.java.app.repositories.EmployeeRepository;
+
+import org.springframework.stereotype.Service;
+
+/// The employee service.
+///
+/// @version    0.7.0
+/// @since      0.7.0
+@Service
+public class EmployeeService {
+    /// The repository.
+    private final EmployeeRepository employeeRepository;
+
+    /// The constructor.
+    ///
+    /// @param  employeeRepository  net.jmp.spring.java.app.repositories.EmployeeRepository
+    public EmployeeService(final EmployeeRepository employeeRepository) {
+        super();
+
+        this.employeeRepository = employeeRepository;
+    }
 }

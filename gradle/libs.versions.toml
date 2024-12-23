@@ -50,6 +50,7 @@ org-mongodb-mongodb-driver-sync = "5.2.0"
 org-redisson-redisson = "3.38.1"
 org-slf4j-slf4j-api = "2.0.16"
 org-springframework-boot-spring-boot-starter-data-jdbc = "3.4.0"
+org-springframework-boot-spring-boot-starter-data-jpa = "3.4.1"
 org-springframework-boot-spring-boot-starter-data-redis = "3.3.5"
 org-springframework-data-spring-data-mongodb = "4.3.5"
 org-springframework-spring-context = "6.1.14"
@@ -73,6 +74,7 @@ org-mongodb-mongodb-driver-sync = { module = "org.mongodb:mongodb-driver-sync", 
 org-redisson-redisson = { module = "org.redisson:redisson", version.ref = "org-redisson-redisson" }
 org-slf4j-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "org-slf4j-slf4j-api" }
 org-springframework-boot-spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "org-springframework-boot-spring-boot-starter-data-jdbc" }
+org-springframework-boot-spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "org-springframework-boot-spring-boot-starter-data-jpa" }
 org-springframework-boot-spring-boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis", version.ref = "org-springframework-boot-spring-boot-starter-data-redis" }
 org-springframework-data-spring-data-mongodb = { module = "org.springframework.data:spring-data-mongodb", version.ref = "org-springframework-data-spring-data-mongodb" }
 org-springframework-spring-context = { module = "org.springframework:spring-context", version.ref = "org-springframework-spring-context" }

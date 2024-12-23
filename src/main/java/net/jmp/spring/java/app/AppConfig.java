@@ -45,7 +45,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 /// @version    0.7.0
 /// @since      0.1.0
 @Configuration
-@Import({ JdbcConfig.class, MongoConfig.class, RedisConfig.class, ServicesConfig.class })
+@Import({ JdbcConfig.class, JpaConfig.class, MongoConfig.class, RedisConfig.class, ServicesConfig.class })
 @EnableMongoRepositories("net.jmp.spring.java.app")
 public class AppConfig {
     /// The default constructor.
