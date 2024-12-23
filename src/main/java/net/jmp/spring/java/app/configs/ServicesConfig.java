@@ -1,12 +1,7 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.configs;
 
 /*
- * (#)AppConfig.java    0.7.0   12/20/2024
- * (#)AppConfig.java    0.5.0   11/15/2024
- * (#)AppConfig.java    0.4.0   11/15/2024
- * (#)AppConfig.java    0.3.0   11/13/2024
- * (#)AppConfig.java    0.2.0   11/09/2024
- * (#)AppConfig.java    0.1.0   11/04/2024
+ * (#)ServicesConfig.java   0.7.0   12/23/2024
  *
  * @author   Jonathan Parker
  *
@@ -33,23 +28,37 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import net.jmp.spring.java.app.configs.*;
+import net.jmp.spring.java.app.services.HelloWorldService;
+import net.jmp.spring.java.app.services.HelloWorldServiceImpl;
+import net.jmp.spring.java.app.services.StringService;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-/// The Spring application configuration.
+/// The Spring services configuration.
 ///
 /// @version    0.7.0
-/// @since      0.1.0
+/// @since      0.7.0
 @Configuration
-@Import({ JdbcConfig.class, MongoConfig.class, RedisConfig.class, ServicesConfig.class })
-@EnableMongoRepositories("net.jmp.spring.java.app")
-public class AppConfig {
+public class ServicesConfig {
     /// The default constructor.
-    public AppConfig() {
+    public ServicesConfig() {
         super();
+    }
+
+    /// The hello world service.
+    ///
+    /// @return net.jmp.spring.java.app.services.HelloWorldService
+    @Bean
+    public HelloWorldService helloWorldService() {
+        return new HelloWorldServiceImpl();
+    }
+
+    /// The string service.
+    ///
+    /// @return net.jmp.spring.java.app.services.StringService
+    @Bean
+    public StringService stringService() {
+        return new StringService();
     }
 }

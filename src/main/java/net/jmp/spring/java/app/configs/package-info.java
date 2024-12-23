@@ -1,12 +1,5 @@
-package net.jmp.spring.java.app;
-
 /*
- * (#)AppConfig.java    0.7.0   12/20/2024
- * (#)AppConfig.java    0.5.0   11/15/2024
- * (#)AppConfig.java    0.4.0   11/15/2024
- * (#)AppConfig.java    0.3.0   11/13/2024
- * (#)AppConfig.java    0.2.0   11/09/2024
- * (#)AppConfig.java    0.1.0   11/04/2024
+ * (#)package-info.java 0.5.0   12/23/2024
  *
  * @author   Jonathan Parker
  *
@@ -33,23 +26,8 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import net.jmp.spring.java.app.configs.*;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-/// The Spring application configuration.
+/// The package that contains Spring configuration classes.
 ///
 /// @version    0.7.0
-/// @since      0.1.0
-@Configuration
-@Import({ JdbcConfig.class, MongoConfig.class, RedisConfig.class, ServicesConfig.class })
-@EnableMongoRepositories("net.jmp.spring.java.app")
-public class AppConfig {
-    /// The default constructor.
-    public AppConfig() {
-        super();
-    }
-}
+/// @since      0.7.0
+package net.jmp.spring.java.app.configs;

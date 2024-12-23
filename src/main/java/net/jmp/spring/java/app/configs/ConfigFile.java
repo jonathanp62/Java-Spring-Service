@@ -1,12 +1,7 @@
-package net.jmp.spring.java.app;
+package net.jmp.spring.java.app.configs;
 
 /*
- * (#)AppConfig.java    0.7.0   12/20/2024
- * (#)AppConfig.java    0.5.0   11/15/2024
- * (#)AppConfig.java    0.4.0   11/15/2024
- * (#)AppConfig.java    0.3.0   11/13/2024
- * (#)AppConfig.java    0.2.0   11/09/2024
- * (#)AppConfig.java    0.1.0   11/04/2024
+ * (#)ConfigFile.java   0.7.0   12/23/2024
  *
  * @author   Jonathan Parker
  *
@@ -33,23 +28,16 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
-import net.jmp.spring.java.app.configs.*;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-/// The Spring application configuration.
+/// The Spring configuration file.
 ///
 /// @version    0.7.0
-/// @since      0.1.0
-@Configuration
-@Import({ JdbcConfig.class, MongoConfig.class, RedisConfig.class, ServicesConfig.class })
-@EnableMongoRepositories("net.jmp.spring.java.app")
-public class AppConfig {
+/// @since      0.7.0
+public final class ConfigFile {
+    /// The name and relative location of the secrets file.
+    static final String CONFIG_FILE = "config/secrets.properties";
+
     /// The default constructor.
-    public AppConfig() {
+    private ConfigFile() {
         super();
     }
 }
