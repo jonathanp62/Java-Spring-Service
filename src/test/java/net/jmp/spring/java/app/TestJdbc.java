@@ -280,4 +280,21 @@ final class TestJdbc {
 
         assertThat(count).isEqualTo(9);
     }
+
+    @Test
+    void testDepartmentServiceDeleteEverything() {
+        final List<Department> departments = this.departmentService.fetchAll();
+
+        this.departmentService.deleteAll();
+
+        long count = this.departmentService.count();
+
+        assertThat(count).isZero();
+
+        this.departmentService.saveAll(departments);
+
+        count = this.departmentService.count();
+
+        assertThat(count).isEqualTo(9);
+    }
 }
