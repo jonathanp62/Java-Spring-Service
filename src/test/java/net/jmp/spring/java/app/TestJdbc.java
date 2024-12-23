@@ -219,6 +219,30 @@ final class TestJdbc {
     }
 
     @Test
+    void testDepartmentServiceDeleteAll() {
+        final List<Department> newDepartments = List.of(
+                new Department("d999", "Engineering"),
+                new Department("d998", "Food Services"),
+                new Department("d997", "Motor Pool")
+        );
+
+        final List<Department> savedDepartments = new ArrayList<>();
+
+        this.departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
+
+        assertAll(
+                () -> assertThat(savedDepartments).isNotNull(),
+                () -> assertThat(savedDepartments).hasSize(3)
+        );
+
+        this.departmentService.deleteAll(savedDepartments);
+
+        final long count = this.departmentService.count();
+
+        assertThat(count).isEqualTo(9);
+    }
+
+    @Test
     void testDepartmentServiceDeleteById() {
         final Department newDepartment = new Department("d998", "Food Services");
         final Department saved = this.departmentService.save(newDepartment);

@@ -193,7 +193,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     /// @param  entities    java.lang.Iterable<? extends net.jmp.spring.java.app.classes.Department>
     @Override
     public void deleteAll(final Iterable<? extends Department> entities) {
-
+        entities.forEach(this::delete);
     }
 
     /// Delete all departments.

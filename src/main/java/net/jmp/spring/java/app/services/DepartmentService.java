@@ -128,6 +128,13 @@ public class DepartmentService {
         this.departmentRepository.delete(department);
     }
 
+    /// Delete all departments.
+    ///
+    /// @param  entities    java.lang.Iterable<? extends net.jmp.spring.java.app.classes.Department>
+    public void deleteAll(final Iterable<Department> departments) {
+        this.departmentRepository.deleteAll(departments);
+    }
+
     /// Delete a department by identifier.
     ///
     /// @param  id  java.lang.String
