@@ -32,10 +32,14 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import net.jmp.spring.java.app.services.EmployeeService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -52,6 +56,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /// @version    0.7.0
 /// @since      0.7.0
 @Configuration
+@EnableJpaRepositories(basePackages = "net.jmp.spring.java.app.repositories")
 @EnableTransactionManagement
 public class JpaConfig {
     /// The data source.
@@ -108,6 +113,14 @@ public class JpaConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
+    /// Return the employee service.
+    ///
+    /// @return  net.jmp.spring.java.app.services.EmployeeService
+    @Bean
+    public EmployeeService employeeService() {
+        return new EmployeeService();
+    }
+
     /// Add some additional hibernate properties.  Currently,
     /// this is to auto-create and drop the database tables.
     ///
@@ -116,7 +129,6 @@ public class JpaConfig {
         final Properties properties = new Properties();
 
         properties.setProperty("hibernate.hbm2ddl.auto", "none");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 
         return properties;
     }

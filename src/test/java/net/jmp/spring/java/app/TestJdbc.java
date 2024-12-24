@@ -1,7 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
- * (#)TestJdbc.java 0.7.0   121/21/2024
+ * (#)TestJdbc.java 0.7.0   12/21/2024
  *
  * @author   Jonathan Parker
  *
@@ -28,6 +28,10 @@ package net.jmp.spring.java.app;
  * SOFTWARE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import net.jmp.spring.java.app.classes.Department;
 
 import net.jmp.spring.java.app.repositories.DepartmentRepository;
@@ -43,10 +47,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.context.ApplicationContext;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /// The test class for the JDBC beans.
 /// Note that because this is not a Spring Boot

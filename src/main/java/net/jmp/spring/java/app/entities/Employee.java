@@ -28,9 +28,7 @@ package net.jmp.spring.java.app.entities;
  * SOFTWARE.
  */
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -39,12 +37,12 @@ import java.time.LocalDate;
 /// @version    0.7.0
 /// @since      0.7.0
 @Entity
+@Table(name = "employees")
 public class Employee {
     /// A gender enumeration.
     public enum Gender {
         /// Male.
         M,
-
         /// Female
         F
     }
@@ -68,6 +66,7 @@ public class Employee {
 
     /// The gender.
     @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     /// The hire date.

@@ -1,7 +1,7 @@
-package net.jmp.spring.java.app.services;
+package net.jmp.spring.java.app;
 
 /*
- * (#)EmployeeService.java  0.7.0   12/23/2024
+ * (#)TestJpa.java  0.7.0   12/24/2024
  *
  * @author   Jonathan Parker
  *
@@ -32,28 +32,45 @@ import java.util.List;
 
 import net.jmp.spring.java.app.entities.Employee;
 
-import net.jmp.spring.java.app.repositories.EmployeeRepository;
+import net.jmp.spring.java.app.services.EmployeeService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.springframework.stereotype.Service;
+import static org.junit.jupiter.api.Assertions.*;
 
-/// The employee service.
+import org.junit.jupiter.api.*;
+
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+/// The test class for the JPA beans.
+/// Note that because this is not a Spring Boot
+/// application autowiring does not work.
 ///
 /// @version    0.7.0
 /// @since      0.7.0
-@Service
-public class EmployeeService {
-    /// The repository.
-    @Autowired
-    EmployeeRepository employeeRepository;
+@DisplayName("JPA and MySQL client")
+@Tag("JPA")
+final class TestJpa {
+    private ApplicationContext context;
+    private EmployeeService employeeService;
 
-    /// The default constructor.
-    public EmployeeService() {
-        super();
+    @BeforeEach
+    void beforeEach() {
+        if (this.context == null) {
+            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        }
+
+        if (this.employeeService == null) {
+            this.employeeService = this.context.getBean(EmployeeService.class);
+        }
     }
 
-    public List<Employee> findAll() {
-        return this.employeeRepository.findAll();
+    @Test
+    void testEmployeeServiceFindAll() {
+        final List<Employee> employees = this.employeeService.findAll();
+
+        employees.forEach(System.out::println);
     }
 }
