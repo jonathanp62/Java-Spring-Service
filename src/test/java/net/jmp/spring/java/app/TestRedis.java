@@ -82,6 +82,10 @@ final class TestRedis {
 
     @AfterEach
     void afterEach() {
+        if (this.context == null) {
+            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        }
+
         @SuppressWarnings("unchecked")
         final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
         final RedisStringService redisStringService = new RedisStringService(redisTemplate);
