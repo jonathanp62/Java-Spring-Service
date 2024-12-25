@@ -53,6 +53,9 @@
     <logger name="net.jmp.spring.java.app.demos.JdbcTemplateDemo" additivity="false" level="info">
         <appender-ref ref="MAIN" />
     </logger>
+    <logger name="net.jmp.spring.java.app.demos.JpaDemo" additivity="false" level="info">
+        <appender-ref ref="MAIN" />
+    </logger>
     <logger name="net.jmp.spring.java.app.demos.MongoRepositoryDemo" additivity="false" level="info">
         <appender-ref ref="MAIN" />
     </logger>

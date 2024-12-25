@@ -71,6 +71,6 @@ final class TestJpa {
     void testEmployeeServiceFindAll() {
         final List<Employee> employees = this.employeeService.findAll();
 
-        employees.forEach(System.out::println);
+        assertThat(employees).hasSize(300_024);
     }
 }

@@ -4,6 +4,7 @@
   "demos": [
     "HelloWorldDemo",
     "JdbcTemplateDemo",
+    "JpaDemo",
     "MongoRepositoryDemo",
     "MongoTemplateDemo",
     "RedissonDemo",

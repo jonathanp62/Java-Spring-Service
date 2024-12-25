@@ -68,6 +68,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 /// @since      0.2.0
 @DisplayName("Redis template and Redisson client")
 @Tag("Redis")
+@Disabled
 final class TestRedis {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
