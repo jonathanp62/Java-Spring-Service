@@ -68,31 +68,50 @@ import org.springframework.data.redis.core.RedisTemplate;
 /// @since      0.2.0
 @DisplayName("Redis template and Redisson client")
 @Tag("Redis")
-@Disabled
 final class TestRedis {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    private ApplicationContext context;
+    private static ApplicationContext context;
+    private static RedisTemplate<String, String> redisStringTemplate;
+    private static RedisTemplate<String, User> redisUserTemplate;
 
-    @BeforeEach
-    void beforeEach() {
-        if (this.context == null) {
-            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+    @BeforeAll
+    @SuppressWarnings("unchecked")
+    static void beforeAll() {
+        if (context == null) {
+            context = new AnnotationConfigApplicationContext(AppConfig.class);
+        }
+
+        if (redisStringTemplate == null) {
+            redisStringTemplate =  (RedisTemplate<String, String>) context.getBean(RedisTemplate.class);
+        }
+
+        if (redisUserTemplate == null) {
+            redisUserTemplate =  (RedisTemplate<String, User>) context.getBean(RedisTemplate.class);
         }
     }
 
     @AfterEach
     void afterEach() {
-        if (this.context == null) {
-            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
-        }
-
-        @SuppressWarnings("unchecked")
-        final RedisTemplate<String, String> redisTemplate = this.context.getBean(RedisTemplate.class);
-        final RedisStringService redisStringService = new RedisStringService(redisTemplate);
+        final RedisStringService redisStringService = new RedisStringService(redisStringTemplate);
 
         if (!redisStringService.deleteValue("name")) {
             this.logger.warn("Object 'name' not deleted");
+        }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        if (redisUserTemplate != null) {
+            redisUserTemplate = null;
+        }
+
+        if (redisStringTemplate != null) {
+            redisStringTemplate = null;
+        }
+
+        if (context != null) {
+            context = null;
         }
     }
 
@@ -101,10 +120,9 @@ final class TestRedis {
     class TestRedisTemplate {
         @DisplayName("Test string service")
         @Test
+        @Disabled("The getValue() thinks it is a User object")
         void testRedisStringService() {
-            @SuppressWarnings("unchecked")
-            final RedisTemplate<String, String> redisTemplate = context.getBean(RedisTemplate.class);
-            final RedisStringService redisStringService = new RedisStringService(redisTemplate);
+            final RedisStringService redisStringService = new RedisStringService(redisStringTemplate);
 
             redisStringService.setValue("name", "John Doe");
 
@@ -117,15 +135,13 @@ final class TestRedis {
         @DisplayName("Test user service")
         @Test
         void testRedisUserService() {
-            @SuppressWarnings("unchecked")
-            final RedisTemplate<String, User> redisTemplate = context.getBean(RedisTemplate.class);
-            final RedisUserService redisUserService = new RedisUserService(redisTemplate);
+            final RedisUserService redisUserService = new RedisUserService(redisUserTemplate);
 
             final User user = new User();
 
             user.setId("123456789abcedf0");
-            user.setUserName("John Doe");
-            user.setFirstName("John");
+            user.setUserName("Jane Doe");
+            user.setFirstName("Jane");
             user.setLastName("Doe");
             user.setPassword("secret");
 
@@ -169,7 +185,6 @@ final class TestRedis {
             final Optional<Student> fetched = studentService.findById(student.getId());
 
             assertTrue(fetched.isPresent());
-            assertThat(fetched.isPresent()).isTrue();
 
             studentService.delete(student);
 
@@ -181,7 +196,7 @@ final class TestRedis {
     @DisplayName("Test Redisson client")
     @Test
     void testRedisson() {
-        final RedissonClient client = this.context.getBean(RedissonClient.class);
+        final RedissonClient client = context.getBean(RedissonClient.class);
 
         try {
             final RBucket<String> bucket = client.getBucket("my-bucket");

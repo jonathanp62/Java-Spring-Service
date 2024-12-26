@@ -57,34 +57,45 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 @DisplayName("JDBC template and MySQL client")
 @Tag("JDBC")
 final class TestJdbc {
-    private ApplicationContext context;
-    private DepartmentService departmentService;
+    private static ApplicationContext context;
+    private static DepartmentService departmentService;
 
-    @BeforeEach
-    void beforeEach() {
-        if (this.context == null) {
-            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+    @BeforeAll
+    static void beforeAll() {
+        if (context == null) {
+            context = new AnnotationConfigApplicationContext(AppConfig.class);
         }
 
-        if (this.departmentService == null) {
-            final DepartmentRepository departmentRepository = this.context.getBean(DepartmentRepository.class);
+        if (departmentService == null) {
+            final DepartmentRepository departmentRepository = context.getBean(DepartmentRepository.class);
 
-            this.departmentService = new DepartmentService(departmentRepository);
+            departmentService = new DepartmentService(departmentRepository);
         }
     }
 
     @AfterEach
     void afterEach() {
-        this.departmentService.delete(new Department("d997", "Motor Pool"));
-        this.departmentService.delete(new Department("d998", "Food Services"));
-        this.departmentService.deleteById("d999");
+        departmentService.delete(new Department("d997", "Motor Pool"));
+        departmentService.delete(new Department("d998", "Food Services"));
+        departmentService.deleteById("d999");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        if (departmentService != null) {
+            departmentService = null;
+        }
+
+        if (context != null) {
+            context = null;
+        }
     }
 
     @Test
     void testDepartmentServiceFindAll() {
         final List<Department> departments = new ArrayList<>();
 
-        this.departmentService.findAll().forEach(departments::add);
+        departmentService.findAll().forEach(departments::add);
 
         assertAll(
                 () -> assertThat(departments).isNotNull(),
@@ -94,7 +105,7 @@ final class TestJdbc {
 
     @Test
     void testDepartmentServiceFetchAll() {
-        final List<Department> departments = this.departmentService.fetchAll();
+        final List<Department> departments = departmentService.fetchAll();
 
         assertAll(
                 () -> assertThat(departments).isNotNull(),
@@ -104,40 +115,40 @@ final class TestJdbc {
 
     @Test
     void testDepartmentServiceCount() {
-        final long count = this.departmentService.count();
+        final long count = departmentService.count();
 
         assertThat(count).isEqualTo(9);
     }
 
     @Test
     void testDepartmentServiceExistsById() {
-        boolean exists = this.departmentService.existsById("not-found");
+        boolean exists = departmentService.existsById("not-found");
 
         assertThat(exists).isFalse();
 
-        exists = this.departmentService.existsById("d001");
+        exists = departmentService.existsById("d001");
 
         assertThat(exists).isTrue();
     }
 
     @Test
     void testDepartmentServiceFindById() {
-        Optional<Department> result = this.departmentService.findById("not-found");
+        Optional<Department> result = departmentService.findById("not-found");
 
         assertThat(result).isNotPresent();
 
-        result = this.departmentService.findById("d001");
+        result = departmentService.findById("d001");
 
         assertThat(result).isPresent();
     }
 
     @Test
     void testDepartmentServiceFindByName() {
-        Optional<Department> result = this.departmentService.findByName("not-found");
+        Optional<Department> result = departmentService.findByName("not-found");
 
         assertThat(result).isNotPresent();
 
-        result = this.departmentService.findByName("Research");
+        result = departmentService.findByName("Research");
 
         assertThat(result).isPresent();
     }
@@ -145,8 +156,8 @@ final class TestJdbc {
     @Test
     void testDepartmentServiceSaveInsert() {
         final Department newDepartment = new Department("d999", "Engineering");
-        final Department _ = this.departmentService.save(newDepartment);
-        final Department fetched = this.departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
+        final Department _ = departmentService.save(newDepartment);
+        final Department fetched = departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
 
         assertAll(
                 () -> assertThat(fetched).isNotNull(),
@@ -160,8 +171,8 @@ final class TestJdbc {
     @Test
     void testDepartmentServiceSaveUpdate() {
         final Department newDepartment = new Department("d999", "Engineering");
-        final Department saved = this.departmentService.save(newDepartment);
-        final Department fetchedAfterInsert = this.departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
+        final Department saved = departmentService.save(newDepartment);
+        final Department fetchedAfterInsert = departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
 
         assertAll(
                 () -> assertThat(fetchedAfterInsert).isNotNull(),
@@ -174,7 +185,7 @@ final class TestJdbc {
         saved.setName("Engineering Services");
 
         final Department _ = departmentService.save(saved);
-        final Department fetchedAfterUpdate = this.departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
+        final Department fetchedAfterUpdate = departmentService.findById("d999").orElseThrow(() -> new RuntimeException("Not found"));
 
         assertAll(
                 () -> assertThat(fetchedAfterUpdate).isNotNull(),
@@ -195,7 +206,7 @@ final class TestJdbc {
 
         final List<Department> savedDepartments = new ArrayList<>();
 
-        this.departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
+        departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
 
         assertAll(
                 () -> assertThat(savedDepartments).isNotNull(),
@@ -206,16 +217,16 @@ final class TestJdbc {
     @Test
     void testDepartmentServiceDelete() {
         final Department newDepartment = new Department("d998", "Food Services");
-        final Department saved = this.departmentService.save(newDepartment);
+        final Department saved = departmentService.save(newDepartment);
 
         assertAll(
                 () -> assertThat(saved).isNotNull(),
-                () -> assertThat(this.departmentService.existsById("d998")).isTrue()
+                () -> assertThat(departmentService.existsById("d998")).isTrue()
         );
 
-        this.departmentService.delete(saved);
+        departmentService.delete(saved);
 
-        assertThat(this.departmentService.existsById("d998")).isFalse();
+        assertThat(departmentService.existsById("d998")).isFalse();
     }
 
     @Test
@@ -228,16 +239,16 @@ final class TestJdbc {
 
         final List<Department> savedDepartments = new ArrayList<>();
 
-        this.departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
+        departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
 
         assertAll(
                 () -> assertThat(savedDepartments).isNotNull(),
                 () -> assertThat(savedDepartments).hasSize(3)
         );
 
-        this.departmentService.deleteAll(savedDepartments);
+        departmentService.deleteAll(savedDepartments);
 
-        final long count = this.departmentService.count();
+        final long count = departmentService.count();
 
         assertThat(count).isEqualTo(9);
     }
@@ -245,16 +256,16 @@ final class TestJdbc {
     @Test
     void testDepartmentServiceDeleteById() {
         final Department newDepartment = new Department("d998", "Food Services");
-        final Department saved = this.departmentService.save(newDepartment);
+        final Department saved = departmentService.save(newDepartment);
 
         assertAll(
                 () -> assertThat(saved).isNotNull(),
-                () -> assertThat(this.departmentService.existsById("d998")).isTrue()
+                () -> assertThat(departmentService.existsById("d998")).isTrue()
         );
 
-        this.departmentService.deleteById("d998");
+        departmentService.deleteById("d998");
 
-        assertThat(this.departmentService.existsById("d998")).isFalse();
+        assertThat(departmentService.existsById("d998")).isFalse();
     }
 
     @Test
@@ -267,33 +278,33 @@ final class TestJdbc {
 
         final List<Department> savedDepartments = new ArrayList<>();
 
-        this.departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
+        departmentService.saveAll(newDepartments).forEach(savedDepartments::add);
 
         assertAll(
                 () -> assertThat(savedDepartments).isNotNull(),
                 () -> assertThat(savedDepartments).hasSize(3)
         );
 
-        this.departmentService.deleteAllById(List.of("d999", "d998", "d997"));
+        departmentService.deleteAllById(List.of("d999", "d998", "d997"));
 
-        final long count = this.departmentService.count();
+        final long count = departmentService.count();
 
         assertThat(count).isEqualTo(9);
     }
 
     @Test
     void testDepartmentServiceDeleteEverything() {
-        final List<Department> departments = this.departmentService.fetchAll();
+        final List<Department> departments = departmentService.fetchAll();
 
-        this.departmentService.deleteAll();
+        departmentService.deleteAll();
 
-        long count = this.departmentService.count();
+        long count = departmentService.count();
 
         assertThat(count).isZero();
 
-        this.departmentService.saveAll(departments);
+        departmentService.saveAll(departments);
 
-        count = this.departmentService.count();
+        count = departmentService.count();
 
         assertThat(count).isEqualTo(9);
     }

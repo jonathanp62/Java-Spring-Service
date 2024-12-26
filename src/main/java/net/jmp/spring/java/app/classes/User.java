@@ -38,7 +38,7 @@ public final class User {
     /// The user identifier.
     private String id;
 
-    /// The user name.
+    /// The username.
     private String userName;
 
     /// The first name.

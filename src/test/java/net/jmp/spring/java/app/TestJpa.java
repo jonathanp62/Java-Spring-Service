@@ -55,23 +55,34 @@ import org.springframework.data.domain.Sort;
 @DisplayName("JPA and MySQL client")
 @Tag("JPA")
 final class TestJpa {
-    private ApplicationContext context;
-    private EmployeeService employeeService;
+    private static ApplicationContext context;
+    private static EmployeeService employeeService;
 
-    @BeforeEach
-    void beforeEach() {
-        if (this.context == null) {
-            this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+    @BeforeAll
+    static void beforeAll() {
+        if (context == null) {
+            context = new AnnotationConfigApplicationContext(AppConfig.class);
         }
 
-        if (this.employeeService == null) {
-            this.employeeService = this.context.getBean(EmployeeService.class);
+        if (employeeService == null) {
+            employeeService = context.getBean(EmployeeService.class);
+        }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        if (employeeService != null) {
+            employeeService = null;
+        }
+
+        if (context != null) {
+            context = null;
         }
     }
 
     @Test
     void testEmployeeServiceFindAll() {
-        final List<Employee> employees = this.employeeService.findAll();
+        final List<Employee> employees = employeeService.findAll();
 
         assertThat(employees).hasSize(300_024);
     }
@@ -79,7 +90,7 @@ final class TestJpa {
     @Test
     void testEmployeeServiceFindAllSorted() {
         final Sort sort = Sort.by("lastName", "firstName");
-        final List<Employee> employees = this.employeeService.findAll(sort)
+        final List<Employee> employees = employeeService.findAll(sort)
                 .stream()
                 .limit(10)
                 .toList();
@@ -102,7 +113,7 @@ final class TestJpa {
     @Test
     void testEmployeeServiceFindById() {
         final int employeeNumber = 100_860;
-        final Employee employee = this.employeeService.findById(employeeNumber).orElseThrow(() -> new RuntimeException("Not found"));
+        final Employee employee = employeeService.findById(employeeNumber).orElseThrow(() -> new RuntimeException("Not found"));
 
         assertAll(
                 () -> assertThat(employee.getEmployeeNumber()).isEqualTo(employeeNumber),
@@ -110,7 +121,7 @@ final class TestJpa {
         );
 
         assertThrows(
-                RuntimeException.class, () -> this.employeeService.findById(0).orElseThrow(() -> new RuntimeException("Not found"))
+                RuntimeException.class, () -> employeeService.findById(0).orElseThrow(() -> new RuntimeException("Not found"))
         );
     }
 
@@ -120,7 +131,7 @@ final class TestJpa {
                 258641, 258005, 455773, 436560, 266651, 487598, 216963, 15427, 100860, 107070, 0
         );
 
-        final List<Integer> employees = this.employeeService.findAllById(ids)
+        final List<Integer> employees = employeeService.findAllById(ids)
                         .stream()
                         .map(Employee::getEmployeeNumber)
                         .toList();
@@ -142,12 +153,12 @@ final class TestJpa {
 
     @Test
     void testEmployeeServiceCount() {
-        assertThat(this.employeeService.count()).isEqualTo(300_024);
+        assertThat(employeeService.count()).isEqualTo(300_024);
     }
 
     @Test
     void testEmployeeServiceExists() {
-        assertThat(this.employeeService.existsById(100_860)).isTrue();
-        assertThat(this.employeeService.existsById(0)).isFalse();
+        assertThat(employeeService.existsById(100_860)).isTrue();
+        assertThat(employeeService.existsById(0)).isFalse();
     }
 }
