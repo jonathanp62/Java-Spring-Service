@@ -65,7 +65,8 @@ public class EmployeeService {
 
     /// Finds all employees applying the specified sort.
     ///
-    /// @return java.util.List<net.jmp.spring.java.app.entities.Employee>
+    /// @param  sort    org.springframework.data.domain.Sort
+    /// @return         java.util.List<net.jmp.spring.java.app.entities.Employee>
     public List<Employee> findAll(final Sort sort) {
         return this.employeeRepository.findAll(sort);
     }
