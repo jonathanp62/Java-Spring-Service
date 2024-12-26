@@ -72,8 +72,6 @@ final class TestRedis {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     private static ApplicationContext context;
-    private static RedisTemplate<String, String> redisStringTemplate;
-    private static RedisTemplate<String, User> redisUserTemplate;
 
     @BeforeAll
     @SuppressWarnings("unchecked")
@@ -81,18 +79,12 @@ final class TestRedis {
         if (context == null) {
             context = new AnnotationConfigApplicationContext(AppConfig.class);
         }
-
-        if (redisStringTemplate == null) {
-            redisStringTemplate =  (RedisTemplate<String, String>) context.getBean(RedisTemplate.class);
-        }
-
-        if (redisUserTemplate == null) {
-            redisUserTemplate =  (RedisTemplate<String, User>) context.getBean(RedisTemplate.class);
-        }
     }
 
     @AfterEach
     void afterEach() {
+        @SuppressWarnings("unchecked")
+        final RedisTemplate<String, String> redisStringTemplate = context.getBean(RedisTemplate.class);
         final RedisStringService redisStringService = new RedisStringService(redisStringTemplate);
 
         if (!redisStringService.deleteValue("name")) {
@@ -102,14 +94,6 @@ final class TestRedis {
 
     @AfterAll
     static void afterAll() {
-        if (redisUserTemplate != null) {
-            redisUserTemplate = null;
-        }
-
-        if (redisStringTemplate != null) {
-            redisStringTemplate = null;
-        }
-
         if (context != null) {
             context = null;
         }
@@ -120,8 +104,13 @@ final class TestRedis {
     class TestRedisTemplate {
         @DisplayName("Test string service")
         @Test
-        @Disabled("The getValue() thinks it is a User object")
         void testRedisStringService() {
+            // Getting the context again seems to be the only way to avoid
+            // confusing the two instances of the same RedisTemplate bean.
+
+            final var localContext = new AnnotationConfigApplicationContext(AppConfig.class);
+            @SuppressWarnings("unchecked")
+            final RedisTemplate<String, String> redisStringTemplate = localContext.getBean(RedisTemplate.class);
             final RedisStringService redisStringService = new RedisStringService(redisStringTemplate);
 
             redisStringService.setValue("name", "John Doe");
@@ -135,6 +124,12 @@ final class TestRedis {
         @DisplayName("Test user service")
         @Test
         void testRedisUserService() {
+            // Getting the context again seems to be the only way to avoid
+            // confusing the two instances of the same RedisTemplate bean.
+
+            final var localContext = new AnnotationConfigApplicationContext(AppConfig.class);
+            @SuppressWarnings("unchecked")
+            final RedisTemplate<String, User> redisUserTemplate = localContext.getBean(RedisTemplate.class);
             final RedisUserService redisUserService = new RedisUserService(redisUserTemplate);
 
             final User user = new User();
