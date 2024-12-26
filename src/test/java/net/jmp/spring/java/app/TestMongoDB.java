@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestMongoDB.java  0.7.0   12/26/2024
  * (#)TestMongoDB.java  0.6.0   11/18/2024
  * (#)TestMongoDB.java  0.5.0   11/15/2024
  * (#)TestMongoDB.java  0.1.0   11/04/2024
@@ -51,24 +52,29 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 /// Note that because this is not a Spring Boot
 /// application autowiring does not work.
 ///
-/// @version    0.6.0
+/// @version    0.7.0
 /// @since      0.1.0
 @DisplayName("MongoDB template and repository")
 @Tag("MongoDB")
 final class TestMongoDB {
-    private ApplicationContext context;
+    private static ApplicationContext context;
 
-    @BeforeEach
-    void beforeEach() {
-        if (this.context == null) {
-            this.context = AppContext.getInstance().getApplicationContext();
+    @BeforeAll
+    static void beforeAll() {
+        if (context == null) {
+            context = AppContext.getInstance().getApplicationContext();
         }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        context = null;
     }
 
     @DisplayName("Test MongoDB template")
     @Test
     void testMongoTemplate() {
-        final MongoTemplate mongoTemplate = this.context.getBean(MongoTemplate.class);
+        final MongoTemplate mongoTemplate = context.getBean(MongoTemplate.class);
         final List<DemoDocument> documents = mongoTemplate.findAll(DemoDocument.class);
 
         assertEquals(4, documents.size());

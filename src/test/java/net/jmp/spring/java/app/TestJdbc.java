@@ -63,7 +63,7 @@ final class TestJdbc {
     @BeforeAll
     static void beforeAll() {
         if (context == null) {
-            context = new AnnotationConfigApplicationContext(AppConfig.class);
+            context = AppContext.getInstance().getApplicationContext();
         }
 
         if (departmentService == null) {
@@ -82,13 +82,8 @@ final class TestJdbc {
 
     @AfterAll
     static void afterAll() {
-        if (departmentService != null) {
-            departmentService = null;
-        }
-
-        if (context != null) {
-            context = null;
-        }
+        departmentService = null;
+        context = null;
     }
 
     @Test

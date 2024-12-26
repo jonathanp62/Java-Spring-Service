@@ -1,6 +1,7 @@
 package net.jmp.spring.java.app;
 
 /*
+ * (#)TestStringService.java    0.7.0   12/26/2024
  * (#)TestStringService.java    0.6.0   11/18/2024
  * (#)TestStringService.java    0.4.0   11/15/2024
  *
@@ -47,18 +48,23 @@ import org.springframework.context.ApplicationContext;
 
 /// The test class for the string service.
 ///
-/// @version    0.6.0
+/// @version    0.7.0
 /// @since      0.4.0
 @DisplayName("String Service")
 @Tag("Service")
 final class TestStringService {
-    private ApplicationContext context;
+    private static ApplicationContext context;
 
-    @BeforeEach
-    void beforeEach() {
-        if (this.context == null) {
-            this.context = AppContext.getInstance().getApplicationContext();
+    @BeforeAll
+    static void beforeAll() {
+        if (context == null) {
+            context = AppContext.getInstance().getApplicationContext();
         }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        context = null;
     }
 
     @DisplayName("String service helper methods")
@@ -158,7 +164,7 @@ final class TestStringService {
     @DisplayName("Test sanitize")
     @Test
     void testSanitizeString() {
-        final StringService stringService = this.context.getBean(StringService.class);
+        final StringService stringService = context.getBean(StringService.class);
 
         assertEquals("JohnDoe", stringService.sanitize("John Doe"));
 

@@ -77,7 +77,7 @@ final class TestRedis {
     @SuppressWarnings("unchecked")
     static void beforeAll() {
         if (context == null) {
-            context = new AnnotationConfigApplicationContext(AppConfig.class);
+            context = AppContext.getInstance().getApplicationContext();
         }
     }
 
@@ -94,9 +94,7 @@ final class TestRedis {
 
     @AfterAll
     static void afterAll() {
-        if (context != null) {
-            context = null;
-        }
+        context = null;
     }
 
     @DisplayName("Redis template")

@@ -61,7 +61,7 @@ final class TestJpa {
     @BeforeAll
     static void beforeAll() {
         if (context == null) {
-            context = new AnnotationConfigApplicationContext(AppConfig.class);
+            context = AppContext.getInstance().getApplicationContext();
         }
 
         if (employeeService == null) {
@@ -71,13 +71,8 @@ final class TestJpa {
 
     @AfterAll
     static void afterAll() {
-        if (employeeService != null) {
-            employeeService = null;
-        }
-
-        if (context != null) {
-            context = null;
-        }
+        employeeService = null;
+        context = null;
     }
 
     @Test
