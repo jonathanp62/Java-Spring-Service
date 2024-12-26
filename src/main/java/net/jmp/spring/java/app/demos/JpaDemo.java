@@ -47,6 +47,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
 
+import org.springframework.data.domain.Sort;
+
 /// The JDBC template demonstration.
 ///
 /// @version    0.7.0
@@ -70,8 +72,43 @@ public final class JpaDemo implements Demo {
         }
 
         final ApplicationContext context = AppContext.getInstance().getApplicationContext();
+        final EmployeeService employeeService = context.getBean(EmployeeService.class);
 
-        this.employeeService(context);
+        this.employeeService(employeeService);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Uses the JPA employee service.
+    ///
+    /// @param  employeeService net.jmp.spring.java.app.services.EmployeeService
+    private void employeeService(final EmployeeService employeeService) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(employeeService));
+        }
+
+        if (this.logger.isInfoEnabled()) {
+            this.employeeServiceCount(employeeService);
+            this.employeeServiceFindAll(employeeService);
+            this.employeeServiceFindAAllSorted(employeeService);
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Uses the JPA employee service to count the number of employee objects.
+    ///
+    /// @param  employeeService net.jmp.spring.java.app.services.EmployeeService
+    private void employeeServiceCount(final EmployeeService employeeService) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(employeeService));
+        }
+
+        this.logger.info("Number of employees: {}", employeeService.count());
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -80,22 +117,37 @@ public final class JpaDemo implements Demo {
 
     /// Uses the JPA employee service to fetch and log employee objects.
     ///
-    /// @param  context org.springframework.context.ApplicationContext
-    private void employeeService(final ApplicationContext context) {
+    /// @param  employeeService net.jmp.spring.java.app.services.EmployeeService
+    private void employeeServiceFindAll(final EmployeeService employeeService) {
         if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entryWith(context));
+            this.logger.trace(entryWith(employeeService));
         }
 
+        final List<Employee> employees = employeeService.findAll();
+
+        employees.stream()
+                .limit(10)
+                .forEach(employee -> this.logger.info(employee.toString()));
+
         if (this.logger.isTraceEnabled()) {
-            final EmployeeService employeeService = context.getBean(EmployeeService.class);
-            final List<Employee> employees = employeeService.findAll();
-
-            this.logger.info("Number of employees: {}", employees.size());
-
-            employees.stream()
-                    .limit(10)
-                    .forEach(employee -> this.logger.info(employee.toString()));
+            this.logger.trace(exit());
         }
+    }
+
+    /// Uses the JPA employee service to fetch and log employee objects.
+    ///
+    /// @param  employeeService net.jmp.spring.java.app.services.EmployeeService
+    private void employeeServiceFindAAllSorted(final EmployeeService employeeService) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(employeeService));
+        }
+
+        final Sort sort = Sort.by("lastName", "firstName");
+        final List<Employee> employees = employeeService.findAll(sort);
+
+        employees.stream()
+                .limit(10)
+                .forEach(employee -> this.logger.info(employee.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

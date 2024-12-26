@@ -34,8 +34,11 @@ import javax.sql.DataSource;
 
 import net.jmp.spring.java.app.services.EmployeeService;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 
@@ -58,6 +61,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaRepositories(basePackages = "net.jmp.spring.java.app.repositories")
 @EnableTransactionManagement
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class JpaConfig {
     /// The data source.
     private final DataSource dataSource;

@@ -44,6 +44,8 @@ import org.springframework.context.ApplicationContext;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import org.springframework.data.domain.Sort;
+
 /// The test class for the JPA beans.
 /// Note that because this is not a Spring Boot
 /// application autowiring does not work.
@@ -72,5 +74,80 @@ final class TestJpa {
         final List<Employee> employees = this.employeeService.findAll();
 
         assertThat(employees).hasSize(300_024);
+    }
+
+    @Test
+    void testEmployeeServiceFindAllSorted() {
+        final Sort sort = Sort.by("lastName", "firstName");
+        final List<Employee> employees = this.employeeService.findAll(sort)
+                .stream()
+                .limit(10)
+                .toList();
+
+        assertAll(
+                () -> assertThat(employees).hasSize(10),
+                () -> assertThat(employees.getFirst().getFirstName()).isEqualTo("Abdelkader"),
+                () -> assertThat(employees.get(1).getFirstName()).isEqualTo("Adhemar"),
+                () -> assertThat(employees.get(2).getFirstName()).isEqualTo("Aemilian"),
+                () -> assertThat(employees.get(3).getFirstName()).isEqualTo("Alagu"),
+                () -> assertThat(employees.get(4).getFirstName()).isEqualTo("Aleksander"),
+                () -> assertThat(employees.get(5).getFirstName()).isEqualTo("Alexius"),
+                () -> assertThat(employees.get(6).getFirstName()).isEqualTo("Alois"),
+                () -> assertThat(employees.get(7).getFirstName()).isEqualTo("Aluzio"),
+                () -> assertThat(employees.get(8).getFirstName()).isEqualTo("Amabile"),
+                () -> assertThat(employees.get(9).getFirstName()).isEqualTo("Anestis")
+        );
+    }
+
+    @Test
+    void testEmployeeServiceFindById() {
+        final int employeeNumber = 100_860;
+        final Employee employee = this.employeeService.findById(employeeNumber).orElseThrow(() -> new RuntimeException("Not found"));
+
+        assertAll(
+                () -> assertThat(employee.getEmployeeNumber()).isEqualTo(employeeNumber),
+                () -> assertThat(employee.getFirstName()).isEqualTo("Amabile")
+        );
+
+        assertThrows(
+                RuntimeException.class, () -> this.employeeService.findById(0).orElseThrow(() -> new RuntimeException("Not found"))
+        );
+    }
+
+    @Test
+    void testEmployeeServiceFindAllById() {
+        final List<Integer> ids = List.of(
+                258641, 258005, 455773, 436560, 266651, 487598, 216963, 15427, 100860, 107070, 0
+        );
+
+        final List<Integer> employees = this.employeeService.findAllById(ids)
+                        .stream()
+                        .map(Employee::getEmployeeNumber)
+                        .toList();
+
+        assertAll(
+                () -> assertThat(employees).hasSize(10),
+                () -> assertThat(employees).contains(258641),
+                () -> assertThat(employees).contains(258005),
+                () -> assertThat(employees).contains(455773),
+                () -> assertThat(employees).contains(436560),
+                () -> assertThat(employees).contains(266651),
+                () -> assertThat(employees).contains(487598),
+                () -> assertThat(employees).contains(216963),
+                () -> assertThat(employees).contains(15427),
+                () -> assertThat(employees).contains(100860),
+                () -> assertThat(employees).contains(107070)
+        );
+    }
+
+    @Test
+    void testEmployeeServiceCount() {
+        assertThat(this.employeeService.count()).isEqualTo(300_024);
+    }
+
+    @Test
+    void testEmployeeServiceExists() {
+        assertThat(this.employeeService.existsById(100_860)).isTrue();
+        assertThat(this.employeeService.existsById(0)).isFalse();
     }
 }

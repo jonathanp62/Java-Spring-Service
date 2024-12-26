@@ -38,10 +38,13 @@ import javax.sql.DataSource;
 import net.jmp.spring.java.app.repositories.DepartmentRepository;
 import net.jmp.spring.java.app.repositories.DepartmentRepositoryImpl;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+
 import org.springframework.boot.jdbc.DataSourceBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -50,6 +53,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /// @version    0.7.0
 /// @since      0.7.0
 @Configuration
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class JdbcConfig {
     /// The default constructor.
     public JdbcConfig() {
@@ -61,6 +65,7 @@ public class JdbcConfig {
     /// @return javax.sql.DataSource
     /// @since  0.7.0
     @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public DataSource jdbcDataSource() {
         final var dataSourceBuilder = DataSourceBuilder.create();
         final var secretProperties = new Properties();

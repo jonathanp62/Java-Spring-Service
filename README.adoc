@@ -3,6 +3,13 @@ Spring-Service
 
 A program that demonstrates using Spring features from inside a regular Java application.
 
+Requirements
+~~~~~~~~~~~~
+
+* MongoDB (Atlas)
+* MySQL
+* Redis
+
 Features
 ~~~~~~~~
 

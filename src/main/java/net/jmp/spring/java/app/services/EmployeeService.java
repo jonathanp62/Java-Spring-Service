@@ -29,12 +29,15 @@ package net.jmp.spring.java.app.services;
  */
 
 import java.util.List;
+import java.util.Optional;
 
 import net.jmp.spring.java.app.entities.Employee;
 
 import net.jmp.spring.java.app.repositories.EmployeeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Sort;
 
 import org.springframework.stereotype.Service;
 
@@ -53,7 +56,48 @@ public class EmployeeService {
         super();
     }
 
+    /// Finds all employees.
+    ///
+    /// @return java.util.List<net.jmp.spring.java.app.entities.Employee>
     public List<Employee> findAll() {
         return this.employeeRepository.findAll();
+    }
+
+    /// Finds all employees applying the specified sort.
+    ///
+    /// @return java.util.List<net.jmp.spring.java.app.entities.Employee>
+    public List<Employee> findAll(final Sort sort) {
+        return this.employeeRepository.findAll(sort);
+    }
+
+    /// Finds an employee by identifier.
+    ///
+    /// @param  employeeNumber  int
+    /// @return                 java.util.Optional<net.jmp.spring.java.app.entities.Employee>
+    public Optional<Employee> findById(final int employeeNumber) {
+        return this.employeeRepository.findById(employeeNumber);
+    }
+
+    /// Returns the number of employees in the repository.
+    ///
+    /// @return long
+    public long count() {
+        return this.employeeRepository.count();
+    }
+
+    /// Returns true if an employee exists in the repository.
+    ///
+    /// @param  employeeNumber  int
+    /// @return                 boolean
+    public boolean existsById(final int employeeNumber) {
+        return this.employeeRepository.existsById(employeeNumber);
+    }
+
+    /// Finds all employees by identifier.
+    ///
+    /// @param  ids java.lang.Iterable<java.lang.Integer>
+    /// @return     java.util.List<net.jmp.spring.java.app.entities.Employee>
+    public List<Employee> findAllById(Iterable<Integer> ids) {
+        return this.employeeRepository.findAllById(ids);
     }
 }
