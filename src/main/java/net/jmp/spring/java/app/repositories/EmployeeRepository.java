@@ -30,6 +30,10 @@ package net.jmp.spring.java.app.repositories;
 
 import net.jmp.spring.java.app.entities.Employee;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -47,4 +51,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     /// @return             java.lang.Iterable<net.jmp.spring.java.app.entities.Employee>
     @Query(value = "SELECT emp_no, birth_date, first_name, last_name, gender, hire_date FROM employees WHERE last_name = ?1", nativeQuery = true)
     public Iterable<Employee> findAllByLastName(final String lastName);
-}
+
+    /// Returns a page of employees limited by the given page criteria.
+    ///
+    /// @param  pageable    org.springframework.data.domain.Pageable
+    /// @return             org.springframework.data.domain.Page<net.jmp.spring.java.app.entities.Employee>
+    public Page<Employee> findAll(final Pageable pageable);
+ }

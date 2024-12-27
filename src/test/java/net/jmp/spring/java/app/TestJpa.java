@@ -45,6 +45,9 @@ import org.junit.jupiter.api.*;
 
 import org.springframework.context.ApplicationContext;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 /// The test class for the JPA beans.
@@ -160,6 +163,32 @@ final class TestJpa {
                 () -> assertThat(employees).contains(15427),
                 () -> assertThat(employees).contains(100860),
                 () -> assertThat(employees).contains(107070)
+        );
+    }
+
+    @Test
+    void testEmployeeServiceFindAllPaginated() {
+        final Sort sort = Sort.by("lastName", "firstName");
+        final Pageable pageable = PageRequest.of(0, 10, sort);
+        final Page<Employee> page = employeeService.findAll(pageable);
+        final List<Integer> employeeIds = page
+                .getContent()
+                .stream()
+                .map(Employee::getEmployeeNumber)
+                .toList();
+
+        assertAll(
+                () -> assertThat(employeeIds).hasSize(10),
+                () -> assertThat(employeeIds).contains(258641),
+                () -> assertThat(employeeIds).contains(258005),
+                () -> assertThat(employeeIds).contains(455773),
+                () -> assertThat(employeeIds).contains(436560),
+                () -> assertThat(employeeIds).contains(266651),
+                () -> assertThat(employeeIds).contains(487598),
+                () -> assertThat(employeeIds).contains(216963),
+                () -> assertThat(employeeIds).contains(15427),
+                () -> assertThat(employeeIds).contains(100860),
+                () -> assertThat(employeeIds).contains(107070)
         );
     }
 

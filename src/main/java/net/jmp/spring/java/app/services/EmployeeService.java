@@ -37,6 +37,9 @@ import net.jmp.spring.java.app.repositories.EmployeeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import org.springframework.stereotype.Service;
@@ -154,5 +157,22 @@ public class EmployeeService {
     /// @param  ids   java.lang.Iterable<java.lang.Integer>
     public void deleteAllById(Iterable<Integer> ids) {
         this.employeeRepository.deleteAllById(ids);
+    }
+
+    /// Returns a page of employees.
+    ///
+    /// @param  page    int
+    /// @param  size    int
+    /// @return         org.springframework.data.domain.Page<net.jmp.spring.java.app.entities.Employee>
+    public Page<Employee> findAll(final int page, final int size) {
+        return this.employeeRepository.findAll(PageRequest.of(page, size));
+    }
+
+    /// Returns a page of employees sorted as specified.
+    ///
+    /// @param  pageable    org.springframework.data.domain.Pageable
+    /// @return             org.springframework.data.domain.Page<net.jmp.spring.java.app.entities.Employee>
+    public Page<Employee> findAll(final Pageable pageable) {
+        return this.employeeRepository.findAll(pageable);
     }
 }

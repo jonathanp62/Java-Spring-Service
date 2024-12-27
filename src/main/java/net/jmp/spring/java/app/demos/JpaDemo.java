@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 /// The JDBC template demonstration.
@@ -92,7 +93,8 @@ public final class JpaDemo implements Demo {
         if (this.logger.isInfoEnabled()) {
             this.employeeServiceCount(employeeService);
             this.employeeServiceFindAll(employeeService);
-            this.employeeServiceFindAAllSorted(employeeService);
+            this.employeeServiceFindAllSorted(employeeService);
+            this.employeeServiceFindAllPaginated(employeeService);
         }
 
         if (this.logger.isTraceEnabled()) {
@@ -137,7 +139,7 @@ public final class JpaDemo implements Demo {
     /// Uses the JPA employee service to fetch and log employee objects.
     ///
     /// @param  employeeService net.jmp.spring.java.app.services.EmployeeService
-    private void employeeServiceFindAAllSorted(final EmployeeService employeeService) {
+    private void employeeServiceFindAllSorted(final EmployeeService employeeService) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(employeeService));
         }
@@ -148,6 +150,24 @@ public final class JpaDemo implements Demo {
         employees.stream()
                 .limit(10)
                 .forEach(employee -> this.logger.info(employee.toString()));
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Uses the JPA employee service to fetch
+    /// and log employee objects paginated.
+    ///
+    /// @param  employeeService net.jmp.spring.java.app.services.EmployeeService
+    private void employeeServiceFindAllPaginated(final EmployeeService employeeService) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(employeeService));
+        }
+
+        final Page<Employee> page = employeeService.findAll(0, 10);
+
+        page.get().forEach(employee -> this.logger.info(employee.toString()));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
