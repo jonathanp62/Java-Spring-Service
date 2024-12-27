@@ -128,6 +128,16 @@ final class TestJpa {
     }
 
     @Test
+    void testEmployeeServiceFindAllByLastName() {
+        final String lastName = "Aamodt";
+        final List<Employee> employees = new ArrayList<>(256);
+
+        employeeService.findAllByLastName(lastName).forEach(employees::add);
+
+        assertThat(employees).hasSize(205);
+    }
+
+    @Test
     void testEmployeeServiceFindAllById() {
         final List<Integer> ids = List.of(
                 258641, 258005, 455773, 436560, 266651, 487598, 216963, 15427, 100860, 107070, 0

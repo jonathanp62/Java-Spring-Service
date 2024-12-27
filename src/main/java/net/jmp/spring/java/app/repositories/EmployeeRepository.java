@@ -31,6 +31,7 @@ package net.jmp.spring.java.app.repositories;
 import net.jmp.spring.java.app.entities.Employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -40,4 +41,10 @@ import org.springframework.stereotype.Repository;
 /// @since      0.7.0
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+    /// Returns a list of employees filtered by the given last name.
+    ///
+    /// @param  lastName    java.lang.String
+    /// @return             java.lang.Iterable<net.jmp.spring.java.app.entities.Employee>
+    @Query(value = "SELECT emp_no, birth_date, first_name, last_name, gender, hire_date FROM employees WHERE last_name = ?1", nativeQuery = true)
+    public Iterable<Employee> findAllByLastName(final String lastName);
 }

@@ -102,6 +102,14 @@ public class EmployeeService {
         return this.employeeRepository.findAllById(ids);
     }
 
+    /// Finds all employees with the given last name.
+    ///
+    /// @param  lastName  java.lang.String
+    /// @return           java.lang.Iterable<net.jmp.spring.java.app.entities.Employee>
+    public Iterable<Employee> findAllByLastName(final String lastName) {
+        return this.employeeRepository.findAllByLastName(lastName);
+    }
+
     /// Save an employee.
     ///
     /// @param  <S>         java.lang.Class<? extends net.jmp.spring.java.app.classes.Employee>

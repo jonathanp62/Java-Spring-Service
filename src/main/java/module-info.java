@@ -47,10 +47,11 @@ module spring.service.main {
     requires spring.boot.autoconfigure;
     requires spring.context;
     requires spring.data.commons;
+    requires spring.data.jdbc;
+    requires spring.data.jpa;
     requires spring.data.mongodb;
     requires spring.data.redis;
     requires spring.jdbc;
     requires spring.orm;
     requires spring.tx;
-    requires spring.data.jpa;
 }
