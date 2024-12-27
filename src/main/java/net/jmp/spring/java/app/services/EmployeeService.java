@@ -104,14 +104,16 @@ public class EmployeeService {
 
     /// Save an employee.
     ///
-    /// @param  employee  S extends net.jmp.spring.java.app.entities.Employee
-    /// @return           S extends net.jmp.spring.java.app.entities.Employee
+    /// @param  <S>         java.lang.Class<? extends net.jmp.spring.java.app.classes.Employee>
+    /// @param  employee    S extends net.jmp.spring.java.app.entities.Employee
+    /// @return             S extends net.jmp.spring.java.app.entities.Employee
     public <S extends Employee> S save(final S employee) {
         return this.employeeRepository.save(employee);
     }
 
     /// Save an iterable of employees.
     ///
+    /// @param  <S>         java.lang.Class<? extends net.jmp.spring.java.app.classes.Employee>
     /// @param  employees   java.lang.Iterable<S extends net.jmp.spring.java.app.entities.Employee>
     /// @return             java.lang.Iterable<S extends net.jmp.spring.java.app.entities.Employee>
     public <S extends Employee> Iterable<S> saveAll(final Iterable<S> employees) {
