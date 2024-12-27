@@ -101,4 +101,48 @@ public class EmployeeService {
     public List<Employee> findAllById(Iterable<Integer> ids) {
         return this.employeeRepository.findAllById(ids);
     }
+
+    /// Save an employee.
+    ///
+    /// @param  employee  S extends net.jmp.spring.java.app.entities.Employee
+    /// @return           S extends net.jmp.spring.java.app.entities.Employee
+    public <S extends Employee> S save(final S employee) {
+        return this.employeeRepository.save(employee);
+    }
+
+    /// Save an iterable of employees.
+    ///
+    /// @param  employees   java.lang.Iterable<S extends net.jmp.spring.java.app.entities.Employee>
+    /// @return             java.lang.Iterable<S extends net.jmp.spring.java.app.entities.Employee>
+    public <S extends Employee> Iterable<S> saveAll(final Iterable<S> employees) {
+        return this.employeeRepository.saveAll(employees);
+    }
+
+    /// Deletes an employee by identifier.
+    ///
+    /// @param  employeeNumber  int
+    public void deleteById(final int employeeNumber) {
+        this.employeeRepository.deleteById(employeeNumber);
+    }
+
+    /// Deletes an employee.
+    ///
+    /// @param  employee  net.jmp.spring.java.app.entities.Employee
+    public void delete(final Employee employee) {
+        this.employeeRepository.delete(employee);
+    }
+
+    /// Deletes an iterable of employees.
+    ///
+    /// @param  employees   java.lang.Iterable<? extends net.jmp.spring.java.app.entities.Employee>
+    public void deleteAll(Iterable<? extends Employee> employees) {
+        this.employeeRepository.deleteAll(employees);
+    }
+
+    /// Deletes all employees with the given identifiers.
+    ///
+    /// @param  ids   java.lang.Iterable<java.lang.Integer>
+    public void deleteAllById(Iterable<Integer> ids) {
+        this.employeeRepository.deleteAllById(ids);
+    }
 }
