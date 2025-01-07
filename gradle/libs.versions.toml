@@ -37,6 +37,7 @@ ch-qos-logback-logback-classic = "1.5.7"
 ch-qos-logback-logback-core = "1.5.7"
 com-fasterxml-jackson-core-jackson-databind = "2.18.1"
 com-mysql-mysql-connection-j = "9.1.0"
+io-netty-netty-resolver-dns-native-macos = "4.1.109.Final"
 net-jmp-util-extra-extra-utilities = "1.4.1"
 net-jmp-util-logging-logging-utilities = "1.2.0"
 org-assertj-assertj-core = "3.26.3"
@@ -61,6 +62,7 @@ ch-qos-logback-logback-classic = { module = "ch.qos.logback:logback-classic", ve
 ch-qos-logback-logback-core = { module = "ch.qos.logback:logback-core", version.ref = "ch-qos-logback-logback-core" }
 com-fasterxml-jackson-core-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "com-fasterxml-jackson-core-jackson-databind" }
 com-mysql-mysql-connection-j = { module = "com.mysql:mysql-connector-j", version.ref = "com-mysql-mysql-connection-j" }
+io-netty-netty-resolver-dns-native-macos = { module = "io.netty:netty-resolver-dns-native-macos", version.ref = "io-netty-netty-resolver-dns-native-macos" }
 net-jmp-util-extra-extra-utilities = { module = "net.jmp.util.extra:extra-utilities", version.ref = "net-jmp-util-extra-extra-utilities" }
 net-jmp-util-logging-logging-utilities = { module = "net.jmp.util.logging:logging-utilities", version.ref = "net-jmp-util-logging-logging-utilities" }
 org-assertj-assertj-core = { module = "org.assertj:assertj-core", version.ref = "org-assertj-assertj-core" }
@@ -79,3 +81,23 @@ org-springframework-boot-spring-boot-starter-data-redis = { module = "org.spring
 org-springframework-data-spring-data-mongodb = { module = "org.springframework.data:spring-data-mongodb", version.ref = "org-springframework-data-spring-data-mongodb" }
 org-springframework-spring-context = { module = "org.springframework:spring-context", version.ref = "org-springframework-spring-context" }
 redis-clients-jedis = { module = "redis.clients:jedis", version.ref = "redis-clients-jedis" }
+
+[bundles]
+jmp = ["net-jmp-util-extra-extra-utilities", "net-jmp-util-logging-logging-utilities"]
+
+junit-jupiter = [
+    "org-junit-jupiter-junit-jupiter",
+    "org-junit-jupiter-junit-jupiter-api",
+    "org-junit-jupiter-junit-jupiter-engine",
+    "org-junit-jupiter-junit-jupiter-params"
+]
+
+logback = ["ch-qos-logback-logback-classic", "ch-qos-logback-logback-core"]
+mongodb = ["org-mongodb-mongodb-driver-sync", "org-springframework-data-spring-data-mongodb"]
+redis = ["org-redisson-redisson", "redis-clients-jedis", "org-springframework-boot-spring-boot-starter-data-redis"]
+
+spring = [
+    "org-springframework-boot-spring-boot-starter-data-jdbc",
+    "org-springframework-boot-spring-boot-starter-data-jpa",
+    "org-springframework-spring-context"
+]
